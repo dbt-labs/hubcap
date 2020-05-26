@@ -4,6 +4,10 @@ import dbt.clients.system
 import dbt.config
 import dbt.exceptions
 
+from dbt.config import Project
+from dbt.context.base import generate_base_context
+from dbt.config.renderer import DbtProjectYamlRenderer
+
 import collections
 import os
 import time
@@ -47,10 +51,6 @@ try:
 except dbt.exceptions.CommandResultError as e:
     print(e.stderr.decode())
     raise
-
-dbt.clients.system.run_cmd(ROOT_DIR, ['git', 'submodule', 'init'])
-dbt.clients.system.run_cmd(ROOT_DIR, ['git', 'submodule', 'update'])
-
 
 INDEX_DIR = os.path.join(git_root_dir, "data")
 indexed_files = dbt.clients.system.find_matching(INDEX_DIR, ['packages'], '*.json')
@@ -96,14 +96,16 @@ def get_sha1(url):
     return digest
 
 def get_project(git_path):
-    return dbt.config.Project.from_project_root(git_path, {})
+    ctx = generate_base_context({})
+    renderer = DbtProjectYamlRenderer(ctx)
+    return Project.from_project_root(git_path, renderer)
 
 def make_spec(org, repo, version, git_path):
     tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(org, repo, version)
     sha1 = get_sha1(tarball_url)
 
     project = get_project(git_path)
-    packages = project.packages.packages
+    packages = [p.to_dict() for p in project.packages.packages]
     package_name = project.project_name
 
     return {
@@ -163,6 +165,11 @@ def make_index(org_name, repo, existing, tags, git_path):
         "latest": latest.to_version_string().replace("=", ""), # LOL
         "assets": assets,
     }
+
+def get_hub_versions(org, repo):
+    url = 'https://hub.getdbt.com/api/v1/{}/{}.json'.format(org, repo)
+    resp = requests.get(url).json()
+    return {r['version'] for r in resp['versions'].values()}
 
 new_branches = {}
 for org_name, repos in TRACKED_REPOS.items():

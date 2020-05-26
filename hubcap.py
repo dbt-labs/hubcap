@@ -44,8 +44,12 @@ REMOTE = config['remote']
 git_root_dir = os.path.join(TMP_DIR, "ROOT")
 
 try:
-    dbt.clients.git.clone_and_checkout(REMOTE, cwd=TMP_DIR, dirname="ROOT")
     print("Updating root repo")
+    dbt.clients.system.make_directory(TMP_DIR)
+    if os.path.exists(git_root_dir):
+        dbt.clients.system.rmdir(git_root_dir)
+
+    dbt.clients.system.run_cmd(TMP_DIR, ['git', 'clone', REMOTE, 'ROOT'])
     dbt.clients.system.run_cmd(git_root_dir, ['git', 'checkout', 'master'])
     dbt.clients.system.run_cmd(git_root_dir, ['git', 'pull', 'origin', 'master'])
 except dbt.exceptions.CommandResultError as e:
@@ -320,7 +324,7 @@ if PUSH_BRANCHES and len(new_branches) > 0:
         try:
             dbt.clients.system.run_cmd(index_path, ['git', 'checkout', branch])
             try:
-                dbt.clients.system.run_cmd(hub_dir, ['git', 'fetch', '--unshallow', 'hub'])
+                dbt.clients.system.run_cmd(hub_dir, ['git', 'fetch', 'hub'])
             except dbt.exceptions.CommandResultError as e:
                 print(e.stderr.decode())
 

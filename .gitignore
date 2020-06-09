@@ -1,3 +1,4 @@
 env/
 git-tmp/
 config.json
+hub.current.json

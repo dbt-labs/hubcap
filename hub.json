@@ -34,5 +34,8 @@
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
-    ]   
+    ],
+    "kristeligt-dagblad": [
+        "dbt_ml"
+    ]
 }

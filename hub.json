@@ -30,7 +30,9 @@
         "dbt_github",
         "dbt_github_source",
         "dbt_marketo",
-        "dbt_marketo_source"
+        "dbt_marketo_source",
+        "dbt_asana",
+        "dbt_asana_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

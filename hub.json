@@ -30,7 +30,11 @@
         "dbt_github",
         "dbt_github_source",
         "dbt_marketo",
-        "dbt_marketo_source"
+        "dbt_marketo_source",
+        "dbt_asana",
+        "dbt_asana_source",
+        "dbt_hubspot",
+        "dbt_hubspot_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
@@ -38,7 +42,13 @@
     "kristeligt-dagblad": [
         "dbt_ml"
     ],
+	  "rudderlabs": [
+		    "dbt-sessionization",
+		    "dbt-id-resolution",
+		    "dbt-customer-journey-analysis",
+		    "dbt-events-registry"
+	  ],
     "sgoley": [
-        "postgres_utils"
+        "dbt-postgres-utils"
     ]
 }

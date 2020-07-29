@@ -42,10 +42,13 @@
     "kristeligt-dagblad": [
         "dbt_ml"
     ],
-	"rudderlabs": [
-		"dbt-sessionization",
-		"dbt-id-resolution",
-		"dbt-customer-journey-analysis",
-		"dbt-events-registry"
-	]
+	  "rudderlabs": [
+		    "dbt-sessionization",
+		    "dbt-id-resolution",
+		    "dbt-customer-journey-analysis",
+		    "dbt-events-registry"
+	  ],
+    "sgoley": [
+        "dbt-postgres-utils"
+    ]
 }

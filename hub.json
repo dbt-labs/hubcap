@@ -34,7 +34,9 @@
         "dbt_asana",
         "dbt_asana_source",
         "dbt_hubspot",
-        "dbt_hubspot_source"
+        "dbt_hubspot_source",
+	"dbt_stripe",
+	"dbt_stripe_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

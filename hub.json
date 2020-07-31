@@ -35,8 +35,8 @@
         "dbt_asana_source",
         "dbt_hubspot",
         "dbt_hubspot_source",
-	"dbt_stripe",
-	"dbt_stripe_source"
+        "dbt_stripe",
+        "dbt_stripe_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
@@ -44,12 +44,12 @@
     "kristeligt-dagblad": [
         "dbt_ml"
     ],
-	  "rudderlabs": [
-		    "dbt-sessionization",
-		    "dbt-id-resolution",
-		    "dbt-customer-journey-analysis",
-		    "dbt-events-registry"
-	  ],
+    "rudderlabs": [
+        "dbt-sessionization",
+        "dbt-id-resolution",
+        "dbt-customer-journey-analysis",
+        "dbt-events-registry"
+    ],
     "sgoley": [
         "dbt-postgres-utils"
     ]

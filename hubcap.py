@@ -247,6 +247,11 @@ for org_name, repos in TRACKED_REPOS.items():
 
                 version_path = os.path.join(repo_dir, "{}.json".format(tag))
 
+                print(f"      Checking out {git_path} to tag {tag}")
+                out, err = dbt.clients.system.run_cmd(git_path, ['git', 'checkout', tag])
+                print(f"        ERR: {err}")
+                print(f"        OUT: {out}")
+
                 package_spec = make_spec(org_name, repo, tag, git_path)
                 dbt.clients.system.write_file(version_path, json.dumps(package_spec, indent=4))
 

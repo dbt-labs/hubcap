@@ -38,7 +38,7 @@
         "dbt_stripe",
         "dbt_stripe_source",
         "dbt_linkedin",
-        "dbt_linkedin_ads"
+        "dbt_linkedin_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

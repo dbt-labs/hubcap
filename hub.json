@@ -36,7 +36,9 @@
         "dbt_hubspot",
         "dbt_hubspot_source",
         "dbt_stripe",
-        "dbt_stripe_source"
+        "dbt_stripe_source",
+        "dbt_linkedin",
+        "dbt_linkedin_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

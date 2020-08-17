@@ -38,7 +38,16 @@
         "dbt_stripe",
         "dbt_stripe_source",
         "dbt_linkedin",
-        "dbt_linkedin_source"
+        "dbt_linkedin_source",
+        "dbt_zendesk",
+        "dbt_zendesk_source",
+        "dbt_pinterest",
+        "dbt_pinterest_source"
+        "dbt_facebook_ads",
+        "dbt_facebook_ads_source",
+        "dbt_bing_ads",
+        "dbt_bing_ads_source",
+        "dbt_fivetran_log"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  lint:
+    docker:
+      - image: circleci/python:3.6.4
+    steps:
+      - checkout
+      # Validate hub.json file
+      - run: "echo hub.json | python3 -m json.tool"
+
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint

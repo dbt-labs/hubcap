@@ -42,7 +42,7 @@
         "dbt_zendesk",
         "dbt_zendesk_source",
         "dbt_pinterest",
-        "dbt_pinterest_source"
+        "dbt_pinterest_source",
         "dbt_facebook_ads",
         "dbt_facebook_ads_source",
         "dbt_bing_ads",

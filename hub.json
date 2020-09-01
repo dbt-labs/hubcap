@@ -45,9 +45,14 @@
         "dbt_pinterest_source",
         "dbt_facebook_ads",
         "dbt_facebook_ads_source",
-        "dbt_bing_ads",
-        "dbt_bing_ads_source",
-        "dbt_fivetran_log"
+        "dbt_microsoft_ads",
+        "dbt_microsoft_ads_source",
+        "dbt_fivetran_log",
+        "dbt_jira",
+        "dbt_jira_source",
+        "dbt_shopify",
+        "dbt_shopify_source",
+        "dbt_mixpanel"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

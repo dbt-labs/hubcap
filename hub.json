@@ -60,6 +60,9 @@
     "kristeligt-dagblad": [
         "dbt_ml"
     ],
+    "gitlabhq": [
+        "snowflake_spend"
+    ],
     "rudderlabs": [
         "dbt-sessionization",
         "dbt-id-resolution",

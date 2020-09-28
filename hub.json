@@ -71,5 +71,8 @@
     ],
     "sgoley": [
         "dbt-postgres-utils"
+    ],
+    "Datavault-UK": [
+        "dbtvault"
     ]
 }

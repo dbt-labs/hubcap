@@ -18,6 +18,7 @@
         "redshift",
         "segment",
         "ecommerce",
+        "spark-utils",
         "stitch-utils",
         "dbt-codegen",
         "dbt-audit-helper",

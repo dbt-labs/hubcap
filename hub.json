@@ -26,7 +26,9 @@
     ],
     "fivetran": [
         "dbt_netsuite",
+        "dbt_netsuite_source",
         "dbt_mailchimp",
+        "dbt_mailchimp_source",
         "dbt_salesforce",
         "dbt_github",
         "dbt_github_source",
@@ -53,7 +55,14 @@
         "dbt_jira_source",
         "dbt_shopify",
         "dbt_shopify_source",
-        "dbt_mixpanel"
+        "dbt_mixpanel",
+        "dbt_twitter",
+        "dbt_twitter_source",
+        "dbt_ad_reporting",
+        "dbt_google_ads",
+        "dbt_google_ads_source",
+        "dbt_quickbooks",
+        "dbt_quickbooks_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

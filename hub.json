@@ -30,6 +30,7 @@
         "dbt_mailchimp",
         "dbt_mailchimp_source",
         "dbt_salesforce",
+        "dbt_salesforce_source",
         "dbt_github",
         "dbt_github_source",
         "dbt_marketo",
@@ -62,7 +63,8 @@
         "dbt_google_ads",
         "dbt_google_ads_source",
         "dbt_quickbooks",
-        "dbt_quickbooks_source"
+        "dbt_quickbooks_source",
+        "dbt_fivetran_utils"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

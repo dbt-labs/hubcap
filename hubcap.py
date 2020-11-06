@@ -183,8 +183,10 @@ for org_name, repos in TRACKED_REPOS.items():
             git_path = os.path.join(TMP_DIR, repo)
 
             print("Cloning repo {}".format(clone_url))
-            dbt.clients.git.clone_and_checkout(clone_url, cwd=TMP_DIR, dirname=repo)
+            if os.path.exists(git_path):
+                dbt.clients.system.rmdir(git_path)
 
+            dbt.clients.system.run_cmd(TMP_DIR, ['git', 'clone', clone_url, repo])
             dbt.clients.system.run_cmd(git_path, ['git', 'fetch', '-t'])
             tags = dbt.clients.git.list_tags(git_path)
 

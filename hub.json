@@ -86,5 +86,10 @@
     ],
     "Datavault-UK": [
         "dbtvault"
+    ],
+    "calogica": [
+        "dbt-date",
+        "dbt-expectations"
     ]
+
 }

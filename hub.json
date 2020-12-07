@@ -90,6 +90,9 @@
     "calogica": [
         "dbt-date",
         "dbt-expectations"
+    ],
+    "tnightengale": [
+        "dbt-meta-testing"
     ]
 
 }

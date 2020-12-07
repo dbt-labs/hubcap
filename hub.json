@@ -91,6 +91,9 @@
         "dbt-date",
         "dbt-expectations"
     ],
+    "yu-iskw": [
+        "dbt-airflow-macros"
+    ],
     "tnightengale": [
         "dbt-meta-testing"
     ]

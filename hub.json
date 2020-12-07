@@ -93,6 +93,9 @@
     ],
     "yu-iskw": [
         "dbt-airflow-macros"
+    ],
+    "tnightengale": [
+        "dbt-meta-testing"
     ]
 
 }

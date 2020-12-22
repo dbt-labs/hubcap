@@ -64,6 +64,16 @@
         "dbt_google_ads_source",
         "dbt_quickbooks",
         "dbt_quickbooks_source",
+        "dbt_intercom",
+        "dbt_intercom_source",
+        "dbt_pardot",
+        "dbt_pardot_source",
+        "dbt_greenhouse",
+        "dbt_greenhouse_source",
+        "dbt_lever",
+        "dbt_lever_source",
+        "dbt_zuora",
+        "dbt_zuora_source",
         "dbt_fivetran_utils"
     ],
     "Montreal-Analytics": [

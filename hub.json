@@ -106,6 +106,9 @@
     ],
     "tnightengale": [
         "dbt-meta-testing"
+    ],
+    "omnata-labs": [
+        "dbt-ml-preprocessing"
     ]
 
 }

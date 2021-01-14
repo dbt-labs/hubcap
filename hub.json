@@ -109,6 +109,9 @@
     ],
     "omnata-labs": [
         "dbt-ml-preprocessing"
+    ],
+    "dbt-msft": [
+        "tsql-utils"
     ]
 
 }

@@ -48,6 +48,7 @@
         "dbt_pinterest",
         "dbt_pinterest_source",
         "dbt_facebook_ads",
+        "dbt_facebook_ads_creative_history",
         "dbt_facebook_ads_source",
         "dbt_microsoft_ads",
         "dbt_microsoft_ads_source",
@@ -74,7 +75,9 @@
         "dbt_lever_source",
         "dbt_zuora",
         "dbt_zuora_source",
-        "dbt_fivetran_utils"
+        "dbt_fivetran_utils",
+        "dbt_xero",
+        "dbt_xero_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

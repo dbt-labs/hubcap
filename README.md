@@ -8,3 +8,5 @@ Each hour, `hubcap.py` runs, and checks whether there are new releases for any o
 Currently, only packages hosted on a GitHub repo are supported.
 
 To add your package, open a PR that adds your repository to [hub.json](hub.json).
+
+Note that only release names that use [semantic versioning](https://semver.org/) will be picked up by hubcap — both `0.1.0` and `v0.1.0` will be picked up, but `first-release` will not.

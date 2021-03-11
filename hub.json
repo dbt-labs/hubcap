@@ -115,6 +115,9 @@
     ],
     "dbt-msft": [
         "tsql-utils"
+    ],
+    "tailsdotcom": [
+        "dbt_artifacts"
     ]
 
 }

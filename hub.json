@@ -77,7 +77,13 @@
         "dbt_zuora_source",
         "dbt_fivetran_utils",
         "dbt_xero",
-        "dbt_xero_source"
+        "dbt_xero_source",
+        "dbt_klaviyo",
+        "dbt_klaviyo_source",
+        "dbt_snapchat_ads",
+        "dbt_snapchat_ads_source",
+        "dbt_iterable",
+        "dbt_iterable_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

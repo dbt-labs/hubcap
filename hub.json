@@ -124,6 +124,9 @@
     ],
     "tailsdotcom": [
         "dbt_artifacts"
+    ],
+    "emilyriederer": [
+        "dbtplyr"
     ]
 
 }

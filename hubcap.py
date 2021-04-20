@@ -5,8 +5,10 @@ import dbt.config
 import dbt.exceptions
 
 from dbt.config import Project
+from dbt.config.profile import Profile
+from dbt.config.renderer import DbtProjectYamlRenderer, ProfileRenderer
 from dbt.context.base import generate_base_context
-from dbt.config.renderer import DbtProjectYamlRenderer
+from dbt.context.target import generate_target_context
 
 import collections
 import os
@@ -17,6 +19,24 @@ import json
 import io
 import hashlib
 import requests
+
+
+PHONY_PROFILE = {
+    "hubcap": {
+        "target": "dev",
+        "outputs": {
+            "dev": {
+                "type": "postgres",
+                "host": "localhost",
+                "database": "analytics",
+                "schema": "hubcap",
+                "user": "user",
+                "password": "password",
+                "port": 5432
+            }
+        }
+    }
+}
 
 
 NOW = int(time.time())
@@ -100,7 +120,13 @@ def get_sha1(url):
     return digest
 
 def get_project(git_path):
-    ctx = generate_base_context({})
+    phony_profile = Profile.from_raw_profiles(
+        raw_profiles=PHONY_PROFILE,
+        profile_name='hubcap',
+        renderer=ProfileRenderer({})
+    )
+
+    ctx = generate_target_context(phony_profile, cli_vars={})
     renderer = DbtProjectYamlRenderer(ctx)
     return Project.from_project_root(git_path, renderer)
 

@@ -127,6 +127,9 @@
     ],
     "emilyriederer": [
         "dbtplyr"
+    ],
+    "MaterializeInc": [
+        "materialize-dbt-utils"
     ]
 
 }

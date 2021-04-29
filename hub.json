@@ -83,7 +83,8 @@
         "dbt_snapchat_ads",
         "dbt_snapchat_ads_source",
         "dbt_iterable",
-        "dbt_iterable_source"
+        "dbt_iterable_source",
+        "dbt_salesforce_formula_utils"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

@@ -131,6 +131,8 @@
     ],
     "MaterializeInc": [
         "materialize-dbt-utils"
+    ],
+    "data-mie": [
+        "dbt-profiler"
     ]
-
 }

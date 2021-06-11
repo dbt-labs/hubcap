@@ -134,5 +134,8 @@
     ],
     "data-mie": [
         "dbt-profiler"
+    ],
+    "entechlog": [
+        "dbt-snow-mask"
     ]
 }

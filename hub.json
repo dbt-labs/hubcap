@@ -86,6 +86,18 @@
         "dbt_iterable_source",
         "dbt_salesforce_formula_utils"
     ],
+    "Meltano": [
+        "dbt-tap-adwords",
+        "dbt-tap-carbon-intensity",
+        "dbt-tap-facebook",
+        "dbt-tap-gitlab",
+        "dbt-tap-google-analytics",
+        "dbt-tap-salesforce",
+        "dbt-tap-shopify",
+        "dbt-tap-stripe",
+        "dbt-tap-zendesk",
+        "dbt-tap-zuora",
+    ]
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],

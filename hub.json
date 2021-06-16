@@ -137,5 +137,8 @@
     ],
     "entechlog": [
         "dbt-snow-mask"
+    ],
+    "re-data": [
+        "dbt-re-data"
     ]
 }

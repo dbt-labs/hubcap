@@ -288,6 +288,8 @@ for org_name, repos in TRACKED_REPOS.items():
                 if len(res[1]):
                     print("ERROR" + res[1].decode())
 
+                new_branches[branch_name]['new'] = True
+
             # good house keeping
             dbt.clients.system.run_cmd(index_path, ['git', 'checkout', 'master'])
             print()
@@ -302,7 +304,7 @@ for org_name, repos in TRACKED_REPOS.items():
             print("Unhandled exception. Skipping\n  {}".format(e))
 
 def make_pr(ORG, REPO, head):
-    url = 'https://api.github.com/repos/fishtown-analytics/hub.getdbt.com/pulls'
+    url = 'https://api.github.com/repos/dbt-labs/hub.getdbt.com/pulls'
     body = {
         "title": "HubCap: Bump {}/{}".format(ORG, REPO),
         "head": head,
@@ -317,7 +319,7 @@ def make_pr(ORG, REPO, head):
     req = requests.post(url, data=body, headers={'Content-Type': 'application/json'}, auth=(user, token))
 
 def get_open_prs():
-    url = 'https://api.github.com/repos/fishtown-analytics/hub.getdbt.com/pulls?state=open'
+    url = 'https://api.github.com/repos/dbt-labs/hub.getdbt.com/pulls?state=open'
 
     user = config['user']['name']
     token = config['user']['token']
@@ -344,8 +346,11 @@ if PUSH_BRANCHES and len(new_branches) > 0:
     open_prs = get_open_prs()
 
     for branch, info in new_branches.items():
-        # don't open a PR if one is already open
-        if is_open_pr(open_prs, info['org'], info['repo']):
+        if not info.get('new'):
+            print(f"No changes on branch {branch} - Skipping")
+            continue
+        elif is_open_pr(open_prs, info['org'], info['repo']):
+            # don't open a PR if one is already open
             print("PR is already open for {}/{}. Skipping.".format(info['org'], info['repo']))
             continue
 

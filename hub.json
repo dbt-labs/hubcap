@@ -142,6 +142,7 @@
         "dbt-re-data"
     ],
     "beautypie": [
+        "dbt-google-analytics-360",
         "dbt-zendesk-support"
     ]
 }

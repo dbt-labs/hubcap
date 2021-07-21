@@ -144,5 +144,8 @@
     "beautypie": [
         "dbt-google-analytics-360",
         "dbt-zendesk-support"
+    ],
+    "mjirv": [
+        "dbt-datamocktool"
     ]
 }

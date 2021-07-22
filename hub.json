@@ -147,5 +147,8 @@
     ],
     "mjirv": [
         "dbt-datamocktool"
+    ],
+    "jitsu": [
+        "dbt-jitsu"
     ]
 }

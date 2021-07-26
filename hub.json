@@ -147,5 +147,8 @@
     ],
     "mjirv": [
         "dbt-datamocktool"
+    ],
+    "snowplow": [
+        "dbt-snowplow-utils"
     ]
 }

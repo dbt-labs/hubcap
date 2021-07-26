@@ -150,5 +150,8 @@
     ],
     "jitsu": [
         "dbt-jitsu"
+    ],
+    "snowplow": [
+        "dbt-snowplow-utils"
     ]
 }

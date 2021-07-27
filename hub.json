@@ -152,6 +152,7 @@
         "dbt-jitsu"
     ],
     "snowplow": [
-        "dbt-snowplow-utils"
+        "dbt-snowplow-utils",
+        "dbt-snowplow-web"
     ]
 }

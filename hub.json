@@ -148,7 +148,7 @@
     "mjirv": [
         "dbt-datamocktool"
     ],
-    "jitsu": [
+    "jitsucom": [
         "dbt-jitsu"
     ],
     "snowplow": [

@@ -1,89 +1,49 @@
 
-import dbt.clients.git
-import dbt.clients.system
-import dbt.config
-import dbt.exceptions
-
-from dbt.config import Project
-from dbt.config.profile import Profile
-from dbt.config.renderer import DbtProjectYamlRenderer, ProfileRenderer
-from dbt.context.base import generate_base_context
-from dbt.context.target import generate_target_context
-
 import collections
-import os
-import time
 import datetime
-import json
-
-import io
 import hashlib
+import json
+import os
+import subprocess
 import requests
+import shutil
 
+from pathlib import Path
 
-PHONY_PROFILE = {
-    "hubcap": {
-        "target": "dev",
-        "outputs": {
-            "dev": {
-                "type": "postgres",
-                "host": "localhost",
-                "database": "analytics",
-                "schema": "hubcap",
-                "user": "user",
-                "password": "password",
-                "port": 5432
-            }
-        }
-    }
-}
-
-
-NOW = int(time.time())
+NOW = int(datetime.datetime.now().timestamp())
 NOW_ISO = datetime.datetime.now(datetime.timezone.utc).astimezone().isoformat()
 
-CWD = os.path.dirname(os.path.realpath(__file__))
-ROOT_DIR = os.path.dirname(CWD)
+TMP_DIR = Path.cwd() / Path("git-tmp")
 
-TMP_DIR = os.path.join(CWD, "git-tmp")
-dbt.clients.system.make_directory(TMP_DIR)
+config = json.loads(os.environ['CONFIG'])
 
-config = {}
-with open("config.json", "r") as fh:
-    config = json.loads(fh.read())
-
-with open("hub.current.json", "r") as fh:
-    tracked = json.loads(fh.read())
-    config['tracked_repos'] = tracked
+response = requests.get('https://raw.githubusercontent.com/dbt-labs/hubcap/master/hub.json')
+response.raise_for_status()
+config['tracked_repos'] = response.json()
 
 TRACKED_REPOS = config['tracked_repos']
 ONE_BRANCH_PER_REPO = config['one_branch_per_repo']
 PUSH_BRANCHES = config['push_branches']
 REMOTE = config['remote']
 
-git_root_dir = os.path.join(TMP_DIR, "ROOT")
+git_root_dir = TMP_DIR / Path('ROOT')
 
-try:
-    print("Updating root repo")
-    dbt.clients.system.make_directory(TMP_DIR)
-    if os.path.exists(git_root_dir):
-        dbt.clients.system.rmdir(git_root_dir)
+print("Updating root repo")
+Path.mkdir(TMP_DIR, exist_ok=True)
+if os.path.exists(git_root_dir):
+    shutil.rmtree(git_root_dir)
 
-    dbt.clients.system.run_cmd(TMP_DIR, ['git', 'clone', REMOTE, 'ROOT'])
-    dbt.clients.system.run_cmd(git_root_dir, ['git', 'checkout', 'master'])
-    dbt.clients.system.run_cmd(git_root_dir, ['git', 'pull', 'origin', 'master'])
-except dbt.exceptions.CommandResultError as e:
-    print(e.stderr.decode())
-    raise
+os.chdir(TMP_DIR)
+subprocess.run(['git', 'clone', REMOTE, 'ROOT'])
+os.chdir(git_root_dir)
+subprocess.run(['git'], ['checkout'], ['master'])
+subprocess.run(['git'], ['pull'], ['origin'], ['master'])
 
-INDEX_DIR = os.path.join(git_root_dir, "data")
-indexed_files = dbt.clients.system.find_matching(INDEX_DIR, ['packages'], '*.json')
-
+indexed_files = list((git_root_dir / Path('data') / Path('packages')).glob('**/*.json'))
 index = collections.defaultdict(lambda : collections.defaultdict(list))
-for path in indexed_files:
-    abs_path = path['absolute_path']
-    filename = os.path.basename(abs_path)
+for abs_path in indexed_files:
 
+    filename = os.path.basename(abs_path)
     if filename == 'index.json':
         continue
 
@@ -99,7 +59,6 @@ for path in indexed_files:
 
     if not config.get('refresh', False):
         index[org_name][repo_name].append(info)
-
 
 def download(url):
     response = requests.get(url)
@@ -118,17 +77,6 @@ def get_sha1(url):
     digest = hasher.hexdigest()
     print("      SHA1: {}".format(digest))
     return digest
-
-def get_project(git_path):
-    phony_profile = Profile.from_raw_profiles(
-        raw_profiles=PHONY_PROFILE,
-        profile_name='hubcap',
-        renderer=ProfileRenderer({})
-    )
-
-    ctx = generate_target_context(phony_profile, cli_vars={})
-    renderer = DbtProjectYamlRenderer(ctx)
-    return Project.from_project_root(git_path, renderer)
 
 def make_spec(org, repo, version, git_path):
     tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(org, repo, version)
@@ -210,11 +158,17 @@ for org_name, repos in TRACKED_REPOS.items():
 
             print("Cloning repo {}".format(clone_url))
             if os.path.exists(git_path):
-                dbt.clients.system.rmdir(git_path)
+                shutil.rmtree(path)
 
-            dbt.clients.system.run_cmd(TMP_DIR, ['git', 'clone', clone_url, repo])
-            dbt.clients.system.run_cmd(git_path, ['git', 'fetch', '-t'])
-            tags = dbt.clients.git.list_tags(git_path)
+            os.chdir(TMP_DIR)
+            subprocess.run(['git'], ['clone'], clone_url, repo)
+
+            os.chdir(git_path)
+            subprocess.run(['git', 'fetch', '-t'])
+            output = subprocess.check_output(['git', 'tag', '--list'])
+            tags = set(out.decode('utf-8').strip().split('\n'))
+
+            assert(False)
 
             project = get_project(git_path)
             package_name = project.project_name
@@ -274,10 +228,10 @@ for org_name, repos in TRACKED_REPOS.items():
                     continue
 
                 version_path = os.path.join(repo_dir, "{}.json".format(tag))
-                
+
                 print("    Checking out tag {}".format(tag))
                 dbt.clients.system.run_cmd(TMP_DIR, ['git', 'checkout', tag])
-                
+
                 package_spec = make_spec(org_name, repo, tag, git_path)
                 dbt.clients.system.write_file(version_path, json.dumps(package_spec, indent=4))
 
@@ -306,67 +260,3 @@ for org_name, repos in TRACKED_REPOS.items():
         except RuntimeError as e:
             print("Unhandled exception. Skipping\n  {}".format(e))
 
-def make_pr(ORG, REPO, head):
-    url = 'https://api.github.com/repos/dbt-labs/hub.getdbt.com/pulls'
-    body = {
-        "title": "HubCap: Bump {}/{}".format(ORG, REPO),
-        "head": head,
-        "base": "master",
-        "body": "Auto-bumping from new release at https://github.com/{}/{}/releases".format(ORG, REPO),
-        "maintainer_can_modify": True
-    }
-    body = json.dumps(body)
-
-    user = config['user']['name']
-    token = config['user']['token']
-    req = requests.post(url, data=body, headers={'Content-Type': 'application/json'}, auth=(user, token))
-
-def get_open_prs():
-    url = 'https://api.github.com/repos/dbt-labs/hub.getdbt.com/pulls?state=open'
-
-    user = config['user']['name']
-    token = config['user']['token']
-    req = requests.get(url, auth=(user, token))
-    return req.json()
-
-def is_open_pr(prs, ORG, REPO):
-    for pr in prs:
-        value = '{}/{}'.format(ORG, REPO)
-        if value in pr['title']:
-            return True
-
-    return False
-
-# push new branches, if there are any
-print("Push branches? {} - {}".format(PUSH_BRANCHES, list(new_branches.keys())))
-if PUSH_BRANCHES and len(new_branches) > 0:
-    hub_dir = os.path.join(TMP_DIR, "ROOT")
-    try:
-        dbt.clients.system.run_cmd(hub_dir, ['git', 'remote', 'add', 'hub', REMOTE])
-    except dbt.exceptions.CommandResultError as e:
-        print(e.stderr.decode())
-
-    open_prs = get_open_prs()
-
-    for branch, info in new_branches.items():
-        if not info.get('new'):
-            print(f"No changes on branch {branch} - Skipping")
-            continue
-        elif is_open_pr(open_prs, info['org'], info['repo']):
-            # don't open a PR if one is already open
-            print("PR is already open for {}/{}. Skipping.".format(info['org'], info['repo']))
-            continue
-
-        try:
-            dbt.clients.system.run_cmd(index_path, ['git', 'checkout', branch])
-            try:
-                dbt.clients.system.run_cmd(hub_dir, ['git', 'fetch', 'hub'])
-            except dbt.exceptions.CommandResultError as e:
-                print(e.stderr.decode())
-
-            print("Pushing and PRing for {}/{}".format(info['org'], info['repo']))
-            res = dbt.clients.system.run_cmd(hub_dir, ['git', 'push', 'hub', branch])
-            print(res[1].decode())
-            make_pr(info['org'], info['repo'], branch)
-        except Exception as e:
-            print(e)

@@ -4,16 +4,18 @@ import datetime
 import hashlib
 import json
 import os
+import re
 import subprocess
 import requests
 import shutil
+import yaml
 
 from pathlib import Path
 
 NOW = int(datetime.datetime.now().timestamp())
 NOW_ISO = datetime.datetime.now(datetime.timezone.utc).astimezone().isoformat()
 
-TMP_DIR = Path.cwd() / Path("git-tmp")
+TMP_DIR = Path.cwd() / Path('git-tmp')
 
 config = json.loads(os.environ['CONFIG'])
 
@@ -34,10 +36,10 @@ if os.path.exists(git_root_dir):
     shutil.rmtree(git_root_dir)
 
 os.chdir(TMP_DIR)
-subprocess.run(['git', 'clone', REMOTE, 'ROOT'])
+subprocess.run(['git', 'clone', '-q', REMOTE, 'ROOT'])
 os.chdir(git_root_dir)
-subprocess.run(['git'], ['checkout'], ['master'])
-subprocess.run(['git'], ['pull'], ['origin'], ['master'])
+subprocess.run(['git', 'checkout', '-q', 'master'])
+subprocess.run(['git', 'pull', '-q', 'origin', 'master'])
 
 indexed_files = list((git_root_dir / Path('data') / Path('packages')).glob('**/*.json'))
 index = collections.defaultdict(lambda : collections.defaultdict(list))
@@ -78,13 +80,15 @@ def get_sha1(url):
     print("      SHA1: {}".format(digest))
     return digest
 
-def make_spec(org, repo, version, git_path):
+def make_spec(org, repo, package_name, version, git_path):
     tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(org, repo, version)
     sha1 = get_sha1(tarball_url)
 
-    project = get_project(git_path)
-    packages = [p.to_dict() for p in project.packages.packages]
-    package_name = project.project_name
+    # note: some packages do not have a packages.yml
+    packages = []
+    if os.path.exists(git_path / 'packages.yml') and git_path == Path.cwd():
+        with open('packages.yml', 'r') as stream:
+            packages = yaml.safe_load(stream)
 
     return {
         "id": "{}/{}/{}".format(org, package_name, version),
@@ -105,8 +109,23 @@ def make_spec(org, repo, version, git_path):
         }
     }
 
+def get_proper_version_tags(tags):
+    version_tags = []
+    for tag in tags:
+        if tag.startswith('v'):
+            tag = tag[1:]
 
-def make_index(org_name, repo, existing, tags, git_path):
+        # regex taken from official SEMVER documentation site
+        match = re.match('^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$', tag)
+
+        if match is not None and match.group('prerelease') is None:
+            version_tag = match.group(0)
+            version_tags.append(version_tag)
+
+    version_tags.sort(key=lambda s: list(map(int, s.split('.'))))
+    return version_tags
+
+def make_index(org_name, repo, package_name, existing, tags, git_path):
     description = "dbt models for {}".format(repo)
     assets = {
         "logo": "logos/placeholder.svg".format(repo)
@@ -116,32 +135,19 @@ def make_index(org_name, repo, existing, tags, git_path):
         description = existing.get('description', description)
         assets = existing.get('assets', assets)
 
-    import dbt.semver
-    version_tags = []
-    for tag in tags:
-        if tag.startswith('v'):
-            tag = tag[1:]
+    # attempt to grab the latest release version of a project
+    sorted_version_tags = get_proper_version_tags(tags)
+    if len(sorted_version_tags) < 1:
+        latest = ''
+    else:
+        latest = sorted_version_tags[-1]
 
-        try:
-            version_tag = dbt.semver.VersionSpecifier.from_version_string(tag)
-            version_tags.append(version_tag)
-        except dbt.exceptions.SemverException as e:
-            print("Semver exception for {}. Skipping\n  {}".format(repo, e))
-
-    # find latest tag which is not a prerelease
-    latest = version_tags[0]
-    for version_tag in version_tags:
-        if version_tag > latest and not version_tag.prerelease:
-            latest = version_tag
-
-    project = get_project(git_path)
-    package_name = project.project_name
     return {
         "name": package_name,
         "namespace": org_name,
         "description": description,
-        "latest": latest.to_version_string().replace("=", ""), # LOL
-        "assets": assets,
+        "latest": latest.replace("=", ""), # LOL
+        "assets": assets
     }
 
 def get_hub_versions(org, repo):
@@ -152,111 +158,139 @@ def get_hub_versions(org, repo):
 new_branches = {}
 for org_name, repos in TRACKED_REPOS.items():
     for repo in repos:
-        try:
-            clone_url = 'https://github.com/{}/{}.git'.format(org_name, repo)
-            git_path = os.path.join(TMP_DIR, repo)
+        print('> Begin reckoning package {} maintained by {}'.format(repo, org_name))
 
-            print("Cloning repo {}".format(clone_url))
-            if os.path.exists(git_path):
-                shutil.rmtree(path)
+        clone_url = 'https://github.com/{}/{}.git'.format(org_name, repo)
+        git_path = TMP_DIR / Path(repo)
 
-            os.chdir(TMP_DIR)
-            subprocess.run(['git'], ['clone'], clone_url, repo)
+        print('    Cloning repo {}'.format(clone_url))
+        if os.path.exists(git_path):
+            shutil.rmtree(git_path)
 
-            os.chdir(git_path)
-            subprocess.run(['git', 'fetch', '-t'])
-            output = subprocess.check_output(['git', 'tag', '--list'])
-            tags = set(out.decode('utf-8').strip().split('\n'))
+        # operate at head of git-tmp subtree
+        os.chdir(TMP_DIR)
+        subprocess.run(['git', 'clone', '-q', clone_url, repo])
 
-            assert(False)
+        # operate within current package repository clone
+        os.chdir(git_path)
+        subprocess.run(['git', 'fetch', '-q', '-t'])
+        output = subprocess.check_output(['git', 'tag', '--list'])
+        tags = set(output.decode('utf-8').strip().split('\n'))
 
-            project = get_project(git_path)
-            package_name = project.project_name
+        # parse package name
+        package_name = ''
 
-            existing_tags = [i['version'] for i in index[org_name][package_name]]
-            print("  Found Tags: {}".format(sorted(tags)))
-            print("  Existing Tags: {}".format(sorted(existing_tags)))
+        # skip projects that are missing configuration
+        if not os.path.exists('dbt_project.yml'):
+            continue
 
-            new_tags = set(tags) - set(existing_tags)
+        with open('dbt_project.yml', 'r') as stream:
+            package_name = yaml.safe_load(stream)['name']
 
-            if len(new_tags) == 0:
-                print("    No tags to add. Skipping")
-                continue
+        # assess package releases
+        existing_tags = [i['version'] for i in index[org_name][package_name]]
+        print("  Found Tags: {}".format(sorted(tags)))
+        print("  Existing Tags: {}".format(sorted(existing_tags)))
 
-            # check out a new branch for the changes
-            if ONE_BRANCH_PER_REPO:
-                branch_name = 'bump-{}-{}-{}'.format(org_name, repo, NOW)
-            else:
-                branch_name = 'bump-{}'.format(NOW)
+        new_tags = set(tags) - set(existing_tags)
 
-            index_path = os.path.join(TMP_DIR, "ROOT")
-            print("    Checking out branch {} in meta-index".format(branch_name))
+        if len(new_tags) == 0:
+            print('    No tags to add. Skipping')
+            continue
 
+        # move to the root directory and check out a new branch for the changes
+        os.chdir(git_root_dir)
+        if ONE_BRANCH_PER_REPO:
+            branch_name = 'bump-{}-{}-{}'.format(org_name, repo, NOW)
+        else:
+            branch_name = 'bump-{}'.format(NOW)
+
+        print("    Checking out branch {} in meta-index".format(branch_name))
+
+        completed_subprocess = subprocess.run(['git', 'checkout', '-q', '-b', branch_name])
+        if completed_subprocess.returncode == 128:
+            subprocess.run(['git', 'checkout', '-q', branch_name])
+
+        new_branches[branch_name] = {"org": org_name, "repo": package_name}
+        index_file_path = git_root_dir / 'data' / 'packages' / org_name / package_name / 'index.json'
+
+        existing_index_file_contents = ''
+        if os.path.exists(index_file_path):
+            with open(index_file_path, 'rb') as stream:
+                existing_index_file_contents = stream.read().decode('utf-8').strip()
             try:
-                out, err = dbt.clients.system.run_cmd(index_path, ['git', 'checkout', branch_name])
-            except dbt.exceptions.CommandResultError as e:
-                dbt.clients.system.run_cmd(index_path, ['git', 'checkout', '-b', branch_name])
+                existing_index_file = json.loads(existing_index_file_contents)
+            except:
+                existing_index_file = []
+        else:
+            existing_index_file = {}
 
-            new_branches[branch_name] = {"org": org_name, "repo": package_name}
-            index_file_path = os.path.join(index_path, 'data', 'packages', org_name, package_name, 'index.json')
+        new_index_entry = make_index(org_name, repo, package_name, existing_index_file, set(tags) | set(existing_tags), git_path)
 
-            if os.path.exists(index_file_path):
-                existing_index_file_contents = dbt.clients.system.load_file_contents(index_file_path)
-                try:
-                    existing_index_file = json.loads(existing_index_file_contents)
-                except:
-                    existing_index_file = []
-            else:
-                existing_index_file = {}
+        repo_dir = git_root_dir / 'data' / 'packages' / org_name / package_name / 'versions'
+        Path.mkdir(repo_dir, parents=True, exist_ok=True)
 
-            new_index_entry = make_index(org_name, repo, existing_index_file, set(tags) | set(existing_tags), git_path)
-            repo_dir = os.path.join(index_path, 'data', 'packages', org_name, package_name, 'versions')
-            dbt.clients.system.make_directory(repo_dir)
-            dbt.clients.system.write_file(index_file_path, json.dumps(new_index_entry, indent=4))
+        # write index (latest) file spec
+        with open(index_file_path, 'w') as f:
+            f.write(str(json.dumps(new_index_entry, indent=4)))
 
-            for i, tag in enumerate(sorted(new_tags)):
-                print("    Adding tag: {}".format(tag))
+        # write file spec for each tag
+        for tag in get_proper_version_tags(tags):
+            print('    Adding tag {}'.format(tag))
+            print('    Checking out tag {}'.format(tag))
 
-                import dbt.semver
-                try:
-                    raw_tag = tag
-                    if raw_tag.startswith('v'):
-                        raw_tag = tag[1:]
-                    dbt.semver.VersionSpecifier.from_version_string(raw_tag)
-                except dbt.exceptions.SemverException:
-                    print("Not semver {}. Skipping".format(raw_tag))
-                    continue
+            version_path = repo_dir / Path('{}.json'.format(tag))
 
-                version_path = os.path.join(repo_dir, "{}.json".format(tag))
+            # checkout tag within current package repo and create JSON spec
+            os.chdir(git_path)
+            subprocess.run(['git', 'checkout', '-q', tag])
+            package_spec = make_spec(org_name, repo, package_name, tag, git_path)
 
-                print("    Checking out tag {}".format(tag))
-                dbt.clients.system.run_cmd(TMP_DIR, ['git', 'checkout', tag])
+            # return to versions directory in the hub repo to commit changes
+            os.chdir(repo_dir)
+            with open(version_path, 'w') as f:
+                f.write(str(json.dumps(package_spec, indent=4)))
 
-                package_spec = make_spec(org_name, repo, tag, git_path)
-                dbt.clients.system.write_file(version_path, json.dumps(package_spec, indent=4))
+            print('      staging and commiting package spec')
+            msg = "hubcap: Adding tag {} for {}/{}".format(tag, org_name, repo)
 
-                msg = "hubcap: Adding tag {} for {}/{}".format(tag, org_name, repo)
-                print("      running `git add`")
-                res = dbt.clients.system.run_cmd(repo_dir, ['git', 'add', '-A'])
-                if len(res[1]):
-                    print("ERROR" + res[1].decode())
-                print("      running `git commit`")
-                res = dbt.clients.system.run_cmd(repo_dir, ['git', 'commit', '-am', '{}'.format(msg)])
-                if len(res[1]):
-                    print("ERROR" + res[1].decode())
+            subprocess.run(['git', 'add', '-A'])
+            subprocess.run(['git', 'commit', '-am', '{}'.format(msg)])
 
-                new_branches[branch_name]['new'] = True
+            new_branches[branch_name]['new'] = True
 
-            # good house keeping
-            dbt.clients.system.run_cmd(index_path, ['git', 'checkout', 'master'])
-            print()
+        # good house keeping
+        os.chdir(git_root_dir)
+        subprocess.run(['git', 'checkout', 'master'])
+        print()
+        break
+    break
 
-        except dbt.exceptions.SemverException as e:
-            print("Semver exception. Skipping\n  {}".format(e))
+from release_carrier import *
 
-        except Exception as e:
-            print("Unhandled exception. Skipping\n  {}".format(e))
+# push new branches, if there are any
+print("Push branches? {} - {}".format(PUSH_BRANCHES, list(new_branches.keys())))
+if PUSH_BRANCHES and len(new_branches) > 0:
+    hub_dir = git_root_dir
+    os.chdir(git_root_dir)
+    subprocess.run(['git', 'remote', 'add', 'hub', REMOTE])
 
-        except RuntimeError as e:
-            print("Unhandled exception. Skipping\n  {}".format(e))
+    open_prs = get_open_prs(config)
+
+    for branch, info in new_branches.items():
+        if not info.get('new'):
+            print(f"No changes on branch {branch} - Skipping")
+            continue
+        elif is_open_pr(open_prs, info['org'], info['repo']):
+            # don't open a PR if one is already open
+            print("PR is already open for {}/{}. Skipping.".format(info['org'], info['repo']))
+            continue
+
+        os.chdir(hub_dir)
+        subprocess.run(['git', 'checkout', branch])
+        subprocess.run(['git', 'fetch', 'hub'])
+
+        print("Pushing and PRing for {}/{}".format(info['org'], info['repo']))
+        subprocess.run(['git', 'push', 'hub', branch])
+        make_pr(info['org'], info['repo'], branch, config)
 

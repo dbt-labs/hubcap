@@ -88,7 +88,7 @@ def make_spec(org, repo, package_name, version, git_path):
     packages = []
     if os.path.exists(git_path / 'packages.yml') and git_path == Path.cwd():
         with open('packages.yml', 'r') as stream:
-            packages = yaml.safe_load(stream)
+            packages = yaml.safe_load(stream)['packages']
 
     return {
         "id": "{}/{}/{}".format(org, package_name, version),
@@ -191,12 +191,13 @@ for org_name, repos in TRACKED_REPOS.items():
         existing_tags = [i['version'] for i in index[org_name][package_name]]
         print("  Found Tags: {}".format(sorted(tags)))
         print("  Existing Tags: {}".format(sorted(existing_tags)))
-
         new_tags = set(tags) - set(existing_tags)
 
         if len(new_tags) == 0:
             print('    No tags to add. Skipping')
             continue
+        else:
+            print("  New Tags: {}".format(sorted(new_tags)))
 
         # move to the root directory and check out a new branch for the changes
         os.chdir(git_root_dir)
@@ -235,7 +236,7 @@ for org_name, repos in TRACKED_REPOS.items():
             f.write(str(json.dumps(new_index_entry, indent=4)))
 
         # write file spec for each tag
-        for tag in get_proper_version_tags(tags):
+        for tag in get_proper_version_tags(new_tags):
             print('    Adding tag {}'.format(tag))
             print('    Checking out tag {}'.format(tag))
 
@@ -263,8 +264,6 @@ for org_name, repos in TRACKED_REPOS.items():
         os.chdir(git_root_dir)
         subprocess.run(['git', 'checkout', 'master'])
         print()
-        break
-    break
 
 from release_carrier import *
 

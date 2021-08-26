@@ -35,6 +35,7 @@ Path.mkdir(TMP_DIR, exist_ok=True)
 if os.path.exists(git_root_dir):
     shutil.rmtree(git_root_dir)
 
+os.mkdir(git_root_dir)
 os.chdir(TMP_DIR)
 subprocess.run(['git', 'clone', '-q', REMOTE, 'ROOT'])
 os.chdir(git_root_dir)

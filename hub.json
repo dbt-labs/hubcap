@@ -154,5 +154,8 @@
     "snowplow": [
         "dbt-snowplow-utils",
         "dbt-snowplow-web"
+    ],
+    "lalalilo": [
+        "athena-utils"
     ]
 }

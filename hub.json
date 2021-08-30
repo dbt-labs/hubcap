@@ -84,7 +84,11 @@
         "dbt_snapchat_ads_source",
         "dbt_iterable",
         "dbt_iterable_source",
-        "dbt_salesforce_formula_utils"
+        "dbt_salesforce_formula_utils",
+        "dbt_youtube_analytics",
+        "dbt_youtube_analytics_source",
+        "dbt_pendo",
+        "dbt_pendo_source"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

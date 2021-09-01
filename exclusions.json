@@ -1,0 +1,25 @@
+{
+   "dbt-labs":[
+      "bing-ads",
+      "recurly",
+      "shopify",
+      "purecloud",
+      "zendesk",
+      "stripe",
+      "outbrain",
+      "taboola",
+      "quickbooks",
+      "bing-ads",
+      "taboola",
+      "heap",
+      "ecommerce",
+      "facebook-ads",
+      "zendesk",
+      "stripe",
+      "purecloud"
+   ],
+   "beautypie":[
+      "dbt-google-analytics-360",
+      "dbt-zendesk-support"
+   ]
+}

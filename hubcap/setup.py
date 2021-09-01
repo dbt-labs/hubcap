@@ -17,30 +17,22 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-PKG_EXCLUSION_OVERRIDES = {
-    'dbt-labs': ['bing-ads', 'recurly', 'shopify', 'purecloud', 'zendesk', 'stripe', 'outbrain', 'taboola',
-                 'quickbooks', 'bing-ads', 'taboola', 'heap', 'ecommerce', 'facebook-ads', 'zendesk', 'stripe',
-                 'purecloud'],
-    'beautypie': ['dbt-google-analytics-360', 'dbt-zendesk-support']
-}
-
-
 def build_config():
     config = json.loads(os.environ['CONFIG'])
     config['tracked_repos'] = {}
 
-    # necessary for as long as hubcap's git is disconnected from the github copy of the hub
-    response = requests.get('https://raw.githubusercontent.com/dbt-labs/hubcap/master/hub.json')
-    response.raise_for_status()
-    org_pkg_list = response.json()
+    with open('hub.json', 'r') as hub_stream, open('exclusions.json') as excluded_stream:
+        org_pkg_list = json.load(hub_stream)
+        # Mila: eventually we instead remove the packages at their source rather than this post-facto filtering
+        excluded_pkg_list = json.load(excluded_stream)
 
-    for org_name, org_pkg_names in org_pkg_list.items():
-        res_pkg_list = [pkg_name for pkg_name in org_pkg_names
-            if not (org_name in PKG_EXCLUSION_OVERRIDES.keys() and pkg_name in PKG_EXCLUSION_OVERRIDES[org_name])
-        ]
+        for org_name, org_pkg_names in org_pkg_list.items():
+            res_pkg_list = [pkg_name for pkg_name in org_pkg_names
+                if not (org_name in excluded_pkg_list.keys() and pkg_name in excluded_pkg_list[org_name])
+            ]
 
-        if res_pkg_list:
-            config['tracked_repos'][org_name] = res_pkg_list
+            if res_pkg_list:
+                config['tracked_repos'][org_name] = res_pkg_list
 
     return config
 

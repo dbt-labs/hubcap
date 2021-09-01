@@ -1,2 +1,2 @@
-dbt==0.19.1
 requests==2.20.1
+pyyaml

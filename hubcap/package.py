@@ -25,6 +25,8 @@ def parse_pkgs(repo_dir):
         with open(repo_dir / Path('packages.yml'), 'r') as stream:
             pkgs = yaml.safe_load(stream)['packages']
             return pkgs if pkgs else []
+    else:
+        return []
 
 
 def cut_version_branch(org_name, repo, separate_commits_by_pkg):

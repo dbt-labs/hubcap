@@ -16,13 +16,15 @@ def has_dbt_project_yml(directory):
 
 def parse_pkg_name(repo_dir):
     with open(repo_dir / Path('dbt_project.yml'), 'r') as stream:
-        return yaml.safe_load(stream)['name']
+        name = yaml.safe_load(stream)['name']
+        return name if name else ''
 
 
 def parse_pkgs(repo_dir):
     if os.path.exists(repo_dir / 'packages.yml'):
         with open(repo_dir / Path('packages.yml'), 'r') as stream:
-            return yaml.safe_load(stream)['packages']
+            pkgs = yaml.safe_load(stream)['packages']
+            return pkgs if pkgs else []
 
 
 def cut_version_branch(org_name, repo, separate_commits_by_pkg):

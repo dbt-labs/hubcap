@@ -6,8 +6,9 @@ import yaml
 
 from pathlib import Path
 
+import version
+
 from setup import *
-from version import *
 
 
 def has_dbt_project_yml(directory):
@@ -72,7 +73,7 @@ def make_index(org_name, repo, package_name, existing, tags, git_path):
 
     # attempt to grab the latest release version of a project
 
-    version_numbers = [tag[1:] if tag.startswith('v') else tag for tag in tags]
+    version_numbers = [version.strip_v_from_version(tag) for tag in tags]
     version_numbers.sort(key=lambda s: list(map(int, s.split('.'))))
     latest_version = version_numbers[-1]
 

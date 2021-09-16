@@ -31,15 +31,9 @@ set -o pipefail
 # specified in Heroku's config variables
 export ENV="${ENV-development}"
 if [ "$ENV" = 'prod' ] || [ "$ENV" = 'test' ]; then
-    email='drew@fishtownanalytics.com'
-    user_name='dbt-hubcap'
-else
-    email='test@notarealuser.com'
-    user_name='dbt-hubcap-staging'
+    git config --global user.email 'drew@fishtownanalytics.com'  # TODO: make this a dedicated CI user
+    git config --global user.name 'dbt-hubcap'
 fi
-
-git config --global user.email "${email}"
-git config --global user.name "${user_name}"
 
 if ! [ -d "${GIT_TMP}" ]; then
     mkdir "${GIT_TMP}"

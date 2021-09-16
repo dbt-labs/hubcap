@@ -1,4 +1,6 @@
 env/
 git-tmp/
+*.swp
+__pycache__/
 config.json
 hub.current.json

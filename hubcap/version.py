@@ -23,11 +23,15 @@ def strip_v_from_version(tag):
 
 
 def get_existing_tags(pkg_index_records):
-    return { pkg_index_record['version'] for pkg_index_record in pkg_index_records }
+    '''in: the version index of a package checked into hub
+    out: only semver compliant tags'''
+    existing_hub_tags = { pkg_index_record['version'] for pkg_index_record in pkg_index_records }
+    return set(filter(is_valid_semver_tag, existing_hub_tags))
 
 
 def get_new_tags(pkg_index_records):
-    '''designed to be run inside a package repo'''
+    '''designed to be run inside a package repo
+    will not pick up tags other than those which are semver compliant'''
 
     run_cmd('git fetch --quiet --tags')
     all_remote_tags = run_cmd('git tag --list', quiet=True).split('\n')

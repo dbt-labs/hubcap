@@ -46,7 +46,7 @@ pkgs_with_updates = package.get_pkgs_with_updates(TRACKED_REPOS, existing_pkg_ve
 
 logging.info('preparing branches for packages with versions to be added')
 # this wants to take place inside the git-tmp/hub repo
-new_branches = package.commit_version_updates_to_hub(pkgs_with_updates, hub_dir_path)
+new_branches = package.commit_version_updates_to_hub(pkgs_with_updates, hub_dir_path, ONE_BRANCH_PER_REPO)
 
 # =
 # = push new branches, if there are any

@@ -1,2 +1,3 @@
+gitpython
 requests==2.20.1
 pyyaml

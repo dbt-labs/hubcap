@@ -4,6 +4,8 @@ import requests
 import subprocess
 import yaml
 
+from git import cmd
+from git import Repo
 from pathlib import Path
 
 import version
@@ -15,19 +17,57 @@ def has_dbt_project_yml(directory):
     return os.path.exists(directory / Path('dbt_project.yml'))
 
 
+def clone_package_repos(repo_index, path):
+    '''clone all package repos listed in index to path'''
+    for org_name, repos in repo_index.items():
+        for repo in repos:
+            current_repo_path = path / Path(repo)
+
+            logging.info(f'cloning package {repo} maintained by {org_name} to {current_repo_path}')
+            clone_repo(f'https://github.com/{org_name}/{repo}.git', current_repo_path)
+
+
 def parse_pkg_name(repo_dir):
     with open(repo_dir / Path('dbt_project.yml'), 'r') as stream:
         name = yaml.safe_load(stream)['name']
         return name if name else ''
 
-
 def parse_pkgs(repo_dir):
     if os.path.exists(repo_dir / 'packages.yml'):
-        with open(repo_dir / Path('packages.yml'), 'r') as stream:
-            pkgs = yaml.safe_load(stream)['packages']
-            return pkgs if pkgs else []
+            with open(repo_dir / Path('packages.yml'), 'r') as stream:
+                pkgs = yaml.safe_load(stream)['packages']
+                return pkgs if pkgs else []
     else:
         return []
+
+
+def get_pkgs_with_updates(repo_index, version_index, path):
+    '''obtain a sublist of the existing repo_index: all those packages with updates'''
+    res = {}
+    for org_name, repos in repo_index.items():
+        for repo in repos:
+            current_repo_path = path / Path(repo)
+
+            if has_dbt_project_yml(current_repo_path):
+                package_name = parse_pkg_name(current_repo_path)
+                packages = parse_pkgs(current_repo_path)
+                logging.info(f'collecting tags for {package_name}')
+
+                existing_tags = version.get_existing_tags(version_index[org_name][package_name])
+                logging.info(f'pkg hub tags:    {sorted(existing_tags)}')
+
+                valid_remote_tags = version.get_valid_remote_tags(Repo(current_repo_path))
+                logging.info(f'pkg remote tags: {sorted(valid_remote_tags)}')
+
+                new_tags = list(valid_remote_tags - existing_tags)
+                if new_tags:
+                    logging.info(f'adding new tags {list(new_tags)} to {package_name} repo')
+                    if org_name not in res:
+                        res[org_name] = {}
+                    res[org_name][repo] = (package_name, current_repo_path, new_tags, existing_tags)
+            else:
+                logging.warning(f'{repo} has no dbt_project.yml. Skipping...')
+    return res
 
 
 def cut_version_branch(org_name, repo, separate_commits_by_pkg):
@@ -132,3 +172,62 @@ def make_spec(org, repo, package_name, packages, version, git_path):
             "sha1": sha1
         }
     }
+
+def commit_version_updates_to_hub(new_pkg_version_index, hub_dir_path, one_branch_per_repo=True):
+    '''input: {org_name: {repo_name:(package_name, repo_path, [version tags], [version_tags])}}
+    output: {branch_name: hashmap of branch info}
+    N.B. this function will make changes to the hub only
+    '''
+    res = {}
+    for org_name, new_repo_tags in new_pkg_version_index.items():
+        for repo, (package_name, repo_path, new_tags, existing_tags) in new_repo_tags.items():
+            os.chdir(hub_dir_path)
+            repo_hub_version_dir = hub_dir_path / 'data' / 'packages' / org_name / package_name / 'versions'
+            Path.mkdir(repo_hub_version_dir, parents=True, exist_ok=True)
+
+            # in hub, on a branch for each package, commit the package version specs for any new tags
+            branch_name = cut_version_branch(org_name, repo, one_branch_per_repo)
+            res[branch_name] = {"org": org_name, "repo": package_name}
+
+            # create an updated version of the repo's index.json
+            index_file_path = hub_dir_path / 'data' / 'packages' / org_name / package_name / 'index.json'
+
+            new_index_entry = make_index(
+                org_name,
+                repo,
+                package_name,
+                fetch_index_file_contents(index_file_path),
+                set(new_tags) | set(existing_tags),
+                repo_path
+            )
+
+            with open(index_file_path, 'w') as f:
+                logging.info(f'writing index.json to {index_file_path}')
+                f.write(str(json.dumps(new_index_entry, indent=4)))
+
+            # create a version spec for each tag
+            for tag in new_tags:
+                # go to repo dir to checkout tag and tag-commit specific package list
+                os.chdir(repo_path)
+                run_cmd(f'git checkout tags/{tag}')
+                packages = parse_pkgs(Path(os.getcwd()))
+
+                # return to hub and build spec
+                os.chdir(hub_dir_path)
+                package_spec = make_spec(org_name, repo, package_name, packages, tag, repo_path)
+
+                version_path = repo_hub_version_dir / Path(f'{tag}.json')
+                with open(version_path, 'w') as f:
+                    logging.info(f'writing spec to {version_path}')
+                    f.write(str(json.dumps(package_spec, indent=4)))
+
+                msg = f'hubcap: Adding tag {tag} for {org_name}/{repo}'
+                logging.info(msg)
+                run_cmd('git add -A')
+                subprocess.run(args=['git', 'commit', '-am', f'{msg}'], capture_output=True)
+
+                res[branch_name]['new'] = True
+            # good house keeping
+            os.chdir(hub_dir_path)
+            run_cmd('git checkout master')
+    return res

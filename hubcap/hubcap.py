@@ -56,7 +56,7 @@ from release_carrier import *
 
 logging.info("Push branches? {} - {}".format(PUSH_BRANCHES, list(new_branches.keys())))
 if new_branches:
-    os.chdir(hub_dir)
+    os.chdir(hub_dir_path)
     run_cmd(f'git remote add hub {REMOTE}')
 
     open_prs = get_open_prs(config)
@@ -69,11 +69,11 @@ if new_branches:
             logging.info("PR is already open for {}/{}. Skipping.".format(info['org'], info['repo']))
             continue
 
-        os.chdir(hub_dir)
+        os.chdir(hub_dir_path)
         run_cmd(f'git checkout {branch}')
         run_cmd(f'git fetch hub')
 
-        if PUSH_BRANCHES and (os.environ['ENV'] == 'test' or os.environ['ENV'] == 'prod'):
+        if PUSH_BRANCHES and os.environ['ENV'] == 'prod':
             logging.info("pushing and PRing for {}/{}".format(info['org'], info['repo']))
             run_cmd(f'git push hub {branch}')
             make_pr(info['org'], info['repo'], branch, config)

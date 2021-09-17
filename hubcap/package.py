@@ -209,7 +209,6 @@ def commit_version_updates_to_hub(new_pkg_version_index, hub_dir_path, one_branc
             for tag in new_tags:
                 # go to repo dir to checkout tag and tag-commit specific package list
                 os.chdir(repo_path)
-                run_cmd(f'git tag')
                 run_cmd(f'git checkout tags/{tag}')
                 packages = parse_pkgs(Path(os.getcwd()))
 

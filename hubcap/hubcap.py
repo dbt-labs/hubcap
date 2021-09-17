@@ -20,7 +20,7 @@ config = setup.build_config()
 
 ONE_BRANCH_PER_REPO = config['one_branch_per_repo']
 PUSH_BRANCHES = config['push_branches']
-REMOTE = 'https://github.com/dbt-labs/hub.getdbt.com.git'
+REMOTE = config['remote']
 TMP_DIR = os.environ['GIT_TMP']
 TRACKED_REPOS = setup.load_tracked_repo_records()
 

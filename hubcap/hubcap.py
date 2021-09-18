@@ -1,4 +1,3 @@
-
 import logging
 import subprocess
 import requests
@@ -8,6 +7,7 @@ from pathlib import Path
 import setup
 import version
 import package
+import release_carrier
 
 from cmd import *
 
@@ -19,7 +19,6 @@ logging.info('preparing script state')
 config = setup.build_config()
 
 ONE_BRANCH_PER_REPO = config['one_branch_per_repo']
-PUSH_BRANCHES = config['push_branches']
 REMOTE = config['remote']
 TMP_DIR = os.environ['GIT_TMP']
 TRACKED_REPOS = setup.load_tracked_repo_records()
@@ -52,28 +51,6 @@ new_branches = package.commit_version_updates_to_hub(pkgs_with_updates, hub_dir_
 # = push new branches, if there are any
 # =
 
-from release_carrier import *
-
-logging.info("Push branches? {} - {}".format(PUSH_BRANCHES, list(new_branches.keys())))
+logging.info("Push branches? {}".format(list(new_branches.keys())))
 if new_branches:
-    os.chdir(hub_dir_path)
-    run_cmd(f'git remote add hub {REMOTE}')
-
-    open_prs = get_open_prs(config)
-
-    for branch, info in new_branches.items():
-        if not info.get('new'):
-            logging.info(f"No changes on branch {branch} - Skipping")
-            continue
-        elif is_open_pr(open_prs, info['org'], info['repo']):
-            logging.info("PR is already open for {}/{}. Skipping.".format(info['org'], info['repo']))
-            continue
-
-        os.chdir(hub_dir_path)
-        run_cmd(f'git checkout {branch}')
-        run_cmd(f'git fetch hub')
-
-        if PUSH_BRANCHES and os.environ['ENV'] == 'prod':
-            logging.info("pushing and PRing for {}/{}".format(info['org'], info['repo']))
-            run_cmd(f'git push hub {branch}')
-            make_pr(info['org'], info['repo'], branch, config)
+    release_carrier.open_new_prs(Repo(hub_dir_path), REMOTE, new_branches, config['user'])

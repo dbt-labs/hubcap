@@ -113,7 +113,8 @@ def make_index(org_name, repo, package_name, existing, tags, git_path):
 
     # attempt to grab the latest release version of a project
 
-    version_numbers = [version.strip_v_from_version(tag) for tag in tags]
+    version_numbers = [version.strip_v_from_version(tag) for tag in tags
+                       if version.is_valid_stable_semver_tag(tag)]
     version_numbers.sort(key=lambda s: list(map(int, s.split('.'))))
     latest_version = version_numbers[-1]
 

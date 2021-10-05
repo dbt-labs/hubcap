@@ -7,12 +7,23 @@ import package
 from cmd import *
 
 
-def is_valid_semver_tag(tag):
+def parse_semver_tag(tag):
+    '''use regexes to parse the semver tag into groups'''
     # regex taken from official SEMVER documentation site
     match = re.match('^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$',
         tag[1:] if tag.startswith('v') else tag
     )
+    return match
 
+
+def is_valid_semver_tag(tag):
+    '''tag is valid according to official semver versioning'''
+    return parse_semver_tag(tag) is not None
+
+
+def is_valid_stable_semver_tag(tag):
+    '''tag is valid according to official semver versioning but is also stable'''
+    match = parse_semver_tag(tag)
     return match is not None and match.group('prerelease') is None
 
 

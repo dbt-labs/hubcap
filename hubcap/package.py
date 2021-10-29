@@ -4,7 +4,6 @@ import requests
 import subprocess
 import yaml
 
-from git import cmd
 from git import Repo
 from pathlib import Path
 
@@ -32,11 +31,12 @@ def parse_pkg_name(repo_dir):
         name = yaml.safe_load(stream)['name']
         return name if name else ''
 
+
 def parse_pkgs(repo_dir):
     if os.path.exists(repo_dir / 'packages.yml'):
-            with open(repo_dir / Path('packages.yml'), 'r') as stream:
-                pkgs = yaml.safe_load(stream)['packages']
-                return pkgs if pkgs else []
+        with open(repo_dir / Path('packages.yml'), 'r') as stream:
+            pkgs = yaml.safe_load(stream)['packages']
+            return pkgs if pkgs else []
     else:
         return []
 
@@ -113,7 +113,8 @@ def make_index(org_name, repo, package_name, existing, tags, git_path):
 
     # attempt to grab the latest release version of a project
 
-    version_numbers = [version.strip_v_from_version(tag) for tag in tags]
+    version_numbers = [version.strip_v_from_version(tag) for tag in tags
+                       if version.is_valid_stable_semver_tag(tag)]
     version_numbers.sort(key=lambda s: list(map(int, s.split('.'))))
     latest_version = version_numbers[-1]
 
@@ -226,7 +227,6 @@ def commit_version_updates_to_hub(new_pkg_version_index, hub_dir_path, one_branc
                 run_cmd('git add -A')
                 subprocess.run(args=['git', 'commit', '-am', f'{msg}'], capture_output=True)
 
-                res[branch_name]['new'] = True
             # good house keeping
             os.chdir(hub_dir_path)
             run_cmd('git checkout master')

@@ -1,3 +1,5 @@
+'''Interface for package release tags and building package indexes'''
+
 import logging
 import os
 import re
@@ -28,6 +30,7 @@ def is_valid_stable_semver_tag(tag):
 
 
 def strip_v_from_version(tag):
+    '''Some release tags are prefixed by a v; removed before releases are added to hub'''
     if tag.startswith('v'):
         return tag[1:]
     else:

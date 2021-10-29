@@ -1,3 +1,5 @@
+'''Module for altering the state of a package repo'''
+
 import hashlib
 import os
 import requests
@@ -13,6 +15,7 @@ from setup import *
 
 
 def has_dbt_project_yml(directory):
+    '''Any package without a dbt_project.yml should be ignored'''
     return os.path.exists(directory / Path('dbt_project.yml'))
 
 
@@ -131,6 +134,7 @@ def make_index(org_name, repo, package_name, existing, tags, git_path):
 
 
 def download(url):
+    '''Get some content to create a sha (very surely) unique to that package version'''
     response = requests.get(url)
 
     file_buf = b""
@@ -141,6 +145,7 @@ def download(url):
 
 
 def get_sha1(url):
+    '''used to create a unique sha for each release'''
     print("    downloading: {}".format(url))
     contents = download(url)
     hasher = hashlib.sha1()
@@ -151,6 +156,7 @@ def get_sha1(url):
 
 
 def make_spec(org, repo, package_name, packages, version, git_path):
+    '''The hub needs these specs for packages to be discoverable by deps and on the web'''
     tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(org, repo, version)
     sha1 = get_sha1(tarball_url)
 

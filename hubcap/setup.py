@@ -1,3 +1,5 @@
+'''Environment setup and state generation for hubcap'''
+
 import collections
 import datetime
 import json
@@ -19,9 +21,11 @@ logging.basicConfig(
 )
 
 def build_config():
+    '''Pull the config env variable which holds github secrets'''
     return json.loads(os.environ['CONFIG'])
 
 def load_tracked_repo_records():
+    '''Determine hub's current state by accessing repo's tracking directory'''
     res = {}
     with open('hub.json', 'r') as hub_stream, open('exclusions.json') as excluded_stream:
         org_pkg_list = json.load(hub_stream)

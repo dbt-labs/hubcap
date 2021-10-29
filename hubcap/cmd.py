@@ -1,3 +1,4 @@
+'''Interface for invoking CLI executables safely from inside this script'''
 
 import logging
 import os
@@ -8,7 +9,9 @@ from git import cmd
 from git import Repo
 from pathlib import Path
 
+
 def run_cmd(cmd, quiet=False):
+    '''Dispatching commands to shell from inside Python needs an exit status wrapper'''
     proc = subprocess.run(args=cmd.split(), capture_output=True)
 
     if proc.returncode:
@@ -25,6 +28,7 @@ def run_cmd(cmd, quiet=False):
 
 
 def repo_default_branch(repo):
+    '''Programmatically obtain a repo's default branch for dynamic repo checkouts'''
     prev_dir = os.getcwd()
     os.chdir(repo.working_dir)
 
@@ -36,7 +40,7 @@ def repo_default_branch(repo):
 
 
 def clone_repo(remote, path):
-    '''clone down a github repo to a path and a reference to that directory'''
+    '''Clone down a github repo to a path and a reference to that directory'''
     logging.info(f'cloning {remote} to {path}')
     repo = Repo.clone_from(remote, path)
 

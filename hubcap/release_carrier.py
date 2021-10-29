@@ -1,3 +1,5 @@
+'''Interface for dispatching updates to packages back to github'''
+
 import json
 import requests
 import os
@@ -6,6 +8,7 @@ import setup
 from git import Repo
 
 def make_pr(ORG, REPO, head, user_creds):
+    '''Create POST content which in turns create a hub new-version PR'''
     url = 'https://api.github.com/repos/dbt-labs/hub.getdbt.com/pulls'
     body = {
         "title": "HubCap: Bump {}/{}".format(ORG, REPO),
@@ -22,6 +25,7 @@ def make_pr(ORG, REPO, head, user_creds):
 
 
 def get_open_pr_titles(org_name, package_name, user_creds):
+    '''Prevents opening duplicate PRs for currently open versions'''
     url = f'https://api.github.com/repos/{org_name}/{package_name}/pulls?state=open'
 
     user = user_creds.get('name', None)

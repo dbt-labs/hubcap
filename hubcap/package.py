@@ -1,32 +1,27 @@
 '''Module for altering the state of a package repo'''
 
-import hashlib
+import logging
 import os
-import requests
-import subprocess
 import yaml
 
 from git import Repo
 from pathlib import Path
 
+import records
 import version
 
 from setup import *
 
 
-def has_dbt_project_yml(directory):
-    '''Any package without a dbt_project.yml should be ignored'''
-    return os.path.exists(directory / Path('dbt_project.yml'))
-
-
-def clone_package_repos(repo_index, path):
+def clone_package_repos(package_maintainer_index, path):
     '''clone all package repos listed in index to path'''
-    for org_name, repos in repo_index.items():
-        for repo in repos:
-            current_repo_path = path / Path(repo)
+    for maintainer in package_maintainer_index:
+        for package in maintainer.get_packages():
+            name = maintainer.get_name()
+            current_repo_path = path / Path(f'{name}_{package}')
 
-            logging.info(f'cloning package {repo} maintained by {org_name} to {current_repo_path}')
-            clone_repo(f'https://github.com/{org_name}/{repo}.git', current_repo_path)
+            logging.info(f'Drawing down {name}\'s {package}')
+            clone_repo(f'https://github.com/{name}/{package}.git', current_repo_path)
 
 
 def parse_pkg_name(repo_dir):
@@ -44,196 +39,77 @@ def parse_pkgs(repo_dir):
         return []
 
 
-def get_pkgs_with_updates(repo_index, version_index, path):
-    '''obtain a sublist of the existing repo_index: all those packages with updates'''
-    res = {}
-    for org_name, repos in repo_index.items():
-        for repo in repos:
-            current_repo_path = path / Path(repo)
+def get_update_tasks(maintainers, version_index, path):
+    '''build list of tasks for package version-bump commits'''
 
-            if has_dbt_project_yml(current_repo_path):
-                package_name = parse_pkg_name(current_repo_path)
-                packages = parse_pkgs(current_repo_path)
-                logging.info(f'collecting tags for {package_name}')
+    def has_dbt_project_yml(package, directory):
+        '''Any package without a dbt_project.yml should be ignored'''
+        has_yaml = os.path.exists(directory / Path('dbt_project.yml'))
+        if not has_yaml:
+            logging.warning(f'{package} has no dbt_project.yml. Skipping...')
+        return has_yaml
 
-                existing_tags = version.get_existing_tags(version_index[org_name][package_name])
-                logging.info(f'pkg hub tags:    {sorted(existing_tags)}')
+    def get_new_tags(repo_path, maintainer_name):
+        # Existing tags are fetched from version index
+        yml_package_name = parse_pkg_name(repo_path)
+        logging.info(f'collecting tags for {yml_package_name}')
 
-                valid_remote_tags = version.get_valid_remote_tags(Repo(current_repo_path))
-                logging.info(f'pkg remote tags: {sorted(valid_remote_tags)}')
+        existing_tags = version.get_existing_tags(
+            version_index.get((yml_package_name, maintainer_name), set())
+        )
+        logging.info(f'pkg hub tags:    {sorted(existing_tags)}')
 
-                new_tags = list(valid_remote_tags - existing_tags)
-                if new_tags:
-                    logging.info(f'adding new tags {list(new_tags)} to {package_name} repo')
-                    if org_name not in res:
-                        res[org_name] = {}
-                    res[org_name][repo] = (package_name, current_repo_path, new_tags, existing_tags)
-            else:
-                logging.warning(f'{repo} has no dbt_project.yml. Skipping...')
-    return res
+        valid_remote_tags = version.get_valid_remote_tags(Repo(repo_path))
+        logging.info(f'pkg remote tags: {sorted(valid_remote_tags)}')
 
+        new_tags = list(valid_remote_tags - existing_tags)
+        return yml_package_name, existing_tags, new_tags
 
-def cut_version_branch(org_name, repo, separate_commits_by_pkg):
-    '''designed to be run in a hub repo which is sibling to package code repos'''
+    def build_update_task_tuple(maintainer_name, hub_package_name):
+        SKIP = None
+        repo_path = path / Path(f'{maintainer_name}_{hub_package_name}')
 
-    if separate_commits_by_pkg:
-        branch_name = f'bump-{org_name}-{repo}-{NOW}'
-    else:
-        branch_name = 'bump-{NOW}'
+        # Cannot create update task for package without dbt_projects yaml
+        if not has_dbt_project_yml(hub_package_name, repo_path):
+            return SKIP
 
-    logging.info(f'checking out branch {branch_name} in the hub repo itself')
+        yml_package_name, existing_tags, new_tags = get_new_tags(repo_path, maintainer_name)
+        if new_tags:
+            logging.info(f'creating task to add new tags {list(new_tags)} to {yml_package_name}')
+            return records.UpdateTask(
+                github_username=maintainer_name,
+                github_repo_name=hub_package_name,
+                local_path_to_repo=repo_path,
+                package_name=yml_package_name,
+                existing_tags=existing_tags,
+                new_tags=new_tags
+            )
+        # Cannot create update task for package without new tags
+        else:
+            logging.info(f'no new tags for {yml_package_name}. Skipping...')
+            return SKIP
 
-    completed_subprocess = subprocess.run(['git', 'checkout', '-q', '-b', branch_name])
-    if completed_subprocess.returncode == 128:
-        run_cmd(f'git checkout -q {branch_name}')
-
-    return branch_name
-
-
-def fetch_index_file_contents(filepath):
-    existing_index_file = {}
-
-    if os.path.exists(filepath):
-        with open(filepath, 'rb') as stream:
-            existing_index_file_contents = stream.read().decode('utf-8').strip()
-            try:
-                existing_index_file = json.loads(existing_index_file_contents)
-            except:
-                pass
-
-    return existing_index_file
-
-
-def make_index(org_name, repo, package_name, existing, tags, git_path):
-    description = "dbt models for {}".format(repo)
-    assets = {
-        "logo": "logos/placeholder.svg".format(repo)
-    }
-
-    if isinstance(existing, dict):
-        description = existing.get('description', description)
-        assets = existing.get('assets', assets)
-
-    # attempt to grab the latest release version of a project
-
-    version_numbers = [version.strip_v_from_version(tag) for tag in tags
-                       if version.is_valid_stable_semver_tag(tag)]
-    version_numbers.sort(key=lambda s: list(map(int, s.split('.'))))
-    latest_version = version_numbers[-1]
-
-    if not latest_version:
-        latest_version = ''
-
-    return {
-        "name": package_name,
-        "namespace": org_name,
-        "description": description,
-        "latest": latest_version.replace("=", ""), # LOL
-        "assets": assets
-    }
+    return [
+        update_task for update_task in (
+            build_update_task_tuple(maintainer.get_name(), package)
+            for maintainer in maintainers
+            for package in maintainer.get_packages()
+        ) if update_task
+    ]
 
 
-def download(url):
-    '''Get some content to create a sha (very surely) unique to that package version'''
-    response = requests.get(url)
-
-    file_buf = b""
-    for block in response.iter_content(1024*64):
-        file_buf += block
-
-    return file_buf
-
-
-def get_sha1(url):
-    '''used to create a unique sha for each release'''
-    print("    downloading: {}".format(url))
-    contents = download(url)
-    hasher = hashlib.sha1()
-    hasher.update(contents)
-    digest = hasher.hexdigest()
-    print("      SHA1: {}".format(digest))
-    return digest
-
-
-def make_spec(org, repo, package_name, packages, version, git_path):
-    '''The hub needs these specs for packages to be discoverable by deps and on the web'''
-    tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(org, repo, version)
-    sha1 = get_sha1(tarball_url)
-
-    # note: some packages do not have a packages.yml
-    return {
-        "id": "{}/{}/{}".format(org, package_name, version),
-        "name": package_name,
-        "version": version,
-        "published_at": NOW_ISO,
-        "packages": packages,
-        "works_with": [],
-        "_source": {
-            "type": "github",
-            "url": "https://github.com/{}/{}/tree/{}/".format(org, repo, version),
-            "readme": "https://raw.githubusercontent.com/{}/{}/{}/README.md".format(org, repo, version)
-        },
-        "downloads": {
-            "tarball": tarball_url,
-            "format": "tgz",
-            "sha1": sha1
-        }
-    }
-
-def commit_version_updates_to_hub(new_pkg_version_index, hub_dir_path, one_branch_per_repo=True):
-    '''input: {org_name: {repo_name:(package_name, repo_path, [version tags], [version_tags])}}
+def commit_version_updates_to_hub(tasks, hub_dir_path):
+    '''input: UpdateTask
     output: {branch_name: hashmap of branch info}
-    N.B. this function will make changes to the hub only
+    N.B. this function will make changes to the local copy of hub only
     '''
     res = {}
-    for org_name, new_repo_tags in new_pkg_version_index.items():
-        for repo, (package_name, repo_path, new_tags, existing_tags) in new_repo_tags.items():
-            os.chdir(hub_dir_path)
-            repo_hub_version_dir = hub_dir_path / 'data' / 'packages' / org_name / package_name / 'versions'
-            Path.mkdir(repo_hub_version_dir, parents=True, exist_ok=True)
+    for task in tasks:
+        # major side effect is to commit on a new branch package updates
+        branch_name, org_name, package_name = task.run(hub_dir_path)
+        res[branch_name] = {"org": org_name, "repo": package_name}
 
-            # in hub, on a branch for each package, commit the package version specs for any new tags
-            branch_name = cut_version_branch(org_name, repo, one_branch_per_repo)
-            res[branch_name] = {"org": org_name, "repo": package_name}
-
-            # create an updated version of the repo's index.json
-            index_file_path = hub_dir_path / 'data' / 'packages' / org_name / package_name / 'index.json'
-
-            new_index_entry = make_index(
-                org_name,
-                repo,
-                package_name,
-                fetch_index_file_contents(index_file_path),
-                set(new_tags) | set(existing_tags),
-                repo_path
-            )
-
-            with open(index_file_path, 'w') as f:
-                logging.info(f'writing index.json to {index_file_path}')
-                f.write(str(json.dumps(new_index_entry, indent=4)))
-
-            # create a version spec for each tag
-            for tag in new_tags:
-                # go to repo dir to checkout tag and tag-commit specific package list
-                os.chdir(repo_path)
-                run_cmd(f'git checkout tags/{tag}')
-                packages = parse_pkgs(Path(os.getcwd()))
-
-                # return to hub and build spec
-                os.chdir(hub_dir_path)
-                package_spec = make_spec(org_name, repo, package_name, packages, tag, repo_path)
-
-                version_path = repo_hub_version_dir / Path(f'{tag}.json')
-                with open(version_path, 'w') as f:
-                    logging.info(f'writing spec to {version_path}')
-                    f.write(str(json.dumps(package_spec, indent=4)))
-
-                msg = f'hubcap: Adding tag {tag} for {org_name}/{repo}'
-                logging.info(msg)
-                run_cmd('git add -A')
-                subprocess.run(args=['git', 'commit', '-am', f'{msg}'], capture_output=True)
-
-            # good house keeping
-            os.chdir(hub_dir_path)
-            run_cmd('git checkout master')
+        # good house keeping
+        os.chdir(hub_dir_path)
+        run_cmd('git checkout master')
     return res

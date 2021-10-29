@@ -48,3 +48,6 @@ def clone_repo(remote, path):
     repo.git.checkout(main_branch)
     repo.remotes.origin.pull()
     return path
+
+
+__all__ = ['clone_repo', 'run_cmd']

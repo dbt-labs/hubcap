@@ -45,7 +45,7 @@ def get_existing_tags(version_tags):
 
 def get_valid_remote_tags(repo):
     '''designed to be run inside a package repo
-    will not pick up tags other than those which are semver compliant'''
+    Includes semver compliant tags only.'''
     repo.git.fetch('--quiet', '--tags')
     all_remote_tags = repo.git.tag('--list').split('\n')
 

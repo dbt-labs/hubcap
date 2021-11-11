@@ -67,7 +67,7 @@ set -o pipefail
 # ==
 
 # specify ENV in Heroku's config variables or override on CLI
-export ENV="${ENV-development}"
+export ENV="${ENV:-development}"
 
 if [ "$ENV" = 'prod' ] || [ "$ENV" = 'test' ]; then
     # User's prior state saved to avoid corrupting local git config params

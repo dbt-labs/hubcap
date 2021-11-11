@@ -1,3 +1,5 @@
+'''Interface for dispatching updates to packages back to github'''
+
 import json
 import requests
 import os
@@ -6,6 +8,7 @@ import setup
 from git import Repo
 
 def make_pr(ORG, REPO, head, user_creds):
+    '''Create POST content which in turns create a hub new-version PR'''
     url = 'https://api.github.com/repos/dbt-labs/hub.getdbt.com/pulls'
     body = {
         "title": "HubCap: Bump {}/{}".format(ORG, REPO),
@@ -22,6 +25,7 @@ def make_pr(ORG, REPO, head, user_creds):
 
 
 def get_open_pr_titles(org_name, package_name, user_creds):
+    '''Prevents opening duplicate PRs for currently open versions'''
     url = f'https://api.github.com/repos/{org_name}/{package_name}/pulls?state=open'
 
     user = user_creds.get('name', None)
@@ -36,10 +40,11 @@ def is_open_pr(prs, org_name, pkg_name):
     return any('{}/{}'.format(org_name, pkg_name) in pr for pr in prs)
 
 
-def open_new_prs(target_repo, remote_url, branches, user_creds):
+def open_new_prs(target_repo_path, remote_url, branches, user_creds):
     '''Expects: {branch_name: hashmap of branch info} and {user_name, access token}
     will push prs up to a github remote'''
 
+    target_repo = Repo(target_repo_path)
     target_repo.create_remote('hub', url=remote_url)
 
     *_, target_org, target_pkg = remote_url.split('/')

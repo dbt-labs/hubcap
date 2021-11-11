@@ -1,3 +1,5 @@
+'''Interface for package release tags and building package indexes'''
+
 import logging
 import os
 import re
@@ -28,6 +30,7 @@ def is_valid_stable_semver_tag(tag):
 
 
 def strip_v_from_version(tag):
+    '''Some release tags are prefixed by a v; removed before releases are added to hub'''
     if tag.startswith('v'):
         return tag[1:]
     else:
@@ -42,7 +45,7 @@ def get_existing_tags(version_tags):
 
 def get_valid_remote_tags(repo):
     '''designed to be run inside a package repo
-    will not pick up tags other than those which are semver compliant'''
+    Includes semver compliant tags only.'''
     repo.git.fetch('--quiet', '--tags')
     all_remote_tags = repo.git.tag('--list').split('\n')
 

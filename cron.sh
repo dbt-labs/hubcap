@@ -42,7 +42,7 @@ exit_routine() {
   if [ "$ENV" = 'prod' ] || [ "$ENV" = 'test' ]; then
     function reset_git_params() {
       # reset machine's git config state to pre-script invocation
-      if [ -z "${2}" ]; then
+      if [ -z "${2}" ] && [ -z "$(git config --global user."${1}")" ]; then
           git config --global --unset user."${1}"
       else
           git config --global user."${1}" "${2}"
@@ -71,8 +71,8 @@ export ENV="${ENV:-development}"
 
 if [ "$ENV" = 'prod' ] || [ "$ENV" = 'test' ]; then
     # User's prior state saved to avoid corrupting local git config params
-    PRIOR_GIT_EMAIL="$(git config --global user.email)"
-    PRIOR_GIT_NAME="$(git config --global user.name)"
+    PRIOR_GIT_EMAIL="$(git config --global user.email || : )"
+    PRIOR_GIT_NAME="$(git config --global user.name || : )"
 
     # Setup git repo for automated commits during execution
     git config --global user.email 'drew@fishtownanalytics.com'  # TODO: make this a dedicated CI user

@@ -55,4 +55,4 @@ new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path)
 
 logging.info("Pushing branches: {}".format(list(new_branches.keys())))
 if new_branches:
-    release_carrier.open_new_prs(Repo(hub_dir_path), REMOTE, new_branches, config['user'])
+    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, config['user'])

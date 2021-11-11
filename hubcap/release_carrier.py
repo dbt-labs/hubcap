@@ -40,10 +40,11 @@ def is_open_pr(prs, org_name, pkg_name):
     return any('{}/{}'.format(org_name, pkg_name) in pr for pr in prs)
 
 
-def open_new_prs(target_repo, remote_url, branches, user_creds):
+def open_new_prs(target_repo_path, remote_url, branches, user_creds):
     '''Expects: {branch_name: hashmap of branch info} and {user_name, access token}
     will push prs up to a github remote'''
 
+    target_repo = Repo(target_repo_path)
     target_repo.create_remote('hub', url=remote_url)
 
     *_, target_org, target_pkg = remote_url.split('/')

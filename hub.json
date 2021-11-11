@@ -157,5 +157,8 @@
     ],
     "lalalilo": [
         "athena-utils"
+    ],
+    "avo": [
+        "avo_audit"
     ]
 }

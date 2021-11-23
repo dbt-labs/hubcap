@@ -88,7 +88,20 @@
         "dbt_youtube_analytics",
         "dbt_youtube_analytics_source",
         "dbt_pendo",
-        "dbt_pendo_source"
+        "dbt_pendo_source",
+        "dbt_tiktok_ads",
+        "dbt_tiktok_ads_source",
+        "dbt_shopify_holistic_reporting",
+        "dbt_facebook_pages",
+        "dbt_facebook_pages_source",
+        "dbt_instagram_business",
+        "dbt_instagram_business_source",
+        "dbt_twitter_organic",
+        "dbt_twitter_organic_source",
+        "dbt_linkedin_pages",
+        "dbt_linkedin_pages_source",
+        "dbt_social_media_reporting"
+        
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

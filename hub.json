@@ -173,5 +173,8 @@
     ],
     "avohq": [
         "avo_audit"
+    ],
+    "Matatika": [
+        "dbt-tap-googleads"
     ]
 }

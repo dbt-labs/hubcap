@@ -175,6 +175,7 @@
         "avo_audit"
     ],
     "Matatika": [
-        "dbt-tap-googleads"
+        "dbt-tap-googleads",
+        "dbt-tap-solarvista"
     ]
 }

@@ -101,7 +101,7 @@
         "dbt_linkedin_pages",
         "dbt_linkedin_pages_source",
         "dbt_social_media_reporting"
-        
+
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
@@ -177,5 +177,8 @@
     "Matatika": [
         "dbt-tap-googleads",
         "dbt-tap-solarvista"
+    ],
+    "tuva-health": [
+        "tuva"
     ]
 }

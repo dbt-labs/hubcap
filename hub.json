@@ -140,7 +140,7 @@
     "dbt-msft": [
         "tsql-utils"
     ],
-    "tailsdotcom": [
+    "brooklyn-data": [
         "dbt_artifacts"
     ],
     "emilyriederer": [

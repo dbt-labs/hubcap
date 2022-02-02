@@ -184,5 +184,8 @@
     ],
     "elementary-data": [
         "dbt-data-reliability"
+    ],
+    "splitgraph": [
+        "ab2ft_stripe"
     ]
 }

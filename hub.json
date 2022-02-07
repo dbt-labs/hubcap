@@ -188,5 +188,8 @@
     ],
     "splitgraph": [
         "ab2ft_stripe"
-    ]
+    ],
+    "Teradata": [
+        "dbt-teradata-utils"
+    ]    
 }

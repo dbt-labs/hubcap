@@ -23,6 +23,7 @@
         "dbt-codegen",
         "dbt-audit-helper",
         "dbt-external-tables"
+        "dbt_metrics"
     ],
     "fivetran": [
         "dbt_netsuite",

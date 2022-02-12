@@ -192,5 +192,8 @@
     ],
     "Teradata": [
         "dbt-teradata-utils"
-    ]    
+    ],
+    "fal-ai": [
+        "dbt_feature_store"
+    ]
 }

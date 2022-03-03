@@ -101,7 +101,9 @@
         "dbt_twitter_organic_source",
         "dbt_linkedin_pages",
         "dbt_linkedin_pages_source",
-        "dbt_social_media_reporting"
+        "dbt_social_media_reporting",
+        "dbt_sage_intacct",
+        "dbt_sage_intacct_source"
 
     ],
     "Montreal-Analytics": [

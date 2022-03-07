@@ -181,7 +181,9 @@
     "Matatika": [
         "dbt-tap-googleads",
         "dbt-tap-solarvista",
-        "dbt-tap-meltano"
+        "dbt-tap-meltano",
+        "dbt-tap-trello",
+        "dbt-tap-google-analytics"
     ],
     "tuva-health": [
         "tuva"

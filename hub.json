@@ -200,5 +200,8 @@
     ],
     "fal-ai": [
         "dbt_feature_store"
-    ]
+    ],
+    "Divergent-Insights": [
+        "dbt-snowflake-setup"
+    ]    
 }

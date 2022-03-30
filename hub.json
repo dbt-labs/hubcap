@@ -156,7 +156,8 @@
         "dbt-profiler"
     ],
     "entechlog": [
-        "dbt-snow-mask"
+        "dbt-snow-mask",
+        "dbt-snow-utils"
     ],
     "re-data": [
         "dbt-re-data"

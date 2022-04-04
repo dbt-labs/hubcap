@@ -184,7 +184,8 @@
         "dbt-tap-solarvista",
         "dbt-tap-meltano",
         "dbt-tap-trello",
-        "dbt-tap-google-analytics"
+        "dbt-tap-google-analytics",
+        "dbt-tap-spotify"
     ],
     "tuva-health": [
         "tuva"

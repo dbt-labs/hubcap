@@ -188,7 +188,9 @@
         "dbt-tap-spotify"
     ],
     "tuva-health": [
-        "tuva"
+        "core",
+        "chronic_conditions",
+        "readmissions"
     ],
     "elementary-data": [
         "dbt-data-reliability"

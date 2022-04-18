@@ -205,5 +205,8 @@
     "Divergent-Insights": [
         "dbt-snowflake-setup",
         "dbt-dataquality"
-    ]    
+    ],
+    "pvcy": [
+        "dbt-privacy"
+    ]
 }

@@ -207,5 +207,8 @@
     "Divergent-Insights": [
         "dbt-snowflake-setup",
         "dbt-dataquality"
-    ]    
+    ],
+    "datalakehouse": [
+        "dlh-square-analytics-dbt"
+    ] 
 }

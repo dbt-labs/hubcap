@@ -208,6 +208,9 @@
         "dbt-snowflake-setup",
         "dbt-dataquality"
     ],
+    "pvcy": [
+        "dbt-privacy"
+    ],
     "datalakehouse": [
         "dlh-square-analytics-dbt"
     ] 

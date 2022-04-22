@@ -212,6 +212,9 @@
         "dbt-privacy"
     ],
     "datalakehouse": [
-        "dlh-square-analytics-dbt"
+        "dlh-square-analytics-dbt",
+        "dlh-quickbooks-analytics-dbt",
+        "dlh-xero-analytics-dbt",
+        "dlh-salesforce-analytics-dbt"
     ] 
 }

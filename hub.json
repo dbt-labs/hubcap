@@ -25,6 +25,9 @@
         "dbt-external-tables",
         "dbt_metrics"
     ],
+    "cerebriumai": [
+        "airbyte_dbt_github"
+    ],
     "fivetran": [
         "dbt_netsuite",
         "dbt_netsuite_source",

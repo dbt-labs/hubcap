@@ -134,6 +134,9 @@
         "dbt-date",
         "dbt-expectations"
     ],
+    "Snowflake-Labs": [
+        "dbt_constraints"
+    ],
     "yu-iskw": [
         "dbt-airflow-macros"
     ],

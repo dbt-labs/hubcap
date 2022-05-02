@@ -219,5 +219,8 @@
         "dlh-quickbooks-analytics-dbt",
         "dlh-xero-analytics-dbt",
         "dlh-salesforce-analytics-dbt"
-    ] 
+    ],
+    "gabriel-milan": [
+        "dbt-client"
+    ]
 }

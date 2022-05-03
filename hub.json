@@ -106,7 +106,12 @@
         "dbt_linkedin_pages_source",
         "dbt_social_media_reporting",
         "dbt_sage_intacct",
-        "dbt_sage_intacct_source"
+        "dbt_sage_intacct_source",
+        "dbt_google_play",
+        "dbt_google_play_source",
+        "dbt_apple_store",
+        "dbt_apple_store_source",
+        "dbt_app_reporting"
 
     ],
     "Montreal-Analytics": [

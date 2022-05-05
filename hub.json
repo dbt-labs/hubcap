@@ -27,7 +27,8 @@
     ],
     "cerebriumai": [
         "airbyte_dbt_github",
-        "airbyte_dbt_google_ads"
+        "airbyte_dbt_google_ads",
+        "airbyte_dbt_shopify"
     ],
     "fivetran": [
         "dbt_netsuite",

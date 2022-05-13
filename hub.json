@@ -184,7 +184,8 @@
     "snowplow": [
         "dbt-snowplow-utils",
         "dbt-snowplow-web",
-        "dbt-snowplow-mobile"
+        "dbt-snowplow-mobile",
+        "dbt-snowplow-media-player"
     ],
     "lalalilo": [
         "athena-utils"

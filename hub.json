@@ -237,5 +237,8 @@
     ],
     "starburstdata": [
         "dbt-trino-utils"
-    ]
+    ],
+    "Velir": [
+        "dbt-ga4"
+    ] 
 }

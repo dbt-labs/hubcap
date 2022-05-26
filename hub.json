@@ -234,5 +234,8 @@
         "dlh-quickbooks-analytics-dbt",
         "dlh-xero-analytics-dbt",
         "dlh-salesforce-analytics-dbt"
+    ],
+    "Velir": [
+        "dbt-ga4"
     ] 
 }

@@ -235,6 +235,9 @@
         "dlh-xero-analytics-dbt",
         "dlh-salesforce-analytics-dbt"
     ],
+    "starburstdata": [
+        "dbt-trino-utils"
+    ],
     "Velir": [
         "dbt-ga4"
     ] 

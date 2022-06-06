@@ -240,5 +240,8 @@
     ],
     "Velir": [
         "dbt-ga4"
-    ] 
+    ],
+    "hightouchio": [
+        "dbt-hightouch"
+    ]
 }

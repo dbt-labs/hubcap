@@ -244,5 +244,8 @@
     ],
     "hightouchio": [
         "dbt-hightouch"
+    ],
+    "everpeace": [
+        "dbt-models-metadata"
     ]
 }

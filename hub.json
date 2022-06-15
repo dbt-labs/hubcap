@@ -233,7 +233,8 @@
         "dlh-square-analytics-dbt",
         "dlh-quickbooks-analytics-dbt",
         "dlh-xero-analytics-dbt",
-        "dlh-salesforce-analytics-dbt"
+        "dlh-salesforce-analytics-dbt",
+        "dlh-stripe-analytics-dbt"
     ],
     "starburstdata": [
         "dbt-trino-utils"

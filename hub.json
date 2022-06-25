@@ -180,7 +180,8 @@
         "dbt-re-data"
     ],
     "mjirv": [
-        "dbt-datamocktool"
+        "dbt-datamocktool",
+        "dbt_product_analytics"
     ],
     "jitsucom": [
         "dbt-jitsu"

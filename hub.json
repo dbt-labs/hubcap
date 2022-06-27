@@ -23,7 +23,8 @@
         "dbt-codegen",
         "dbt-audit-helper",
         "dbt-external-tables",
-        "dbt_metrics"
+        "dbt_metrics",
+        "dbt-project-evaluator"
     ],
     "cerebriumai": [
         "airbyte_dbt_intercom",

@@ -249,5 +249,9 @@
     ],
     "everpeace": [
         "dbt-models-metadata"
+    ],
+
+    "infinitelambda": [
+        "carbon-analytics"
     ]
 }

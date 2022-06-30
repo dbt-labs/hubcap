@@ -253,5 +253,8 @@
 
     "infinitelambda": [
         "carbon-analytics"
+    ],
+    "andrewcstewart": [
+        "dbt-uaparser"
     ]
 }

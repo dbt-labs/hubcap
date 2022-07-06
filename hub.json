@@ -150,7 +150,8 @@
         "dbt_constraints"
     ],
     "yu-iskw": [
-        "dbt-airflow-macros"
+        "dbt-airflow-macros",
+        "dbt-unittest"
     ],
     "tnightengale": [
         "dbt-meta-testing"

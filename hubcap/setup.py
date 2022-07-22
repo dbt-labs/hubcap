@@ -9,7 +9,7 @@ import re
 import requests
 
 from pathlib import Path
-from cmd import *
+from git_helper import *
 from records import *
 
 NOW = int(datetime.datetime.now().timestamp())

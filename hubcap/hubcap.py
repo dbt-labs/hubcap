@@ -10,7 +10,7 @@ import version
 import package
 import release_carrier
 
-from cmd import *
+from git_helper import *
 from records import *
 
 # ==

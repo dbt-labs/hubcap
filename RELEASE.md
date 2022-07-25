@@ -25,7 +25,12 @@ The commands below assume a production application named `dbt-hubcap`. Replace w
     - `ENV`: `prod`
 1. (Re-)deploy the application using the instructions below. See [these](https://dashboard.heroku.com/apps/dbt-hubcap/deploy/heroku-git) instructions for context.
 
-## Heroku production release
+
+## Heroku production release (automated)
+
+It is possible to configure automatic deploys from GitHub to deploy automatically whenever a specific branch is pushed to: [Deploy > Deployment method > GitHub > Connect to GitHub](https://dashboard.heroku.com/apps/dbt-hubcap/deploy/github).
+
+## Heroku production release (manual)
 
 All of the following steps can be performed locally to initiate a remote deploy on Heroku.
 

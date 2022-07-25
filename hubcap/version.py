@@ -6,7 +6,7 @@ import re
 
 import package
 
-from cmd import *
+from git_helper import *
 
 
 def parse_semver_tag(tag):

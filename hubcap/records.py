@@ -1,6 +1,6 @@
 '''Interface for objects useful to processing hub entries'''
 
-import cmd
+import git_helper
 import hashlib
 import json
 import logging
@@ -71,7 +71,7 @@ class UpdateTask(object):
         for tag in self.new_tags:
             # go to repo dir to checkout tag and tag-commit specific package list
             os.chdir(self.local_path_to_repo)
-            cmd.run_cmd(f'git checkout tags/{tag}')
+            git_helper.run_cmd(f'git checkout tags/{tag}')
             packages = package.parse_pkgs(Path(os.getcwd()))
 
             # return to hub and build spec
@@ -88,7 +88,7 @@ class UpdateTask(object):
 
             msg = f'hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}'
             logging.info(msg)
-            cmd.run_cmd('git add -A')
+            git_helper.run_cmd('git add -A')
             subprocess.run(args=['git', 'commit', '-am', f'{msg}'], capture_output=True)
 
         # if succesful return branchname
@@ -102,7 +102,7 @@ class UpdateTask(object):
 
         completed_subprocess = subprocess.run(['git', 'checkout', '-q', '-b', branch_name])
         if completed_subprocess.returncode == 128:
-            run_cmd(f'git checkout -q {branch_name}')
+            git_helper.run_cmd(f'git checkout -q {branch_name}')
 
         return branch_name
 

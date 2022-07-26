@@ -132,7 +132,7 @@
     ],
     "rudderlabs": [
         "dbt-sessionization",
-        "dbt-id-resolution",
+        "dbt-id-stitching",
         "dbt-customer-journey-analysis",
         "dbt-events-registry"
     ],

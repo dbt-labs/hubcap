@@ -14,6 +14,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### First run experience
 - Packages SHOULD contain a README file which explains how to get started with the package and customise its behaviour.
+- The documentation SHOULD indicate which data warehouses are expected to work with this package.
 
 ### Customisability 
 - Packages MUST NOT hard-code table references, and MUST use `ref` or `source` instead.
@@ -37,5 +38,6 @@ Packages with a dependency on another package:
 - Packages SHOULD disambiguate their resource names to avoid clashes with nodes that are likely to already exist in a project. 
     - For example, packages SHOULD NOT provide a model simply called `users`.
 
-### Updates
+### Releases and updates
 - Packages SHOULD follow the guidance of the [Semantic Versioning Specification](https://semver.org/).
+- Packages MUST create a git tag with the version number that follows the accepted version format.

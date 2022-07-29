@@ -25,19 +25,22 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
     - MAY assume table names, particularly if the package was built to support tables created by a known tool.
 
 ### Dependencies
+#### Dependencies on dbt Core
 - Packages requiring a minimum version of `dbt-core` MUST declare it in the `require-dbt-version` property of `dbt_project.yml`.
-- Packages requiring a minimum version of `dbt-core` SHOULD declare compatibility with all subsequent minor and patch releases of that major version. 
+- Packages requiring a minimum version of `dbt-core` SHOULD allow all subsequent minor and patch releases of that major version. 
     - For example, a package which depends on functionality added in dbt Core 1.2 SHOULD set its `require-dbt-version` property to `[">=1.2.0", "<2.0.0"]`.
-Packages with a dependency on another package:
-    - MAY, if the dependent package is major-version-zero, pin to the current minor version only.
-    - SHOULD NOT pin to a patch version of the dependent package unless they are aware of an incompatibility between their package and the dependency.
-    - SHOULD reference the version in the dbt Package Hub when available, as opposed to a `git` installation.
+#### Dependencies on other packages defined in `packages.yml`:
+- Packages SHOULD import their dependencies from the dbt Package Hub when available, as opposed to a `git` installation.
+- Packages SHOULD NOT pin to a patch version of their imported package unless they are aware of an incompatibility.
+- Packages importing another package which has reached major version one or later SHOULD allow all subsequent minor and patch releases of that major version. 
+- Packages importing another package which is major version zero MAY pin to the current minor version only.
 
 ### Interoperability
 - Packages MUST NOT override dbt Core behaviour in such a way as to impact other dbt resources (models, tests, etc) not provided by the package.
+- Packages MUST use the cross-database macros built into dbt Core where available, such as `{{ datediff }}` and `{{ type_string() }}`.
 - Packages SHOULD disambiguate their resource names to avoid clashes with nodes that are likely to already exist in a project. 
     - For example, packages SHOULD NOT provide a model simply called `users`.
 
 ### Releases and updates
+- Packages' git tags MUST validate against the regex defined in [version.py](/hubcap/version.py).
 - Packages SHOULD follow the guidance of the [Semantic Versioning Specification](https://semver.org/).
-- Packages MUST create a git tag with the version number that follows the accepted version format.

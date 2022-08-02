@@ -31,13 +31,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
     - For example, a package which depends on functionality added in dbt Core 1.2 SHOULD set its `require-dbt-version` property to `[">=1.2.0", "<2.0.0"]`.
 #### Dependencies on other packages defined in `packages.yml`:
 - Packages SHOULD import their dependencies from the dbt Package Hub when available, as opposed to a `git` installation.
-- Packages SHOULD NOT pin to a patch version of their imported package unless they are aware of an incompatibility.
-- Packages importing another package which has reached major version one or later SHOULD allow all subsequent minor and patch releases of that major version. 
-- Packages importing another package which is major version zero MAY pin to the current minor version only.
-
+- Packages SHOULD specify the widest possible range of supported versions, to minimise issues in dependency resolution. 
+    - In particular, packages SHOULD NOT pin to a patch version of their imported package unless they are aware of an incompatibility.
 ### Interoperability
 - Packages MUST NOT override dbt Core behaviour in such a way as to impact other dbt resources (models, tests, etc) not provided by the package.
-- Packages MUST use the cross-database macros built into dbt Core where available, such as `{{ datediff }}` and `{{ type_string() }}`.
+- Packages intended for use with multiple platforms MUST use the cross-database macros built into dbt Core where available, such as `{{ except() }}` and `{{ type_string() }}`.
 - Packages SHOULD disambiguate their resource names to avoid clashes with nodes that are likely to already exist in a project. 
     - For example, packages SHOULD NOT provide a model simply called `users`.
 

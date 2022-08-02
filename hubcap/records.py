@@ -174,7 +174,7 @@ class UpdateTask(object):
             "id": "{}/{}/{}".format(org, package_name, version),
             "name": package_name,
             "version": version,
-            "published_at": setup.NOW_ISO,
+            "published_at": "1970-01-01T00:00:00.000000+00:00",
             "packages": packages,
             "works_with": [],
             "_source": {

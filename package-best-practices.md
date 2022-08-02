@@ -43,4 +43,4 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Releases and updates
 - Packages' git tags MUST validate against the regex defined in [version.py](/hubcap/version.py).
-- Packages SHOULD follow the guidance of the [Semantic Versioning Specification](https://semver.org/).
+- Packages SHOULD follow the guidance of [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html).

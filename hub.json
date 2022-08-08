@@ -211,7 +211,8 @@
     "tuva-health": [
         "core",
         "chronic_conditions",
-        "readmissions"
+        "readmissions",
+        "medicare_claims_connector"
     ],
     "elementary-data": [
         "dbt-data-reliability"

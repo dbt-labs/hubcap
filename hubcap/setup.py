@@ -13,7 +13,6 @@ from git_helper import *
 from records import *
 
 NOW = int(datetime.datetime.now().timestamp())
-NOW_ISO = datetime.datetime.now(datetime.timezone.utc).astimezone().isoformat()
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',

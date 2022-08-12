@@ -73,12 +73,13 @@ class UpdateTask(object):
             os.chdir(self.local_path_to_repo)
             git_helper.run_cmd(f'git checkout tags/{tag}')
             packages = package.parse_pkgs(Path(os.getcwd()))
+            require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
 
             # return to hub and build spec
             os.chdir(main_dir)
             package_spec = self.make_spec(
                 self.github_username, self.github_repo_name,
-                self.package_name, packages, tag
+                self.package_name, packages, require_dbt_version, tag
             )
 
             version_path = self.hub_version_index_path / Path(f'{tag}.json')
@@ -164,7 +165,7 @@ class UpdateTask(object):
         print("      SHA1: {}".format(digest))
         return digest
 
-    def make_spec(self, org, repo, package_name, packages, version):
+    def make_spec(self, org, repo, package_name, packages, require_dbt_version, version):
         '''The hub needs these specs for packages to be discoverable by deps and on the web'''
         tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(org, repo, version)
         sha1 = self.get_sha1(tarball_url)
@@ -176,7 +177,7 @@ class UpdateTask(object):
             "version": version,
             "published_at": "1970-01-01T00:00:00.000000+00:00",
             "packages": packages,
-            "works_with": [],
+            "works_with": require_dbt_version,
             "_source": {
                 "type": "github",
                 "url": "https://github.com/{}/{}/tree/{}/".format(org, repo, version),

@@ -31,6 +31,12 @@ def parse_pkg_name(repo_dir):
         return name if name else ''
 
 
+def parse_require_dbt_version(repo_dir):
+    with open(repo_dir / Path('dbt_project.yml'), 'r') as stream:
+        requirements = yaml.safe_load(stream).get('require-dbt-version', [])
+        return requirements if requirements else []
+
+
 def parse_pkgs(repo_dir):
     if os.path.exists(repo_dir / 'packages.yml'):
         with open(repo_dir / Path('packages.yml'), 'r') as stream:

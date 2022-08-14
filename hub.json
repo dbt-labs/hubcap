@@ -252,11 +252,13 @@
     "everpeace": [
         "dbt-models-metadata"
     ],
-
     "infinitelambda": [
         "carbon-analytics"
     ],
     "andrewcstewart": [
         "dbt-uaparser"
+    ],
+    "LewisDavies": [
+        "upstream-prod"
     ]
 }

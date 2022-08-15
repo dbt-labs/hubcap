@@ -177,7 +177,8 @@ class UpdateTask(object):
             "version": version,
             "published_at": "1970-01-01T00:00:00.000000+00:00",
             "packages": packages,
-            "works_with": require_dbt_version,
+            "require_dbt_version": require_dbt_version,
+            "works_with": [],
             "_source": {
                 "type": "github",
                 "url": "https://github.com/{}/{}/tree/{}/".format(org, repo, version),

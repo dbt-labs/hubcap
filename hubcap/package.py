@@ -69,7 +69,7 @@ def get_update_tasks(maintainers, version_index, path):
         valid_remote_tags = version.get_valid_remote_tags(Repo(repo_path))
         logging.info(f'pkg remote tags: {sorted(valid_remote_tags)}')
 
-        new_tags = list(valid_remote_tags - existing_tags)
+        new_tags = list(valid_remote_tags)
         return yml_package_name, existing_tags, new_tags
 
     def build_update_task_tuple(maintainer_name, hub_package_name):
@@ -113,10 +113,10 @@ def commit_version_updates_to_hub(tasks, hub_dir_path):
     res = {}
     for task in tasks:
         # major side effect is to commit on a new branch package updates
-        branch_name, org_name, package_name = task.run(hub_dir_path)
-        res[branch_name] = {"org": org_name, "repo": package_name}
+        task.run(hub_dir_path)
+        # res[branch_name] = {"org": org_name, "repo": package_name}
 
         # good house keeping
-        os.chdir(hub_dir_path)
-        run_cmd('git checkout master')
-    return res
+        # os.chdir(hub_dir_path)
+        # run_cmd('git checkout master')
+    # return res

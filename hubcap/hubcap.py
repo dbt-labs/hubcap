@@ -47,12 +47,12 @@ update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, 
 
 logging.info('preparing branches for packages with versions to be added')
 # this wants to take place inside the git-tmp/hub repo
-new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path)
+package.commit_version_updates_to_hub(update_tasks, hub_dir_path)
 
 # =
 # = push new branches, if there are any
 # =
 
-logging.info("Pushing branches: {}".format(list(new_branches.keys())))
-if new_branches:
-    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, config['user'])
+# logging.info("Pushing branches: {}".format(list(new_branches.keys())))
+# if new_branches:
+#     release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, config['user'])

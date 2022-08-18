@@ -52,7 +52,7 @@ class UpdateTask(object):
         Path.mkdir(self.hub_version_index_path, parents=True, exist_ok=True)
 
         # print(os.getcwd())
-        branch_name = self.cut_version_branch()
+        # branch_name = self.cut_version_branch()
 
         # create an updated version of the repo's index.json
         index_filepath = Path(os.path.dirname(self.hub_version_index_path)) / 'index.json'
@@ -68,7 +68,7 @@ class UpdateTask(object):
             f.write(str(json.dumps(new_index_entry, indent=4)))
 
         # create a version spec for each tag
-        for tag in self.new_tags:
+        for tag in self.existing_tags:
             # go to repo dir to checkout tag and tag-commit specific package list
             os.chdir(self.local_path_to_repo)
             git_helper.run_cmd(f'git checkout tags/{tag}')
@@ -87,13 +87,14 @@ class UpdateTask(object):
                 logging.info(f'writing spec to {version_path}')
                 f.write(str(json.dumps(package_spec, indent=4)))
 
-            msg = f'hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}'
-            logging.info(msg)
-            git_helper.run_cmd('git add -A')
-            subprocess.run(args=['git', 'commit', '-am', f'{msg}'], capture_output=True)
+            #msg = f'hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}'
+            #logging.info(msg)
+            #git_helper.run_cmd('git add -A')
+            #subprocess.run(args=['git', 'commit', '-am', f'{msg}'], capture_output=True)
 
         # if succesful return branchname
-        return branch_name, self.github_username, self.github_repo_name
+        return
+        # return branch_name, self.github_username, self.github_repo_name
 
     def cut_version_branch(self):
         '''designed to be run in a hub repo which is sibling to package code repos'''

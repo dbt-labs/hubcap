@@ -193,7 +193,9 @@
         "dbt_google_play_source",
         "dbt_apple_store",
         "dbt_apple_store_source",
-        "dbt_app_reporting"
+        "dbt_app_reporting",
+        "dbt_apple_search_ads",
+        "dbt_apple_search_ads_source"
     ],
     "gitlabhq": [
         "snowflake_spend"

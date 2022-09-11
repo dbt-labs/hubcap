@@ -228,6 +228,9 @@
     "re-data": [
         "dbt-re-data"
     ],
+    "rjh336": [
+        "dbt-model-usage"
+    ],
     "rudderlabs": [
         "dbt-sessionization",
         "dbt-id-stitching",

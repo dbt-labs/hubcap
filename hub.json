@@ -195,7 +195,11 @@
         "dbt_apple_store_source",
         "dbt_app_reporting",
         "dbt_apple_search_ads",
-        "dbt_apple_search_ads_source"
+        "dbt_apple_search_ads_source",
+        "dbt_amplitude",
+        "dbt_amplitude_source",
+        "dbt_recurly",
+        "dbt_recurly_source"
     ],
     "gitlabhq": [
         "snowflake_spend"

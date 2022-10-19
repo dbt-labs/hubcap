@@ -26,6 +26,9 @@
     "Snowflake-Labs": [
         "dbt_constraints"
     ],
+    "ScalefreeCOM": [
+        "datavault4dbt"
+    ],
     "Teradata": [
         "dbt-teradata-utils"
     ],

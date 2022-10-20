@@ -201,6 +201,9 @@
         "dbt_recurly",
         "dbt_recurly_source"
     ],
+    "get-select": [
+        "dbt-snowflake-monitoring"
+    ],
     "gitlabhq": [
         "snowflake_spend"
     ],

@@ -40,7 +40,7 @@ def is_open_pr(prs, org_name, pkg_name):
     return any('{}/{}'.format(org_name, pkg_name) in pr for pr in prs)
 
 
-def open_new_prs(target_repo_path, remote_url, branches, user_creds):
+def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branches):
     '''Expects: {branch_name: hashmap of branch info} and {user_name, access token}
     will push prs up to a github remote'''
 
@@ -65,7 +65,9 @@ def open_new_prs(target_repo_path, remote_url, branches, user_creds):
         target_repo.git.checkout(branch)
         target_repo.git.fetch('hub')
 
-        if os.environ['ENV'] == 'prod':
-            setup.logging.info("pushing and PRing for {}/{}".format(info['org'], info['repo']))
+        if push_branches:
+            setup.logging.info(f"Pushing and PRing branch {branch}")
             origin = target_repo.git.push('origin', branch)
             make_pr(info['org'], info['repo'], branch, user_creds)
+        else:
+            setup.logging.info(f"Not pushing and PRing branch {branch}")

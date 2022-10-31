@@ -41,11 +41,17 @@ def repo_default_branch(repo):
 
 def clone_repo(remote, path):
     '''Clone down a github repo to a path and a reference to that directory'''
-    logging.info(f'cloning {remote} to {path}')
-    repo = Repo.clone_from(remote, path)
+
+    if Path(path).is_dir():
+        logging.info(f'already exists: {path}')
+        repo = Repo(path)
+    else:
+        logging.info(f'cloning {remote} to {path}')
+        repo = Repo.clone_from(remote, path)
 
     main_branch = repo_default_branch(repo)
     repo.git.checkout(main_branch)
+    logging.info(f'pulling {main_branch} at {path}')
     repo.remotes.origin.pull()
     return path
 

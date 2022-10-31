@@ -75,7 +75,7 @@ if [ "$ENV" = 'prod' ] || [ "$ENV" = 'test' ]; then
     PRIOR_GIT_NAME="$(git config --global user.name || : )"
 
     # Setup git repo for automated commits during execution
-    git config --global user.email 'drew@fishtownanalytics.com'  # TODO: make this a dedicated CI user
+    git config --global user.email 'buildbot@fishtownanalytics.com'
     git config --global user.name 'dbt-hubcap'
 fi
 

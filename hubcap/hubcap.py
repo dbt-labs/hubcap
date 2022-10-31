@@ -20,7 +20,9 @@ from records import *
 logging.info('preparing script state')
 config = setup.build_config()
 
-REMOTE = config['remote']
+github_org = config.get("org", "dbt-labs")
+github_repo = config.get("repo", "hub.getdbt.com")
+REMOTE = f"git@github.com:{github_org}/{github_repo}.git"
 TMP_DIR = os.environ['GIT_TMP']
 TOKEN = config['user']['token']
 PACKAGE_MAINTAINERS = setup.load_package_maintainers()

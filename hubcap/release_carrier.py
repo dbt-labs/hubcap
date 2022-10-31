@@ -51,6 +51,17 @@ def is_open_pr(prs, org_name, pkg_name):
     return any('{}/{}'.format(org_name, pkg_name) in pr for pr in prs)
 
 
+def get_org_repo(remote_url: str) -> str:
+    '''Parse the organization and repository from a GitHub remote URL.'''
+    *_, target_org, target_pkg = remote_url.split('/')
+    # Strip off "git@github.com:" from the beginning of the organization name
+    target_org = target_org.replace("git@github.com:", "")
+    # Strip off ".git" from the end of the package name
+    target_pkg_name = target_pkg[:-len('.git')]
+
+    return target_org, target_pkg_name
+
+
 def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branches, pull_request_url, pr_strategy):
     '''Expects: {branch_name: hashmap of branch info} and {user_name, access token}
     will push prs up to a github remote'''
@@ -59,11 +70,7 @@ def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branch
     if not Remote(target_repo, 'hub').exists():
         target_repo.create_remote('hub', url=remote_url)
 
-    *_, target_org, target_pkg = remote_url.split('/')
-    # Strip off "git@github.com:" from the beginning of the organization name
-    target_org = target_org.replace("git@github.com:", "")
-    # Strip off ".git" from the end of the package name
-    target_pkg_name = target_pkg[:-len('.git')]
+    target_org, target_pkg_name = get_org_repo(remote_url)
     open_pr_titles = get_open_pr_titles(target_org, target_pkg_name, user_creds)
 
     pr_branches = { name: info for name, info in branches.items()

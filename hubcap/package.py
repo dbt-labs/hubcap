@@ -105,7 +105,7 @@ def get_update_tasks(maintainers, version_index, path):
     ]
 
 
-def commit_version_updates_to_hub(tasks, hub_dir_path):
+def commit_version_updates_to_hub(tasks, hub_dir_path, pr_strategy):
     '''input: UpdateTask
     output: {branch_name: hashmap of branch info}
     N.B. this function will make changes to the local copy of hub only
@@ -113,7 +113,7 @@ def commit_version_updates_to_hub(tasks, hub_dir_path):
     res = {}
     for task in tasks:
         # major side effect is to commit on a new branch package updates
-        branch_name, org_name, package_name = task.run(hub_dir_path)
+        branch_name, org_name, package_name = task.run(hub_dir_path, pr_strategy)
         res[branch_name] = {"org": org_name, "repo": package_name}
 
         # good house keeping

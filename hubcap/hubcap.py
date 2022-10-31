@@ -12,6 +12,8 @@ import release_carrier
 
 from git_helper import *
 from records import *
+from records import IndividualPullRequests, ConsolididatedPullRequest
+
 
 # ==
 # == Build global state
@@ -23,11 +25,17 @@ config = setup.build_config()
 github_org = config.get("org", "dbt-labs")
 github_repo = config.get("repo", "hub.getdbt.com")
 push_branches = config.get("push_branches", True)
+one_branch_per_repo = config.get("one_branch_per_repo", True)
 REMOTE = f"git@github.com:{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
 TMP_DIR = os.environ['GIT_TMP']
 TOKEN = config['user']['token']
 PACKAGE_MAINTAINERS = setup.load_package_maintainers()
+
+if one_branch_per_repo:
+    pr_strategy = IndividualPullRequests()
+else:
+    pr_strategy = ConsolididatedPullRequest()
 
 # pull down hub to assess current state and have ready for future commits
 hub_dir_path = clone_repo(REMOTE, TMP_DIR / Path('hub'))
@@ -51,7 +59,7 @@ update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, 
 
 logging.info('preparing branches for packages with versions to be added')
 # this wants to take place inside the git-tmp/hub repo
-new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path)
+new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path, pr_strategy)
 
 # =
 # = push new branches, if there are any
@@ -59,4 +67,4 @@ new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path)
 
 logging.info("Pushing branches: {}".format(list(new_branches.keys())))
 if new_branches:
-    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, config['user'], push_branches, PULL_REQUEST_URL)
+    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, config['user'], push_branches, PULL_REQUEST_URL, pr_strategy)

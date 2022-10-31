@@ -6,6 +6,8 @@ import os
 import setup
 
 from git import Repo
+from git.remote import Remote
+
 
 def make_pr(ORG, REPO, head, user_creds):
     '''Create POST content which in turns create a hub new-version PR'''

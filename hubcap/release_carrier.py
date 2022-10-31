@@ -45,7 +45,8 @@ def open_new_prs(target_repo_path, remote_url, branches, user_creds):
     will push prs up to a github remote'''
 
     target_repo = Repo(target_repo_path)
-    target_repo.create_remote('hub', url=remote_url)
+    if not Remote(target_repo, 'hub').exists():
+        target_repo.create_remote('hub', url=remote_url)
 
     *_, target_org, target_pkg = remote_url.split('/')
     target_pkg_name = target_pkg[:-len('.git')]

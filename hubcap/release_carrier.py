@@ -9,13 +9,13 @@ from git import Repo
 from git.remote import Remote
 
 
-def make_pr(ORG, REPO, head, user_creds, url):
+def make_pr(org, repo, head, user_creds, url):
     '''Create POST content which in turns create a hub new-version PR'''
     user = user_creds['name']
     token = user_creds['token']
-    title = "HubCap: Bump {}/{}".format(ORG, REPO)
+    title = "HubCap: Bump {}/{}".format(org, repo)
     base = "master"
-    body = "Auto-bumping from new release at https://github.com/{}/{}/releases".format(ORG, REPO)
+    body = "Auto-bumping from new release at https://github.com/{}/{}/releases".format(org, repo)
     maintainer_can_modify = True
     post_pr(title, head, base, body, maintainer_can_modify, user, token, url)
 

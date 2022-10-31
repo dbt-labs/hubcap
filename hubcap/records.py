@@ -10,9 +10,36 @@ import setup
 import subprocess
 import version
 
+from abc import ABC, abstractmethod
 from pathlib import Path
 
 import package
+
+
+class PullRequestStrategy(ABC):
+    @abstractmethod
+    def pull_request_title(self, org: str, repo: str) -> str:
+        pass
+
+    @abstractmethod
+    def branch_name(self, org: str, repo: str) -> str:
+        pass
+
+
+class IndividualPullRequests(PullRequestStrategy):
+    def pull_request_title(self, org: str, repo: str) -> str:
+        return f"HubCap: Bump {org}/{repo}"
+
+    def branch_name(self, org: str, repo: str) -> str:
+        return f"bump-{org}-{repo}-{setup.NOW}"
+
+
+class ConsolididatedPullRequest(PullRequestStrategy):
+    def pull_request_title(self, org: str, repo: str) -> str:
+        return "HubCap: Bump package versions"
+
+    def branch_name(self, org: str, repo: str) -> str:
+        return f"bump-package-versions-{setup.NOW}"
 
 
 class PackageMaintainer(object):
@@ -46,13 +73,12 @@ class UpdateTask(object):
         self.existing_tags = existing_tags
         self.new_tags = new_tags
 
-    def run(self, main_dir):
+    def run(self, main_dir, pr_strategy):
         os.chdir(main_dir)
         # Ensure versions directory for a hub package entry
         Path.mkdir(self.hub_version_index_path, parents=True, exist_ok=True)
 
-        # print(os.getcwd())
-        branch_name = self.cut_version_branch()
+        branch_name = self.cut_version_branch(pr_strategy)
 
         # create an updated version of the repo's index.json
         index_filepath = Path(os.path.dirname(self.hub_version_index_path)) / 'index.json'
@@ -95,10 +121,9 @@ class UpdateTask(object):
         # if succesful return branchname
         return branch_name, self.github_username, self.github_repo_name
 
-    def cut_version_branch(self):
+    def cut_version_branch(self, pr_strategy):
         '''designed to be run in a hub repo which is sibling to package code repos'''
-
-        branch_name = f'bump-{self.github_username}-{self.github_repo_name}-{setup.NOW}'
+        branch_name = pr_strategy.branch_name(self.github_username, self.github_repo_name)
         setup.logging.info(f'checking out branch {branch_name} in the hub repo')
 
         completed_subprocess = subprocess.run(['git', 'checkout', '-q', '-b', branch_name])
@@ -157,12 +182,12 @@ class UpdateTask(object):
 
     def get_sha1(self, url):
         '''used to create a unique sha for each release'''
-        print("    downloading: {}".format(url))
+        logging.info(f"    downloading: {url}")
         contents = self.download(url)
         hasher = hashlib.sha1()
         hasher.update(contents)
         digest = hasher.hexdigest()
-        print("      SHA1: {}".format(digest))
+        logging.info(f"      SHA1: {digest}")
         return digest
 
     def make_spec(self, org, repo, package_name, packages, require_dbt_version, version):

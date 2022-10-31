@@ -9,9 +9,8 @@ from git import Repo
 from git.remote import Remote
 
 
-def make_pr(ORG, REPO, head, user_creds):
+def make_pr(ORG, REPO, head, user_creds, url):
     '''Create POST content which in turns create a hub new-version PR'''
-    url = 'https://api.github.com/repos/dbt-labs/hub.getdbt.com/pulls'
     body = {
         "title": "HubCap: Bump {}/{}".format(ORG, REPO),
         "head": head,
@@ -23,7 +22,8 @@ def make_pr(ORG, REPO, head, user_creds):
 
     user = user_creds['name']
     token = user_creds['token']
-    req = requests.post(url, data=body, headers={'Content-Type': 'application/json'}, auth=(user, token))
+    response = requests.post(url, data=body, headers={'Content-Type': 'application/json'}, auth=(user, token))
+    response.raise_for_status()
 
 
 def get_open_pr_titles(org_name, package_name, user_creds):
@@ -42,7 +42,7 @@ def is_open_pr(prs, org_name, pkg_name):
     return any('{}/{}'.format(org_name, pkg_name) in pr for pr in prs)
 
 
-def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branches):
+def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branches, pull_request_url):
     '''Expects: {branch_name: hashmap of branch info} and {user_name, access token}
     will push prs up to a github remote'''
 
@@ -70,6 +70,6 @@ def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branch
         if push_branches:
             setup.logging.info(f"Pushing and PRing branch {branch}")
             origin = target_repo.git.push('origin', branch)
-            make_pr(info['org'], info['repo'], branch, user_creds)
+            make_pr(info['org'], info['repo'], branch, user_creds, pull_request_url)
         else:
             setup.logging.info(f"Not pushing and PRing branch {branch}")

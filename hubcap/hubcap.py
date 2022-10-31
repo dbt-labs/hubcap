@@ -24,6 +24,7 @@ github_org = config.get("org", "dbt-labs")
 github_repo = config.get("repo", "hub.getdbt.com")
 push_branches = config.get("push_branches", True)
 REMOTE = f"git@github.com:{github_org}/{github_repo}.git"
+PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
 TMP_DIR = os.environ['GIT_TMP']
 TOKEN = config['user']['token']
 PACKAGE_MAINTAINERS = setup.load_package_maintainers()
@@ -58,4 +59,4 @@ new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path)
 
 logging.info("Pushing branches: {}".format(list(new_branches.keys())))
 if new_branches:
-    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, config['user'], push_branches)
+    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, config['user'], push_branches, PULL_REQUEST_URL)

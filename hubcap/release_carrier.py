@@ -49,6 +49,9 @@ def open_new_prs(target_repo_path, remote_url, branches, user_creds):
         target_repo.create_remote('hub', url=remote_url)
 
     *_, target_org, target_pkg = remote_url.split('/')
+    # Strip off "git@github.com:" from the beginning of the organization name
+    target_org = target_org.replace("git@github.com:", "")
+    # Strip off ".git" from the end of the package name
     target_pkg_name = target_pkg[:-len('.git')]
     open_pr_titles = get_open_pr_titles(target_org, target_pkg_name, user_creds)
 

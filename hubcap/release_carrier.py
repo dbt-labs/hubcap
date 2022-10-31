@@ -11,17 +11,26 @@ from git.remote import Remote
 
 def make_pr(ORG, REPO, head, user_creds, url):
     '''Create POST content which in turns create a hub new-version PR'''
+    user = user_creds['name']
+    token = user_creds['token']
+    title = "HubCap: Bump {}/{}".format(ORG, REPO)
+    base = "master"
+    body = "Auto-bumping from new release at https://github.com/{}/{}/releases".format(ORG, REPO)
+    maintainer_can_modify = True
+    post_pr(title, head, base, body, maintainer_can_modify, user, token, url)
+
+
+def post_pr(title, head, base, body, maintainer_can_modify, user, token, url):
+    '''Create POST content which in turns create a hub new-version PR'''
     body = {
-        "title": "HubCap: Bump {}/{}".format(ORG, REPO),
+        "title": title,
         "head": head,
-        "base": "master",
-        "body": "Auto-bumping from new release at https://github.com/{}/{}/releases".format(ORG, REPO),
-        "maintainer_can_modify": True
+        "base": base,
+        "body": body,
+        "maintainer_can_modify": maintainer_can_modify
     }
     body = json.dumps(body)
 
-    user = user_creds['name']
-    token = user_creds['token']
     response = requests.post(url, data=body, headers={'Content-Type': 'application/json'}, auth=(user, token))
     response.raise_for_status()
 

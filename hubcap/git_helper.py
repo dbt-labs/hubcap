@@ -53,7 +53,7 @@ def clone_repo(remote, path):
     repo.git.checkout(main_branch)
     logging.info(f'pulling {main_branch} at {path}')
     repo.remotes.origin.pull()
-    return path
+    return path, repo
 
 
 __all__ = ['clone_repo', 'run_cmd']

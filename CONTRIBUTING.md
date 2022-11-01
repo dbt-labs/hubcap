@@ -4,10 +4,11 @@
 
 ### Personal access token (PAT)
 
-Follow [these](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) instructions to configurate a personal access token.
+Follow [these](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) instructions to configure a PAT.
 
-Only permissions needed:
-- public_repo
+Scopes:
+- repo (and all sub-items)
+- workflow
 
 Save the token to a secure location. Click the "Configure SSO" button and "Authorize" if applicable.
 
@@ -49,7 +50,7 @@ export ENV=test
 ```
 
 ### Optional configuration environment variables
-```
+```shell
 # Default value is the `git-tmp` directory within the current working directory
 # This directory will be deleted by default at the end of the run
 export GIT_TMP=git-tmp
@@ -57,7 +58,7 @@ export GIT_TMP=git-tmp
 
 ### Optional parameters
 Preserve commits/build artifacts within the `$GIT_TMP` directory
-```
+```shell
 export ENV=test
 ./cron.sh --no-cleanup
 ```

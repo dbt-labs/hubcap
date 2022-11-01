@@ -29,9 +29,10 @@ one_branch_per_repo = config.get("one_branch_per_repo", True)
 REMOTE = f"https://github.com/{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
 TMP_DIR = os.environ['GIT_TMP']
-GITHUB_USERNAME = config.get('user', {}).get('name', 'dbt-hubcap')
-GITHUB_EMAIL = config.get('user', {}).get('email', 'buildbot@fishtownanalytics.com')
-TOKEN = config.get('user', {}).get('token')
+GITHUB_USER = config.get('user', {})
+GITHUB_USERNAME = GITHUB_USER.get('name', 'dbt-hubcap')
+GITHUB_EMAIL = GITHUB_USER.get('email', 'buildbot@fishtownanalytics.com')
+TOKEN = GITHUB_USER.get('token')
 user_creds = {'name': GITHUB_USERNAME, 'token': TOKEN}
 PACKAGE_MAINTAINERS = setup.load_package_maintainers()
 

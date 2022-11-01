@@ -41,9 +41,18 @@ def get_open_pr_titles(org_name, package_name, user_creds):
 
     user = user_creds.get('name', None)
     token = user_creds.get('token', None)
-    response = requests.get(url, auth=(user, token))
-    response.raise_for_status()
-    pr_titles = [pr['title'] for pr in response.json()]
+    pr_titles = []
+
+    try:
+        response = requests.get(url, auth=(user, token))
+        response.raise_for_status()
+        pr_titles = [pr['title'] for pr in response.json()]
+    except Exception as e:
+        setup.logging.error(e)
+        setup.logging.info(f"Is the {org_name}/{package_name} repository visible to the token's user?")
+        setup.logging.info("Does the token have applicable scopes (repo, workflow)?")
+        exit(1)
+
     return pr_titles
 
 

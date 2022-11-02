@@ -5,7 +5,7 @@
         "token": "pe4s0n@l-@cce$$-t0k3n"
     },
     "org": "dbt-labs",
-    "repo": "hub.getdbt.com",
+    "repo": "hub.getdbt.com-test",
     "push_branches": true,
     "one_branch_per_repo": true
 }

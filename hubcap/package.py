@@ -13,7 +13,7 @@ import version
 from setup import *
 
 
-def clone_package_repos(package_maintainer_index, path, token):
+def clone_package_repos(package_maintainer_index, path):
     '''clone all package repos listed in index to path'''
     for maintainer in package_maintainer_index:
         for package in maintainer.get_packages():
@@ -21,7 +21,7 @@ def clone_package_repos(package_maintainer_index, path, token):
             current_repo_path = path / Path(f'{name}_{package}')
 
             logging.info(f'Drawing down {name}\'s {package}')
-            clone_url = 'https://{}@github.com/{}/{}.git'.format(token, name, package)
+            clone_url = f'https://github.com/{name}/{package}.git'
             clone_repo(clone_url, current_repo_path)
 
 

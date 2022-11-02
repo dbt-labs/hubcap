@@ -60,7 +60,7 @@ HUB_VERSION_INDEX = setup.build_pkg_version_index(hub_dir_path)
 # =
 
 logging.info('cloning package repos')
-package.clone_package_repos(PACKAGE_MAINTAINERS, TMP_DIR, TOKEN)
+package.clone_package_repos(PACKAGE_MAINTAINERS, TMP_DIR)
 
 logging.info('collecting the new version tags for packages checked into hub')
 update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, TMP_DIR)

@@ -34,7 +34,8 @@ TOKEN = user_config.get('token')
 user_creds = {'name': GITHUB_USERNAME, 'token': TOKEN}
 REMOTE = f"https://{TOKEN}@github.com/{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
-TMP_DIR = os.environ['GIT_TMP']
+git_tmp = os.environ.get('GIT_TMP', 'git-tmp')
+TMP_DIR = Path(git_tmp).resolve()
 PACKAGE_MAINTAINERS = setup.load_package_maintainers()
 
 if one_branch_per_repo:

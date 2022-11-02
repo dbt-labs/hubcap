@@ -2,6 +2,7 @@
 
 import logging
 import os
+import shutil
 import subprocess
 import sys
 
@@ -39,15 +40,15 @@ def repo_default_branch(repo):
     return default_branch_name
 
 
-def clone_repo(remote, path):
+def clone_repo(remote, path, overwrite=True):
     '''Clone down a github repo to a path and a reference to that directory'''
 
-    if Path(path).is_dir():
-        logging.info(f'already exists: {path}')
-        repo = Repo(path)
-    else:
-        logging.info(f'cloning {remote} to {path}')
-        repo = Repo.clone_from(remote, path)
+    if Path(path).is_dir() and overwrite:
+        logging.info(f'Removing folder that already exists: {path}')
+        shutil.rmtree(path)
+
+    logging.info(f'cloning {remote} to {path}')
+    repo = Repo.clone_from(remote, path)
 
     main_branch = repo_default_branch(repo)
     repo.git.checkout(main_branch)

@@ -27,10 +27,10 @@ github_org = config.get("org", "dbt-labs")
 github_repo = config.get("repo", "hub.getdbt.com")
 push_branches = config.get("push_branches", True)
 one_branch_per_repo = config.get("one_branch_per_repo", True)
-REMOTE = f"https://github.com/{github_org}/{github_repo}.git"
+TOKEN = config['user']['token']
+REMOTE = f"https://{TOKEN}@github.com/{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
 TMP_DIR = os.environ['GIT_TMP']
-TOKEN = config['user']['token']
 PACKAGE_MAINTAINERS = setup.load_package_maintainers()
 
 if one_branch_per_repo:

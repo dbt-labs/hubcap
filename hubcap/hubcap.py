@@ -27,7 +27,11 @@ github_org = config.get("org", "dbt-labs")
 github_repo = config.get("repo", "hub.getdbt.com")
 push_branches = config.get("push_branches", True)
 one_branch_per_repo = config.get("one_branch_per_repo", True)
-TOKEN = config['user']['token']
+user_config = config.get('user', {})
+GITHUB_USERNAME = user_config.get('name', 'dbt-hubcap')
+GITHUB_EMAIL = user_config.get('email', 'drew@fishtownanalytics.com')
+TOKEN = user_config.get('token')
+user_creds = {'name': GITHUB_USERNAME, 'token': TOKEN}
 REMOTE = f"https://{TOKEN}@github.com/{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
 TMP_DIR = os.environ['GIT_TMP']
@@ -39,7 +43,11 @@ else:
     pr_strategy = ConsolididatedPullRequest()
 
 # pull down hub to assess current state and have ready for future commits
-hub_dir_path = clone_repo(REMOTE, TMP_DIR / Path('hub'))
+hub_dir_path, repo = clone_repo(REMOTE, TMP_DIR / Path('hub'))
+
+# configure git at the project level
+repo.config_writer().set_value("user", "name", GITHUB_USERNAME).release()
+repo.config_writer().set_value("user", "email", GITHUB_EMAIL).release()
 
 # create a record in memory of what versions are already committed into the hub
 HUB_VERSION_INDEX = setup.build_pkg_version_index(hub_dir_path)
@@ -93,4 +101,4 @@ new_branches[branch_name] = {'org': 'dbt-labs', 'repo': 'hub.getdbt.com'}
 
 logging.info("Pushing branches: {}".format(list(new_branches.keys())))
 if new_branches:
-    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, config['user'], push_branches, PULL_REQUEST_URL, pr_strategy)
+    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, user_creds, push_branches, PULL_REQUEST_URL, pr_strategy)

@@ -12,6 +12,7 @@ import package
 import release_carrier
 
 from git_helper import *
+from git_helper import config_token_authorization
 from records import *
 from records import IndividualPullRequests, ConsolididatedPullRequest
 
@@ -32,7 +33,7 @@ GITHUB_USERNAME = user_config.get('name', 'dbt-hubcap')
 GITHUB_EMAIL = user_config.get('email', 'drew@fishtownanalytics.com')
 TOKEN = user_config.get('token')
 user_creds = {'name': GITHUB_USERNAME, 'token': TOKEN}
-REMOTE = f"https://{TOKEN}@github.com/{github_org}/{github_repo}.git"
+REMOTE = f"https://github.com/{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
 git_tmp = os.environ.get('GIT_TMP', 'git-tmp')
 TMP_DIR = Path(git_tmp).resolve()
@@ -49,6 +50,7 @@ hub_dir_path, repo = clone_repo(REMOTE, TMP_DIR / Path('hub'))
 # configure git at the project level
 repo.config_writer().set_value("user", "name", GITHUB_USERNAME).release()
 repo.config_writer().set_value("user", "email", GITHUB_EMAIL).release()
+config_token_authorization(repo, TOKEN)
 
 # create a record in memory of what versions are already committed into the hub
 HUB_VERSION_INDEX = setup.build_pkg_version_index(hub_dir_path)

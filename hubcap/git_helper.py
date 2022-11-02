@@ -57,4 +57,16 @@ def clone_repo(remote, path, overwrite=True):
     return path, repo
 
 
+def config_token_authorization(repo, token):
+    '''
+    Handle all 3 git URL styles as authenticated HTTPS URLs using a personal access token (PAT).
+
+    This is the Simplest Bullet™ strategy described here:
+    https://coolaj86.com/articles/vanilla-devops-git-credentials-cheatsheet/
+    '''
+    repo.config_writer().set_value(f'url "https://api:{token}@github.com/"', "insteadOf", "https://github.com/").release()
+    repo.config_writer().set_value(f'url "https://ssh:{token}@github.com/"', "insteadOf", "ssh://git@github.com/").release()
+    repo.config_writer().set_value(f'url "https://git:{token}@github.com/"', "insteadOf", "git@github.com:").release()
+
+
 __all__ = ['clone_repo', 'run_cmd']

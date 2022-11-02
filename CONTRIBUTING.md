@@ -1,5 +1,17 @@
 # Contributing to this repo
 
+## Virtual environment
+
+### Install dependencies
+Instructions for POSIX bash/zsh (see [here](https://docs.python.org/3/library/venv.html) for syntax for other shells):
+```shell
+python3 -m venv env
+source env/bin/activate
+python3 -m pip install --upgrade pip
+python3 -m pip install -r requirements.txt -r dev-requirements.txt
+source env/bin/activate
+```
+
 ## Setup
 
 ### Personal access token (PAT)
@@ -22,24 +34,6 @@ $EDITOR config.json
 
 # Export the JSON credentials into an environment variable
 export CONFIG=$(<config.json)
-```
-
-## Virtual environment
-
-### Install dependencies
-Instructions for POSIX bash/zsh (see [here](https://docs.python.org/3/library/venv.html) for syntax for other shells):
-```shell
-python3 -m venv env
-source env/bin/activate
-python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt -r dev-requirements.txt
-source env/bin/activate
-```
-
-## Testing locally
-
-```shell
-PYTHONPATH=hubcap python -m pytest
 ```
 
 ## Run in test mode
@@ -67,4 +61,10 @@ python3 hubcap/hubcap.py
 ```shell
 # Default value is the `git-tmp` directory within the current working directory
 export GIT_TMP=git-tmp
+```
+
+## Testing locally
+
+```shell
+PYTHONPATH=hubcap python -m pytest
 ```

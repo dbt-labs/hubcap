@@ -1,6 +1,7 @@
 {
     "user": {
         "name": "github_user",
+        "email": "user@somewhere.com",
         "token": "pe4s0n@l-@cce$$-t0k3n"
     },
     "org": "dbt-labs",

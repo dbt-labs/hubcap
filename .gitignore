@@ -1,5 +1,6 @@
 env/
 git-tmp/
+target/
 *.swp
 __pycache__/
 config.json

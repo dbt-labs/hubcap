@@ -59,8 +59,8 @@ python3 hubcap/hubcap.py
 
 ### Optional configuration environment variables
 ```shell
-# Default value is the `git-tmp` directory within the current working directory
-export GIT_TMP=git-tmp
+# Default value is the `target` directory within the current working directory
+export GIT_TMP=target
 ```
 
 ## Testing locally

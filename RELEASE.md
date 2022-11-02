@@ -4,9 +4,8 @@ This application is hosted on [Heroku](https://www.heroku.com), but it can also 
 
 ## Design overview
 It is designed to do the following:
-1. Use a cron schedule to execute the `cron.sh` script at the beginning of every hour
-    1. The `cron.sh` script creates a `git-tmp` directory that is destroyed upon completion
-2. The `cron.sh` script defers most of the processing to `hubcap.py`
+1. Use a cron schedule to execute the main `hubcap.py` script at the beginning of every hour
+2. The `hubcap.py` script creates a `git-tmp` directory to hold cloned git repositories
 3. `hubcap.py` creates a JSON spec file for each package+version combo within the `git-tmp/hub/data/packages/` directory
 4. It opens pull requests against [dbt-labs/hub.getdbt.com](https://github.com/dbt-labs/hub.getdbt.com) for any new versions of dbt packages
     - [Example PR for first-time package](https://github.com/dbt-labs/hub.getdbt.com/pull/1681/files)
@@ -17,12 +16,11 @@ It is designed to do the following:
 The commands below assume a production application named `dbt-hubcap`. Replace with `dbt-hubcap-staging` for the staging version of the application.
 
 1. Use the [Heroku Scheduler](https://dashboard.heroku.com/apps/dbt-hubcap/scheduler) to set the following cron schedule:
-    - Job: `./cron.sh`
+    - Job: `python3 hubcap/hubcap.py`
     - Schedule: Every hour at :00
     - Dyno size: Hobby / Standard-1X
-1. Configure the `CONFIG` and `ENV` environment variables: [Settings > Config Vars > Reveal Config Vars](https://dashboard.heroku.com/apps/dbt-hubcap/settings)
+1. Configure the `CONFIG` environment variable: [Settings > Config Vars > Reveal Config Vars](https://dashboard.heroku.com/apps/dbt-hubcap/settings)
     - `CONFIG`: copy format from `config.example.json` and adjust values as needed
-    - `ENV`: `prod`
 1. (Re-)deploy the application using the instructions below. See [these](https://dashboard.heroku.com/apps/dbt-hubcap/deploy/heroku-git) instructions for context.
 
 
@@ -53,6 +51,14 @@ git pull origin
 git checkout main
 heroku git:remote -a dbt-hubcap
 git push heroku main:main
+```
+
+### Ad hoc executions of the script
+
+For off-schedule ad hoc executions, run the following from the deploy directory above:
+
+```shell
+heroku run python3 hubcap/hubcap.py
 ```
 
 #### Explanation

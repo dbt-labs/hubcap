@@ -4,7 +4,7 @@
 
 ### Personal access token (PAT)
 
-Follow [these](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) instructions to configure a PAT.
+Follow [these](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) instructions to configure a PAT in GitHub.
 
 Scopes:
 - repo (and all sub-items)
@@ -17,7 +17,7 @@ Save the token to a secure location. Click the "Configure SSO" button and "Autho
 ```shell
 cp config.example.json config.json
 
-# Add your GitHub username and token
+# Add the relevant GitHub username, email address and token
 $EDITOR config.json
 
 # Export the JSON credentials into an environment variable
@@ -44,29 +44,27 @@ PYTHONPATH=hubcap python -m pytest
 
 ## Run in test mode
 
-```shell
-export ENV=test
-./cron.sh
-```
+- Set `"repo": "hub.getdbt.com-test"` within `config.json` (or specify some other non-production repository).
+- Optional: set `"push_branches": false` within `config.json`.
 
-### Optional configuration environment variables
+Run:
 ```shell
-# Default value is the `git-tmp` directory within the current working directory
-# This directory will be deleted by default at the end of the run
-export GIT_TMP=git-tmp
-```
-
-### Optional parameters
-Preserve commits/build artifacts within the `$GIT_TMP` directory
-```shell
-export ENV=test
-./cron.sh --no-cleanup
+python3 hubcap/hubcap.py
 ```
 
 ## Run in production mode
 
 **WARNING:** Use with caution -- _will_ modify state.
+- Set `"repo": "hub.getdbt.com"` within `config.json` (since [hub.getdbt.com](https://github.com/dbt-labs/hub.getdbt.com) is the production repository).
+- Set `"push_branches": true` within `config.json`.
+
+Run:
 ```shell
-export ENV=prod
-./cron.sh
+python3 hubcap/hubcap.py
+```
+
+### Optional configuration environment variables
+```shell
+# Default value is the `git-tmp` directory within the current working directory
+export GIT_TMP=git-tmp
 ```

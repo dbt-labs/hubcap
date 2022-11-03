@@ -35,7 +35,7 @@ TOKEN = user_config.get('token')
 user_creds = {'name': GITHUB_USERNAME, 'token': TOKEN}
 REMOTE = f"https://github.com/{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
-git_tmp = os.environ.get('GIT_TMP', 'git-tmp')
+git_tmp = 'target'
 TMP_DIR = Path(git_tmp).resolve()
 PACKAGE_MAINTAINERS = setup.load_package_maintainers()
 
@@ -71,7 +71,7 @@ update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, 
 # =     (stateful operations from here on)
 
 logging.info('preparing branches for packages with versions to be added')
-# this wants to take place inside the git-tmp/hub repo
+# branches exist inside the repo located at {TMP_DIR}/{github_repo} (which by default is target/hub.getdbt.com)
 new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path, pr_strategy, default_branch=default_branch)
 
 # =

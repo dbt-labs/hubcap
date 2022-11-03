@@ -5,8 +5,8 @@ This application is hosted on [Heroku](https://www.heroku.com), but it can also 
 ## Design overview
 It is designed to do the following:
 1. Use a cron schedule to execute the main `hubcap.py` script at the beginning of every hour
-2. The `hubcap.py` script creates a `git-tmp` directory to hold cloned git repositories
-3. `hubcap.py` creates a JSON spec file for each package+version combo within the `git-tmp/hub/data/packages/` directory
+2. The `hubcap.py` script creates a temporary directory to hold cloned git repositories (default is `/target`)
+3. `hubcap.py` creates a JSON spec file for each git repo + git tag combo within the `/target/hub.getdbt.com/data/packages/` directory (by default)
 4. It opens pull requests against [dbt-labs/hub.getdbt.com](https://github.com/dbt-labs/hub.getdbt.com) for any new versions of dbt packages
     - [Example PR for first-time package](https://github.com/dbt-labs/hub.getdbt.com/pull/1681/files)
     - [Example PR for new version of existing package](https://github.com/dbt-labs/hub.getdbt.com/pull/1683/files)

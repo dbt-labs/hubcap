@@ -12,7 +12,7 @@ import package
 import release_carrier
 
 from git_helper import *
-from git_helper import config_token_authorization
+from git_helper import config_token_authorization, repo_default_branch
 from records import *
 from records import IndividualPullRequests, ConsolididatedPullRequest
 
@@ -45,7 +45,8 @@ else:
     pr_strategy = ConsolididatedPullRequest()
 
 # pull down hub to assess current state and have ready for future commits
-hub_dir_path, repo = clone_repo(REMOTE, TMP_DIR / Path('hub'))
+hub_dir_path, repo = clone_repo(REMOTE, TMP_DIR / Path(github_repo))
+default_branch = repo_default_branch(repo)
 
 # configure git at the project level
 repo.config_writer().set_value("user", "name", GITHUB_USERNAME).release()
@@ -63,7 +64,7 @@ logging.info('cloning package repos')
 package.clone_package_repos(PACKAGE_MAINTAINERS, TMP_DIR)
 
 logging.info('collecting the new version tags for packages checked into hub')
-update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, TMP_DIR)
+update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, TMP_DIR, github_repo)
 
 # =
 # = Create new specs and commit them to separate branches in hub
@@ -71,7 +72,7 @@ update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, 
 
 logging.info('preparing branches for packages with versions to be added')
 # by default, the branches exist inside the repo located at target/hub
-new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path, pr_strategy)
+new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path, pr_strategy, default_branch=default_branch)
 
 # =
 # = Add a branch with no commits to confirm that pushing works correctly
@@ -79,7 +80,7 @@ new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path,
 
 branch_name = f'bump-test-{setup.NOW}'
 
-main_dir = Path(TMP_DIR) / 'hub'
+main_dir = Path(TMP_DIR) / github_repo
 os.chdir(main_dir)
 completed_subprocess = subprocess.run(['git', 'checkout', '-q', '-b', branch_name])
 if completed_subprocess.returncode == 128:
@@ -92,7 +93,6 @@ git_helper.run_cmd('git add -A')
 subprocess.run(args=['git', 'commit', '-am', 'Test commit'], capture_output=True)
 
 # Reset back to the default branch
-default_branch = 'master'
 git_helper.run_cmd(f'git checkout -q {default_branch}')
 
 # Add this branch to the list
@@ -104,4 +104,4 @@ new_branches[branch_name] = {'org': 'dbt-labs', 'repo': 'hub.getdbt.com'}
 
 logging.info("Pushing branches: {}".format(list(new_branches.keys())))
 if new_branches:
-    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, user_creds, push_branches, PULL_REQUEST_URL, pr_strategy)
+    release_carrier.open_new_prs(hub_dir_path, REMOTE, new_branches, user_creds, push_branches, PULL_REQUEST_URL, pr_strategy, default_branch=default_branch)

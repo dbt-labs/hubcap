@@ -68,3 +68,13 @@ export GIT_TMP=target
 ```shell
 PYTHONPATH=hubcap python -m pytest
 ```
+
+## Generate requirements.txt
+
+Put any first degree dependencies within `requirements.in`, then run:
+
+```shell
+pip-compile
+```
+
+It will generate a new version of `requirements.txt` with each transitive dependency pinned to a specific version.

@@ -1,16 +1,12 @@
 """Environment setup and state generation for hubcap"""
 
-import collections
 import datetime
 import json
 import logging
 import os
-import re
-import requests
 
 from pathlib import Path
-from git_helper import *
-from records import *
+from records import PackageMaintainer
 
 NOW = int(datetime.datetime.now().timestamp())
 
@@ -28,7 +24,9 @@ def build_config():
 
 def load_package_maintainers():
     """Hub's state determined by packages and their maintainers listed in hub.json"""
-    with open("hub.json", "r") as hub_stream, open("exclusions.json") as excluded_stream:
+    with open("hub.json", "r") as hub_stream, open(
+        "exclusions.json"
+    ) as excluded_stream:
         org_pkg_index = json.load(hub_stream)
         # Mila: we should strive to periodically remove dead packages from hub.json
         excluded_pkgs_index = json.load(excluded_stream)

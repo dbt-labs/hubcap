@@ -57,7 +57,10 @@ class PackageMaintainer(object):
         return f"(maintainer: {self.name}, packages: {self.packages})"
 
     def __eq__(self, other):
-        return self.get_name() == other.get_name() and self.get_packages() == self.get_packages()
+        return (
+            self.get_name() == other.get_name()
+            and self.get_packages() == self.get_packages()
+        )
 
 
 class UpdateTask(object):
@@ -95,7 +98,9 @@ class UpdateTask(object):
         branch_name = self.cut_version_branch(pr_strategy)
 
         # create an updated version of the repo's index.json
-        index_filepath = Path(os.path.dirname(self.hub_version_index_path)) / "index.json"
+        index_filepath = (
+            Path(os.path.dirname(self.hub_version_index_path)) / "index.json"
+        )
         new_index_entry = self.make_index(
             self.github_username,
             self.github_repo_name,
@@ -141,10 +146,14 @@ class UpdateTask(object):
 
     def cut_version_branch(self, pr_strategy):
         """designed to be run in a hub repo which is sibling to package code repos"""
-        branch_name = pr_strategy.branch_name(self.github_username, self.github_repo_name)
+        branch_name = pr_strategy.branch_name(
+            self.github_username, self.github_repo_name
+        )
         helper.logging.info(f"checking out branch {branch_name} in the hub repo")
 
-        completed_subprocess = subprocess.run(["git", "checkout", "-q", "-b", branch_name])
+        completed_subprocess = subprocess.run(
+            ["git", "checkout", "-q", "-b", branch_name]
+        )
         if completed_subprocess.returncode == 128:
             git_helper.run_cmd(f"git checkout -q {branch_name}")
 
@@ -185,7 +194,7 @@ class UpdateTask(object):
                 existing_index_file_contents = stream.read().decode("utf-8").strip()
                 try:
                     return json.loads(existing_index_file_contents)
-                except:
+                except Exception:
                     return {}
 
     def download(self, url):
@@ -209,9 +218,13 @@ class UpdateTask(object):
         logging.info(f"      SHA1: {digest}")
         return digest
 
-    def make_spec(self, org, repo, package_name, packages, require_dbt_version, version):
+    def make_spec(
+        self, org, repo, package_name, packages, require_dbt_version, version
+    ):
         """The hub needs these specs for packages to be discoverable by deps and on the web"""
-        tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(org, repo, version)
+        tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(
+            org, repo, version
+        )
         sha1 = self.get_sha1(tarball_url)
 
         # note: some packages do not have a packages.yml

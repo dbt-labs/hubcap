@@ -2,18 +2,14 @@ import logging
 import git_helper
 import os
 import subprocess
-import requests
 
 from pathlib import Path
 
 import helper
-import version
 import package
 import release_carrier
 
-from git_helper import *
-from git_helper import config_token_authorization, repo_default_branch
-from records import *
+from git_helper import config_token_authorization, repo_default_branch, clone_repo
 from records import IndividualPullRequests, ConsolididatedPullRequest
 
 

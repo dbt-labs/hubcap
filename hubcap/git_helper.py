@@ -4,7 +4,6 @@ import logging
 import os
 import shutil
 import subprocess
-import sys
 
 from git import cmd
 from git import Repo

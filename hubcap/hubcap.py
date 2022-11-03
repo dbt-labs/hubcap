@@ -71,7 +71,7 @@ update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, 
 # =     (stateful operations from here on)
 
 logging.info('preparing branches for packages with versions to be added')
-# by default, the branches exist inside the repo located at target/hub
+# branches exist inside the repo located at {TMP_DIR}/{github_repo} (which by default is target/hub.getdbt.com)
 new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path, pr_strategy, default_branch=default_branch)
 
 # =

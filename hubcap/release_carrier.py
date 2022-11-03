@@ -9,12 +9,11 @@ from git import Repo
 from git.remote import Remote
 
 
-def make_pr(org, repo, head, user_creds, url, pr_strategy):
+def make_pr(org, repo, head, user_creds, url, pr_strategy, base="main"):
     '''Create POST content which in turns create a hub new-version PR'''
     user = user_creds['name']
     token = user_creds['token']
     title = pr_strategy.pull_request_title(org, repo)
-    base = "master"
     body = "Auto-bumping from new release at https://github.com/{}/{}/releases".format(org, repo)
     maintainer_can_modify = True
     post_pr(title, head, base, body, maintainer_can_modify, user, token, url)
@@ -71,7 +70,7 @@ def get_org_repo(remote_url: str) -> str:
     return target_org, target_pkg_name
 
 
-def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branches, pull_request_url, pr_strategy):
+def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branches, pull_request_url, pr_strategy, default_branch='main'):
     '''Expects: {branch_name: hashmap of branch info} and {user_name, access token}
     will push prs up to a github remote'''
 
@@ -96,6 +95,6 @@ def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branch
         if push_branches:
             setup.logging.info(f"Pushing and PRing branch {branch}")
             origin = target_repo.git.push('origin', branch)
-            make_pr(info['org'], info['repo'], branch, user_creds, pull_request_url, pr_strategy)
+            make_pr(info['org'], info['repo'], branch, user_creds, pull_request_url, pr_strategy, base=default_branch)
         else:
             setup.logging.info(f"Not pushing and PRing branch {branch}")

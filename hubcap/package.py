@@ -105,7 +105,7 @@ def get_update_tasks(maintainers, version_index, path):
     ]
 
 
-def commit_version_updates_to_hub(tasks, hub_dir_path, pr_strategy):
+def commit_version_updates_to_hub(tasks, hub_dir_path, pr_strategy, default_branch='main'):
     '''input: UpdateTask
     output: {branch_name: hashmap of branch info}
     N.B. this function will make changes to the local copy of hub only
@@ -118,5 +118,6 @@ def commit_version_updates_to_hub(tasks, hub_dir_path, pr_strategy):
 
         # good house keeping
         os.chdir(hub_dir_path)
-        run_cmd('git checkout master')
+        cmd = f'git checkout {default_branch}'
+        run_cmd(cmd)
     return res

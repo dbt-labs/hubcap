@@ -6,7 +6,7 @@ import json
 import logging
 import os
 import requests
-import setup
+import helper
 import subprocess
 import version
 
@@ -31,7 +31,7 @@ class IndividualPullRequests(PullRequestStrategy):
         return f"HubCap: Bump {org}/{repo}"
 
     def branch_name(self, org: str, repo: str) -> str:
-        return f"bump-{org}-{repo}-{setup.NOW}"
+        return f"bump-{org}-{repo}-{helper.NOW}"
 
 
 class ConsolididatedPullRequest(PullRequestStrategy):
@@ -39,7 +39,7 @@ class ConsolididatedPullRequest(PullRequestStrategy):
         return "HubCap: Bump package versions"
 
     def branch_name(self, org: str, repo: str) -> str:
-        return f"bump-package-versions-{setup.NOW}"
+        return f"bump-package-versions-{helper.NOW}"
 
 
 class PackageMaintainer(object):
@@ -124,7 +124,7 @@ class UpdateTask(object):
     def cut_version_branch(self, pr_strategy):
         '''designed to be run in a hub repo which is sibling to package code repos'''
         branch_name = pr_strategy.branch_name(self.github_username, self.github_repo_name)
-        setup.logging.info(f'checking out branch {branch_name} in the hub repo')
+        helper.logging.info(f'checking out branch {branch_name} in the hub repo')
 
         completed_subprocess = subprocess.run(['git', 'checkout', '-q', '-b', branch_name])
         if completed_subprocess.returncode == 128:

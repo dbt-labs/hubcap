@@ -10,7 +10,7 @@ from pathlib import Path
 import records
 import version
 
-from setup import *
+from helper import clone_repo
 
 
 def clone_package_repos(package_maintainer_index, path):

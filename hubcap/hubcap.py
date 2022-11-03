@@ -6,7 +6,7 @@ import requests
 
 from pathlib import Path
 
-import setup
+import helper
 import version
 import package
 import release_carrier
@@ -22,7 +22,7 @@ from records import IndividualPullRequests, ConsolididatedPullRequest
 # ==
 
 logging.info('preparing script state')
-config = setup.build_config()
+config = helper.build_config()
 
 github_org = config.get("org", "dbt-labs")
 github_repo = config.get("repo", "hub.getdbt.com")
@@ -37,7 +37,7 @@ REMOTE = f"https://github.com/{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
 git_tmp = 'target'
 TMP_DIR = Path(git_tmp).resolve()
-PACKAGE_MAINTAINERS = setup.load_package_maintainers()
+PACKAGE_MAINTAINERS = helper.load_package_maintainers()
 
 if one_branch_per_repo:
     pr_strategy = IndividualPullRequests()
@@ -54,7 +54,7 @@ repo.config_writer().set_value("user", "email", GITHUB_EMAIL).release()
 config_token_authorization(repo, TOKEN)
 
 # create a record in memory of what versions are already committed into the hub
-HUB_VERSION_INDEX = setup.build_pkg_version_index(hub_dir_path)
+HUB_VERSION_INDEX = helper.build_pkg_version_index(hub_dir_path)
 
 # =
 # = Determine new package versions
@@ -78,7 +78,7 @@ new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path,
 # = Add a branch with no commits to confirm that pushing works correctly
 # =
 
-branch_name = f'bump-test-{setup.NOW}'
+branch_name = f'bump-test-{helper.NOW}'
 
 main_dir = Path(TMP_DIR) / github_repo
 os.chdir(main_dir)

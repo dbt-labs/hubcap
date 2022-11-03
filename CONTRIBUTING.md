@@ -68,3 +68,13 @@ python3 hubcap/hubcap.py
 # Default value is the `git-tmp` directory within the current working directory
 export GIT_TMP=git-tmp
 ```
+
+## Generate requirements.txt
+
+Put any first degree dependencies within `requirements.in`, then run:
+
+```shell
+pip-compile
+```
+
+It will generate a new version of `requirements.txt` with each transitive dependency pinned to a specific version.

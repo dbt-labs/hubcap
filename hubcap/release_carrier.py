@@ -3,7 +3,7 @@
 import json
 import requests
 import os
-import setup
+import helper
 
 from git import Repo
 from git.remote import Remote
@@ -47,9 +47,9 @@ def get_open_pr_titles(org_name, package_name, user_creds):
         response.raise_for_status()
         pr_titles = [pr['title'] for pr in response.json()]
     except Exception as e:
-        setup.logging.error(e)
-        setup.logging.info(f"Is the {org_name}/{package_name} repository visible to the token's user?")
-        setup.logging.info("Does the token have applicable scopes (repo, workflow)?")
+        helper.logging.error(e)
+        helper.logging.info(f"Is the {org_name}/{package_name} repository visible to the token's user?")
+        helper.logging.info("Does the token have applicable scopes (repo, workflow)?")
         exit(1)
 
     return pr_titles
@@ -86,15 +86,15 @@ def open_new_prs(target_repo_path, remote_url, branches, user_creds, push_branch
 
     for name, info in branches.items():
         if name not in pr_branches.keys():
-            setup.logging.info("PR is already open for {}/{}. Skipping.".format(info['org'], info['repo']))
+            helper.logging.info("PR is already open for {}/{}. Skipping.".format(info['org'], info['repo']))
 
     for branch, info in pr_branches.items():
         target_repo.git.checkout(branch)
         target_repo.git.fetch('hub')
 
         if push_branches:
-            setup.logging.info(f"Pushing and PRing branch {branch}")
+            helper.logging.info(f"Pushing and PRing branch {branch}")
             origin = target_repo.git.push('origin', branch)
             make_pr(info['org'], info['repo'], branch, user_creds, pull_request_url, pr_strategy, base=default_branch)
         else:
-            setup.logging.info(f"Not pushing and PRing branch {branch}")
+            helper.logging.info(f"Not pushing and PRing branch {branch}")

@@ -2,7 +2,6 @@
 
 import json
 import requests
-import os
 import helper
 
 from git import Repo
@@ -14,7 +13,9 @@ def make_pr(org, repo, head, user_creds, url, pr_strategy, base="main"):
     user = user_creds["name"]
     token = user_creds["token"]
     title = pr_strategy.pull_request_title(org, repo)
-    body = "Auto-bumping from new release at https://github.com/{}/{}/releases".format(org, repo)
+    body = "Auto-bumping from new release at https://github.com/{}/{}/releases".format(
+        org, repo
+    )
     maintainer_can_modify = True
     post_pr(title, head, base, body, maintainer_can_modify, user, token, url)
 
@@ -92,7 +93,8 @@ def open_new_prs(
         target_repo.create_remote("hub", url=remote_url)
 
     target_org, target_pkg_name = get_org_repo(remote_url)
-    open_pr_titles = get_open_pr_titles(target_org, target_pkg_name, user_creds)
+    # TODO: figure out if this is needed/desired or not
+    _ = get_open_pr_titles(target_org, target_pkg_name, user_creds)
 
     pr_branches = {
         name: info
@@ -103,7 +105,9 @@ def open_new_prs(
     for name, info in branches.items():
         if name not in pr_branches.keys():
             helper.logging.info(
-                "PR is already open for {}/{}. Skipping.".format(info["org"], info["repo"])
+                "PR is already open for {}/{}. Skipping.".format(
+                    info["org"], info["repo"]
+                )
             )
 
     for branch, info in pr_branches.items():
@@ -112,7 +116,7 @@ def open_new_prs(
 
         if push_branches:
             helper.logging.info(f"Pushing and PRing branch {branch}")
-            origin = target_repo.git.push("origin", branch)
+            target_repo.git.push("origin", branch)
             make_pr(
                 info["org"],
                 info["repo"],

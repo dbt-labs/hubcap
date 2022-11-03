@@ -10,7 +10,7 @@ from pathlib import Path
 import records
 import version
 
-from helper import clone_repo
+from git_helper import clone_repo, run_cmd
 
 
 def clone_package_repos(package_maintainer_index, path):
@@ -80,9 +80,13 @@ def get_update_tasks(maintainers, version_index, path, hub_repo):
         if not has_dbt_project_yml(hub_package_name, repo_path):
             return SKIP
 
-        yml_package_name, existing_tags, new_tags = get_new_tags(repo_path, maintainer_name)
+        yml_package_name, existing_tags, new_tags = get_new_tags(
+            repo_path, maintainer_name
+        )
         if new_tags:
-            logging.info(f"creating task to add new tags {list(new_tags)} to {yml_package_name}")
+            logging.info(
+                f"creating task to add new tags {list(new_tags)} to {yml_package_name}"
+            )
             return records.UpdateTask(
                 github_username=maintainer_name,
                 github_repo_name=hub_package_name,
@@ -108,7 +112,9 @@ def get_update_tasks(maintainers, version_index, path, hub_repo):
     ]
 
 
-def commit_version_updates_to_hub(tasks, hub_dir_path, pr_strategy, default_branch="main"):
+def commit_version_updates_to_hub(
+    tasks, hub_dir_path, pr_strategy, default_branch="main"
+):
     """input: UpdateTask
     output: {branch_name: hashmap of branch info}
     N.B. this function will make changes to the local copy of hub only

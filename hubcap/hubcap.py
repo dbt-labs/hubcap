@@ -45,7 +45,7 @@ else:
     pr_strategy = ConsolididatedPullRequest()
 
 # pull down hub to assess current state and have ready for future commits
-hub_dir_path, repo = clone_repo(REMOTE, TMP_DIR / Path('hub'))
+hub_dir_path, repo = clone_repo(REMOTE, TMP_DIR / Path(github_repo))
 default_branch = repo_default_branch(repo)
 
 # configure git at the project level
@@ -64,7 +64,7 @@ logging.info('cloning package repos')
 package.clone_package_repos(PACKAGE_MAINTAINERS, TMP_DIR)
 
 logging.info('collecting the new version tags for packages checked into hub')
-update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, TMP_DIR)
+update_tasks = package.get_update_tasks(PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, TMP_DIR, github_repo)
 
 # =
 # = Create new specs and commit them to separate branches in hub
@@ -80,7 +80,7 @@ new_branches = package.commit_version_updates_to_hub(update_tasks, hub_dir_path,
 
 branch_name = f'bump-test-{setup.NOW}'
 
-main_dir = Path(TMP_DIR) / 'hub'
+main_dir = Path(TMP_DIR) / github_repo
 os.chdir(main_dir)
 completed_subprocess = subprocess.run(['git', 'checkout', '-q', '-b', branch_name])
 if completed_subprocess.returncode == 128:

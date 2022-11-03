@@ -62,10 +62,10 @@ class PackageMaintainer(object):
 
 class UpdateTask(object):
     def __init__(self, github_username: str, github_repo_name: str, local_path_to_repo: Path,
-                 package_name: str, existing_tags: list, new_tags: list):
+                 package_name: str, existing_tags: list, new_tags: list, hub_repo: str):
         self.github_username = github_username
         self.github_repo_name = github_repo_name
-        self.hub_version_index_path = Path(os.path.dirname(local_path_to_repo)) / 'hub' / 'data' /\
+        self.hub_version_index_path = Path(os.path.dirname(local_path_to_repo)) / hub_repo / 'data' /\
                                       'packages' / github_username / package_name /\
                                       'versions'
         self.local_path_to_repo = local_path_to_repo

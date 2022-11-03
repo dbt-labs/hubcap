@@ -46,7 +46,7 @@ def parse_pkgs(repo_dir):
         return []
 
 
-def get_update_tasks(maintainers, version_index, path):
+def get_update_tasks(maintainers, version_index, path, hub_repo):
     '''build list of tasks for package version-bump commits'''
 
     def has_dbt_project_yml(package, directory):
@@ -89,7 +89,8 @@ def get_update_tasks(maintainers, version_index, path):
                 local_path_to_repo=repo_path,
                 package_name=yml_package_name,
                 existing_tags=existing_tags,
-                new_tags=new_tags
+                new_tags=new_tags,
+                hub_repo=hub_repo,
             )
         # Cannot create update task for package without new tags
         else:

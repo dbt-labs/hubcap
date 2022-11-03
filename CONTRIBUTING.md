@@ -32,7 +32,7 @@ Instructions for POSIX bash/zsh (see [here](https://docs.python.org/3/library/ve
 python3 -m venv env
 source env/bin/activate
 python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt -r dev-requirements.txt
+python3 -m pip install -r requirements.txt -r requirements-dev.txt
 source env/bin/activate
 ```
 
@@ -68,3 +68,13 @@ python3 hubcap/hubcap.py
 # Default value is the `git-tmp` directory within the current working directory
 export GIT_TMP=git-tmp
 ```
+
+## Generate requirements.txt
+
+Put any first degree dependencies within `requirements.in`, then run:
+
+```shell
+pip-compile
+```
+
+It will generate a new version of `requirements.txt` with each transitive dependency pinned to a specific version.

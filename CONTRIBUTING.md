@@ -61,7 +61,25 @@ python3 hubcap/hubcap.py
 ## Testing locally
 
 ```shell
-PYTHONPATH=hubcap python -m pytest
+python -m pytest
+```
+
+Or just:
+```shell
+tox
+```
+
+## GitHub Actions (GHA) locally
+
+Download and install [`act`](https://github.com/nektos/act) then:
+
+```shell
+act
+```
+
+For Apple M1 Mac users, might need to do this:
+```shell
+act --container-architecture linux/amd64
 ```
 
 ## Generate requirements.txt

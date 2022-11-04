@@ -1,7 +1,4 @@
 import logging
-import git_helper
-import os
-import subprocess
 
 from pathlib import Path
 
@@ -73,30 +70,6 @@ logging.info("preparing branches for packages with versions to be added")
 new_branches = package.commit_version_updates_to_hub(
     update_tasks, hub_dir_path, pr_strategy, default_branch=default_branch
 )
-
-# =
-# = Add a branch with no commits to confirm that pushing works correctly
-# =
-
-branch_name = f"bump-test-{helper.NOW}"
-
-main_dir = Path(TMP_DIR) / github_repo
-os.chdir(main_dir)
-completed_subprocess = subprocess.run(["git", "checkout", "-q", "-b", branch_name])
-if completed_subprocess.returncode == 128:
-    git_helper.run_cmd(f"git checkout -q {branch_name}")
-
-# Commit an empty file
-with open(branch_name, "w") as fp:
-    pass
-git_helper.run_cmd("git add -A")
-subprocess.run(args=["git", "commit", "-am", "Test commit"], capture_output=True)
-
-# Reset back to the default branch
-git_helper.run_cmd(f"git checkout -q {default_branch}")
-
-# Add this branch to the list
-new_branches[branch_name] = {"org": "dbt-labs", "repo": "hub.getdbt.com"}
 
 # =
 # = push new branches, if there are any

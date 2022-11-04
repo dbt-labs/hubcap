@@ -116,7 +116,13 @@ def open_new_prs(
 
         if push_branches:
             helper.logging.info(f"Pushing and PRing branch {branch}")
-            target_repo.git.push("origin", branch)
+
+            try:
+                target_repo.git.push("origin", branch)
+            except Exception as e:
+                helper.logging.error(e)
+                exit(1)
+
             make_pr(
                 info["org"],
                 info["repo"],

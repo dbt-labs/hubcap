@@ -2,3 +2,4 @@ black==22.6.0
 pip-tools
 pre-commit
 pytest
+tox

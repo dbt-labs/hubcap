@@ -121,7 +121,7 @@ def open_new_prs(
                 target_repo.git.push("origin", branch)
             except Exception as e:
                 helper.logging.error(e)
-                exit()
+                exit(1)
 
             make_pr(
                 info["org"],

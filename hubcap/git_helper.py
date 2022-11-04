@@ -72,6 +72,3 @@ def config_token_authorization(repo, token):
     repo.config_writer().set_value(
         f'url "https://git:{token}@github.com/"', "insteadOf", "git@github.com:"
     ).release()
-
-
-__all__ = ["clone_repo", "run_cmd"]

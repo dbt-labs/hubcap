@@ -245,6 +245,3 @@ class UpdateTask(object):
             },
             "downloads": {"tarball": tarball_url, "format": "tgz", "sha1": sha1},
         }
-
-
-__all__ = ["PackageMaintainer", "UpdateTask"]

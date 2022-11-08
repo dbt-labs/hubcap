@@ -269,7 +269,8 @@
         "core",
         "chronic_conditions",
         "readmissions",
-        "medicare_claims_connector"
+        "medicare_claims_connector",
+        "terminology"
     ],
     "yu-iskw": [
         "dbt-airflow-macros",

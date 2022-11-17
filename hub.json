@@ -266,10 +266,11 @@
         "dbt-meta-testing"
     ],
     "tuva-health": [
-        "core",
+        "the_tuva_project",
         "chronic_conditions",
+        "claims_preprocessing",
+        "data_profiling",
         "readmissions",
-        "medicare_claims_connector",
         "terminology"
     ],
     "yu-iskw": [

@@ -40,8 +40,8 @@ def parse_require_dbt_version(repo_dir):
 def parse_pkgs(repo_dir):
     if os.path.exists(repo_dir / "packages.yml"):
         with open(repo_dir / Path("packages.yml"), "r") as stream:
-            pkgs = yaml.safe_load(stream)["packages"]
-            return pkgs if pkgs else []
+            pkgs = yaml.safe_load(stream)
+            return pkgs.get("packages",[]) if pkgs else []
     else:
         return []
 

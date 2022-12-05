@@ -23,6 +23,11 @@
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],
+    "Saras-Daton":[
+        "currency_exchange_rates",
+        "amazon_ads_bigquery",
+        "amazon_sellerpartner_bigquery"
+    ],
     "Snowflake-Labs": [
         "dbt_constraints"
     ],

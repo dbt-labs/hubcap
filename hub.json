@@ -254,7 +254,8 @@
         "dbt-snowplow-utils",
         "dbt-snowplow-web",
         "dbt-snowplow-mobile",
-        "dbt-snowplow-media-player"
+        "dbt-snowplow-media-player",
+        "dbt-snowplow-normalize"
     ],
     "splitgraph": [
         "ab2ft_stripe"

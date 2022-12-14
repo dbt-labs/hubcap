@@ -229,6 +229,9 @@
         "dbt-datamocktool",
         "dbt_product_analytics"
     ],
+    "narratorai": [
+        "dbt-activity-schema"
+    ],
     "omnata-labs": [
         "dbt-ml-preprocessing"
     ],

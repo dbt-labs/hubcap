@@ -259,7 +259,8 @@
         "dbt-snowplow-mobile",
         "dbt-snowplow-media-player",
         "dbt-snowplow-normalize",
-        "dbt-snowplow-ecommerce"
+        "dbt-snowplow-ecommerce",
+        "dbt-snowplow-fractribution"
     ],
     "splitgraph": [
         "ab2ft_stripe"

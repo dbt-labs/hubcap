@@ -2,6 +2,9 @@
     "Datavault-UK": [
         "dbtvault"
     ],
+    "Delphi-Data": [
+        "dbt_natural_language"
+    ],
     "Divergent-Insights": [
         "dbt-snowflake-setup",
         "dbt-dataquality"
@@ -112,9 +115,6 @@
     ],
     "fal-ai": [
         "dbt_feature_store"
-    ],
-    "Delphi-Data": [
-        "dbt_natural_language"
     ],
     "fivetran": [
         "dbt_netsuite",

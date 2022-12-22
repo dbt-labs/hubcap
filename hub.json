@@ -34,6 +34,9 @@
         "airbyte_dbt_shopify",
         "airbyte_dbt_stripe"
     ],
+    "Delphi-Data": [
+        "dbt_natural_language"
+    ],
     "fivetran": [
         "dbt_netsuite",
         "dbt_netsuite_source",

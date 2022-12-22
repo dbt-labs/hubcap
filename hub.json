@@ -202,7 +202,9 @@
         "dbt_amplitude",
         "dbt_amplitude_source",
         "dbt_recurly",
-        "dbt_recurly_source"
+        "dbt_recurly_source",
+        "dbt_amazon_ads",
+        "dbt_amazon_ads_source"
     ],
     "get-select": [
         "dbt-snowflake-monitoring"

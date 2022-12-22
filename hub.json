@@ -278,11 +278,13 @@
     ],
     "tuva-health": [
         "the_tuva_project",
-        "chronic_conditions",
+        "cms_chronic_conditions",
         "claims_preprocessing",
         "data_profiling",
         "readmissions",
-        "terminology"
+        "terminology",
+        "pmpm",
+        "tuva_chronic_conditions"
     ],
     "yu-iskw": [
         "dbt-airflow-macros",

@@ -1,4 +1,72 @@
 {
+    "Datavault-UK": [
+        "dbtvault"
+    ],
+    "Divergent-Insights": [
+        "dbt-snowflake-setup",
+        "dbt-dataquality"
+    ],
+    "LewisDavies": [
+        "upstream-prod"
+    ],
+    "Matatika": [
+        "dbt-tap-googleads",
+        "dbt-tap-solarvista",
+        "dbt-tap-meltano",
+        "dbt-tap-trello",
+        "dbt-tap-google-analytics",
+        "dbt-tap-spotify"
+    ],
+    "MaterializeInc": [
+        "materialize-dbt-utils"
+    ],
+    "Montreal-Analytics": [
+        "dbt-snowflake-utils"
+    ],
+    "Snowflake-Labs": [
+        "dbt_constraints"
+    ],
+    "ScalefreeCOM": [
+        "datavault4dbt"
+    ],
+    "Teradata": [
+        "dbt-teradata-utils"
+    ],
+    "Velir": [
+        "dbt-ga4"
+    ],
+    "andrewcstewart": [
+        "dbt-uaparser"
+    ],
+    "avohq": [
+        "avo_audit"
+    ],
+    "brooklyn-data": [
+        "dbt_artifacts"
+    ],
+    "calogica": [
+        "dbt-date",
+        "dbt-expectations"
+    ],
+    "cerebriumai": [
+        "airbyte_dbt_intercom",
+        "airbyte_dbt_facebook_ads",
+        "airbyte_dbt_github",
+        "airbyte_dbt_google_ads",
+        "airbyte_dbt_pipedrive",
+        "airbyte_dbt_shopify",
+        "airbyte_dbt_stripe"
+    ],
+    "data-mie": [
+        "dbt-profiler"
+    ],
+    "datalakehouse": [
+        "dlh-square-analytics-dbt",
+        "dlh-quickbooks-analytics-dbt",
+        "dlh-xero-analytics-dbt",
+        "dlh-salesforce-analytics-dbt",
+        "dlh-stripe-analytics-dbt"
+    ],
     "dbt-labs": [
         "dbt-utils",
         "dbt-event-logging",
@@ -23,16 +91,27 @@
         "dbt-codegen",
         "dbt-audit-helper",
         "dbt-external-tables",
-        "dbt_metrics"
+        "dbt_metrics",
+        "dbt-project-evaluator"
     ],
-    "cerebriumai": [
-        "airbyte_dbt_intercom",
-        "airbyte_dbt_facebook_ads",
-        "airbyte_dbt_github",
-        "airbyte_dbt_google_ads",
-        "airbyte_dbt_pipedrive",
-        "airbyte_dbt_shopify",
-        "airbyte_dbt_stripe"
+    "dbt-msft": [
+        "tsql-utils"
+    ],
+    "elementary-data": [
+        "dbt-data-reliability"
+    ],
+    "emilyriederer": [
+        "dbtplyr"
+    ],
+    "entechlog": [
+        "dbt-snow-mask",
+        "dbt-snow-utils"
+    ],
+    "everpeace": [
+        "dbt-models-metadata"
+    ],
+    "fal-ai": [
+        "dbt_feature_store"
     ],
     "Delphi-Data": [
         "dbt_natural_language"
@@ -120,135 +199,91 @@
         "dbt_google_play_source",
         "dbt_apple_store",
         "dbt_apple_store_source",
-        "dbt_app_reporting"
-
+        "dbt_app_reporting",
+        "dbt_apple_search_ads",
+        "dbt_apple_search_ads_source",
+        "dbt_amplitude",
+        "dbt_amplitude_source",
+        "dbt_recurly",
+        "dbt_recurly_source"
     ],
-    "Montreal-Analytics": [
-        "dbt-snowflake-utils"
-    ],
-    "kristeligt-dagblad": [
-        "dbt_ml"
+    "get-select": [
+        "dbt-snowflake-monitoring"
     ],
     "gitlabhq": [
         "snowflake_spend"
     ],
+    "hightouchio": [
+        "dbt-hightouch"
+    ],
+    "infinitelambda": [
+        "carbon-analytics"
+    ],
+    "jitsucom": [
+        "dbt-jitsu"
+    ],
+    "kristeligt-dagblad": [
+        "dbt_ml"
+    ],
+    "lalalilo": [
+        "athena-utils"
+    ],
+    "mjirv": [
+        "dbt-datamocktool",
+        "dbt_product_analytics"
+    ],
+    "narratorai": [
+        "dbt-activity-schema"
+    ],
+    "omnata-labs": [
+        "dbt-ml-preprocessing"
+    ],
+    "pvcy": [
+        "dbt-privacy"
+    ],
+    "re-data": [
+        "dbt-re-data"
+    ],
+    "rjh336": [
+        "dbt-model-usage"
+    ],
     "rudderlabs": [
         "dbt-sessionization",
-        "dbt-id-resolution",
+        "dbt-id-stitching",
         "dbt-customer-journey-analysis",
         "dbt-events-registry"
     ],
     "sgoley": [
         "dbt-postgres-utils"
     ],
-    "Datavault-UK": [
-        "dbtvault"
-    ],
-    "calogica": [
-        "dbt-date",
-        "dbt-expectations"
-    ],
-    "Snowflake-Labs": [
-        "dbt_constraints"
-    ],
-    "yu-iskw": [
-        "dbt-airflow-macros"
-    ],
-    "tnightengale": [
-        "dbt-meta-testing"
-    ],
-    "omnata-labs": [
-        "dbt-ml-preprocessing"
-    ],
-    "dbt-msft": [
-        "tsql-utils"
-    ],
-    "brooklyn-data": [
-        "dbt_artifacts"
-    ],
-    "emilyriederer": [
-        "dbtplyr"
-    ],
-    "MaterializeInc": [
-        "materialize-dbt-utils"
-    ],
-    "data-mie": [
-        "dbt-profiler"
-    ],
-    "entechlog": [
-        "dbt-snow-mask",
-        "dbt-snow-utils"
-    ],
-    "re-data": [
-        "dbt-re-data"
-    ],
-    "mjirv": [
-        "dbt-datamocktool"
-    ],
-    "jitsucom": [
-        "dbt-jitsu"
-    ],
     "snowplow": [
         "dbt-snowplow-utils",
         "dbt-snowplow-web",
         "dbt-snowplow-mobile",
-        "dbt-snowplow-media-player"
-    ],
-    "lalalilo": [
-        "athena-utils"
-    ],
-    "avohq": [
-        "avo_audit"
-    ],
-    "Matatika": [
-        "dbt-tap-googleads",
-        "dbt-tap-solarvista",
-        "dbt-tap-meltano",
-        "dbt-tap-trello",
-        "dbt-tap-google-analytics",
-        "dbt-tap-spotify"
-    ],
-    "tuva-health": [
-        "core",
-        "chronic_conditions",
-        "readmissions"
-    ],
-    "elementary-data": [
-        "dbt-data-reliability"
+        "dbt-snowplow-media-player",
+        "dbt-snowplow-normalize",
+        "dbt-snowplow-ecommerce",
+        "dbt-snowplow-fractribution"
     ],
     "splitgraph": [
         "ab2ft_stripe"
     ],
-    "Teradata": [
-        "dbt-teradata-utils"
-    ],
-    "fal-ai": [
-        "dbt_feature_store"
-    ],
-    "Divergent-Insights": [
-        "dbt-snowflake-setup",
-        "dbt-dataquality"
-    ],
-    "pvcy": [
-        "dbt-privacy"
-    ],
-    "datalakehouse": [
-        "dlh-square-analytics-dbt",
-        "dlh-quickbooks-analytics-dbt",
-        "dlh-xero-analytics-dbt",
-        "dlh-salesforce-analytics-dbt",
-        "dlh-stripe-analytics-dbt"
-    ],
     "starburstdata": [
         "dbt-trino-utils"
     ],
-    "Velir": [
-        "dbt-ga4"
+    "tnightengale": [
+        "dbt-meta-testing"
     ],
-    "hightouchio": [
-        "dbt-hightouch"
+    "tuva-health": [
+        "the_tuva_project",
+        "chronic_conditions",
+        "claims_preprocessing",
+        "data_profiling",
+        "readmissions",
+        "terminology"
     ],
-    "everpeace": [
-        "dbt-models-metadata"
+    "yu-iskw": [
+        "dbt-airflow-macros",
+        "dbt-unittest"
     ]
 }

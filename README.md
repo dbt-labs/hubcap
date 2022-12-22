@@ -14,4 +14,4 @@ Assorted constraints:
 ### Adding your package to hubcap
 Currently, only packages hosted on a GitHub repo are supported.
 
-To add your package, open a PR that adds your repository to [hub.json](hub.json).
+To add your package, open a PR that adds your repository to [hub.json](hub.json). A dbt Labs team member will review your PR and provide a cursory check of your new package against [best practices](package-best-practices.md).

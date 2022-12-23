@@ -289,5 +289,8 @@
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest"
+    ],
+    "Post-Holdings": [
+        "dbt_package"
     ]
 }

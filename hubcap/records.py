@@ -175,10 +175,7 @@ class UpdateTask(object):
             if version.is_valid_stable_semver_tag(tag)
         ]
         version_numbers.sort(key=lambda s: list(map(int, s.split("."))))
-        latest_version = version_numbers[-1]
-
-        if not latest_version:
-            latest_version = ""
+        latest_version = version_numbers[-1] if version_numbers else ""
 
         return {
             "name": package_name,

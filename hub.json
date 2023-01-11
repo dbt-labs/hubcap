@@ -289,5 +289,8 @@
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest"
+    ],
+    "Datomni": [
+        "profitwell_metrics"
     ]
 }

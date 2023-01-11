@@ -215,6 +215,9 @@
     "gitlabhq": [
         "snowflake_spend"
     ],
+    "google": [
+        "fhir-dbt-analytics"
+    ],
     "hightouchio": [
         "dbt-hightouch"
     ],

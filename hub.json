@@ -238,7 +238,8 @@
         "dbt_product_analytics"
     ],
     "narratorai": [
-        "dbt-activity-schema"
+        "dbt-activity-schema",
+        "dbt-segment-activity-schema"
     ],
     "omnata-labs": [
         "dbt-ml-preprocessing"

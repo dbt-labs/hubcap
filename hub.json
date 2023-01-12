@@ -227,6 +227,9 @@
     "jitsucom": [
         "dbt-jitsu"
     ],
+    "jpmmcneill": [
+        "dbt-graph-theory"
+    ],
     "kristeligt-dagblad": [
         "dbt_ml"
     ],

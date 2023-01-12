@@ -215,6 +215,9 @@
     "gitlabhq": [
         "snowflake_spend"
     ],
+    "google": [
+        "fhir-dbt-analytics"
+    ],
     "hightouchio": [
         "dbt-hightouch"
     ],
@@ -289,6 +292,9 @@
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest"
+    ],
+    "jmangroup": [
+        "data_profiler"
     ],
     "Datomni": [
         "profitwell_metrics"

@@ -222,7 +222,8 @@
         "dbt-hightouch"
     ],
     "infinitelambda": [
-        "carbon-analytics"
+        "carbon-analytics",
+        "dq-vault"
     ],
     "jitsucom": [
         "dbt-jitsu"

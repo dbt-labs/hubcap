@@ -227,6 +227,9 @@
     "jitsucom": [
         "dbt-jitsu"
     ],
+    "jpmmcneill": [
+        "dbt-graph-theory"
+    ],
     "kristeligt-dagblad": [
         "dbt_ml"
     ],
@@ -298,5 +301,8 @@
     ],
     "Datomni": [
         "profitwell_metrics"
+    ],
+    "Aaron-Zhou": [
+        "dbt-synapse-statistics"
     ]
 }

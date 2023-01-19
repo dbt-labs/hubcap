@@ -6,7 +6,6 @@ import logging
 import os
 import requests
 import subprocess
-import semver
 
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -168,10 +167,9 @@ class UpdateTask(object):
             description = existing.get("description", description)
             assets = existing.get("assets", assets)
 
-        # attempt to grab the latest release version of a project
         # attempt to grab the latest final version of a project if one exists
         # (and the latest prerelease otherwise)
-        latest_version = self.latest_version(tags)
+        latest_version = version.latest_version(tags)
 
         return {
             "name": package_name,
@@ -180,18 +178,6 @@ class UpdateTask(object):
             "latest": latest_version.replace("=", ""),  # LOL
             "assets": assets,
         }
-
-    def latest_version(self, tags: list[str]) -> str:
-        """Get the latest final version if one exists and the latest prerelease otherwise."""
-        version_numbers = [
-            semver.VersionInfo.parse(version.strip_v_from_version(tag)) for tag in tags
-        ]
-        # Prioritize all final versions over any prerelease
-        latest_version = max(
-            version_numbers, key=lambda v: (v == v.finalize_version(), v)
-        )
-
-        return str(latest_version)
 
     def fetch_index_file_contents(self, filepath):
         if os.path.exists(filepath):

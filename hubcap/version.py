@@ -1,6 +1,7 @@
 """Interface for package release tags and building package indexes"""
 
 import re
+import semver
 
 
 def parse_semver_tag(tag):
@@ -45,3 +46,14 @@ def get_valid_remote_tags(repo):
     all_remote_tags = repo.git.tag("--list").split("\n")
 
     return set(filter(is_valid_semver_tag, all_remote_tags))
+
+
+def latest_version(tags: list[str]) -> str:
+    """Get the latest final version if one exists and the latest prerelease otherwise."""
+    version_numbers = [
+        semver.VersionInfo.parse(strip_v_from_version(tag)) for tag in tags
+    ]
+    # Prioritize all final versions over any prerelease
+    latest_version = max(version_numbers, key=lambda v: (v == v.finalize_version(), v))
+
+    return str(latest_version)

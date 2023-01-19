@@ -44,7 +44,7 @@ export CONFIG=$(<config.json)
 
 Run:
 ```shell
-python3 hubcap/hubcap.py
+python3 hubcap.py
 ```
 
 ## Run in production mode
@@ -55,7 +55,7 @@ python3 hubcap/hubcap.py
 
 Run:
 ```shell
-python3 hubcap/hubcap.py
+python3 hubcap.py
 ```
 
 ## Testing locally

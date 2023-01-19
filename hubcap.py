@@ -2,12 +2,17 @@ import logging
 
 from pathlib import Path
 
-import helper
-import package
-import release_carrier
+from hubcap import helper
+from hubcap import package
+from hubcap import package_maintainers
+from hubcap import release_carrier
 
-from git_helper import config_token_authorization, repo_default_branch, clone_repo
-from records import IndividualPullRequests, ConsolididatedPullRequest
+from hubcap.git_helper import (
+    config_token_authorization,
+    repo_default_branch,
+    clone_repo,
+)
+from hubcap.records import IndividualPullRequests, ConsolididatedPullRequest
 
 
 # ==
@@ -30,7 +35,7 @@ REMOTE = f"https://github.com/{github_org}/{github_repo}.git"
 PULL_REQUEST_URL = f"https://api.github.com/repos/{github_org}/{github_repo}/pulls"
 git_tmp = "target"
 TMP_DIR = Path(git_tmp).resolve()
-PACKAGE_MAINTAINERS = helper.load_package_maintainers()
+PACKAGE_MAINTAINERS = package_maintainers.load_package_maintainers()
 
 if one_branch_per_repo:
     pr_strategy = IndividualPullRequests()

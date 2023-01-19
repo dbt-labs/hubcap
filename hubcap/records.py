@@ -1,19 +1,19 @@
 """Interface for objects useful to processing hub entries"""
 
-import git_helper
 import hashlib
 import json
 import logging
 import os
 import requests
-import helper
 import subprocess
-import version
 
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-import package
+from hubcap import git_helper
+from hubcap import helper
+from hubcap import package
+from hubcap import version
 
 
 class PullRequestStrategy(ABC):

@@ -16,7 +16,7 @@ It is designed to do the following:
 The commands below assume a production application named `dbt-hubcap`. Replace with `dbt-hubcap-staging` for the staging version of the application.
 
 1. Use the [Heroku Scheduler](https://dashboard.heroku.com/apps/dbt-hubcap/scheduler) to set the following cron schedule:
-    - Job: `python3 hubcap/hubcap.py`
+    - Job: `python3 hubcap.py`
     - Schedule: Every hour at :00
     - Dyno size: Hobby / Standard-1X
 1. Configure the `CONFIG` environment variable: [Settings > Config Vars > Reveal Config Vars](https://dashboard.heroku.com/apps/dbt-hubcap/settings)
@@ -58,7 +58,7 @@ git push heroku main:main
 For off-schedule ad hoc executions, run the following from the deploy directory above:
 
 ```shell
-heroku run python3 hubcap/hubcap.py
+heroku run python3 hubcap.py
 ```
 
 #### Explanation

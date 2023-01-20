@@ -167,15 +167,9 @@ class UpdateTask(object):
             description = existing.get("description", description)
             assets = existing.get("assets", assets)
 
-        # attempt to grab the latest release version of a project
-
-        version_numbers = [
-            version.strip_v_from_version(tag)
-            for tag in tags
-            if version.is_valid_stable_semver_tag(tag)
-        ]
-        version_numbers.sort(key=lambda s: list(map(int, s.split("."))))
-        latest_version = version_numbers[-1] if version_numbers else ""
+        # attempt to grab the latest final version of a project if one exists
+        # (and the latest prerelease otherwise)
+        latest_version = version.latest_version(tags)
 
         return {
             "name": package_name,

@@ -302,7 +302,11 @@
     "jmangroup": [
         "data_profiler"
     ],
+    "Datomni": [
+        "profitwell_metrics",
+        "ga4_metrics"
+    ],
     "Aaron-Zhou": [
         "dbt-synapse-statistics"
-        ]
+    ]
 }

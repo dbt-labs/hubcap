@@ -223,6 +223,7 @@
     ],
     "infinitelambda": [
         "carbon-analytics",
+        "dq-vault",
         "dq-tools"
     ],
     "jitsucom": [

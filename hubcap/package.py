@@ -7,10 +7,9 @@ import yaml
 from git import Repo
 from pathlib import Path
 
-import records
-import version
-
-from git_helper import clone_repo, run_cmd
+from hubcap import records
+from hubcap import version
+from hubcap.git_helper import clone_repo, run_cmd
 
 
 def clone_package_repos(package_maintainer_index, path):

@@ -223,7 +223,8 @@
     ],
     "infinitelambda": [
         "carbon-analytics",
-        "dq-vault"
+        "dq-vault",
+        "dq-tools"
     ],
     "jitsucom": [
         "dbt-jitsu"
@@ -242,7 +243,8 @@
         "dbt_product_analytics"
     ],
     "narratorai": [
-        "dbt-activity-schema"
+        "dbt-activity-schema",
+        "dbt-segment-activity-schema"
     ],
     "omnata-labs": [
         "dbt-ml-preprocessing"
@@ -299,5 +301,8 @@
     ],
     "jmangroup": [
         "data_profiler"
-    ]
+    ],
+    "Aaron-Zhou": [
+        "dbt-synapse-statistics"
+        ]
 }

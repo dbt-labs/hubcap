@@ -1,9 +1,11 @@
 ## Description 
 
-Tell us about your new package! 
+_Tell us about your new package!_
+
+Link to your package's repository: 
 
 ## Checklist
-This checklist is a cut down version of the [best practices](package-best-practices.md) that we have identified as the package hub has grown. Although meeting these checklist items is not a prerequisite to being added to the Hub, we have found that packages which don't conform provide a worse user experience. 
+_This checklist is a cut down version of the [best practices](package-best-practices.md) that we have identified as the package hub has grown. Although meeting these checklist items is not a prerequisite to being added to the Hub, we have found that packages which don't conform provide a worse user experience._
 
 ### First run experience
 - [ ] The package includes a README which explains how to get started with the package and customise its behaviour

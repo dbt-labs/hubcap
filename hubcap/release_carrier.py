@@ -2,10 +2,11 @@
 
 import json
 import requests
-import helper
 
 from git import Repo
 from git.remote import Remote
+
+from hubcap import helper
 
 
 def make_pr(org, repo, head, user_creds, url, pr_strategy, base="main"):

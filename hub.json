@@ -210,7 +210,8 @@
         "dbt_amazon_ads_source"
     ],
     "get-select": [
-        "dbt-snowflake-monitoring"
+        "dbt-snowflake-monitoring",
+        "dbt-snowflake-query-tags"
     ],
     "gitlabhq": [
         "snowflake_spend"

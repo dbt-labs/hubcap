@@ -313,5 +313,8 @@
     "edanalytics": [
         "edu_edfi_source",
         "edu_wh"
+    ],
+    "Fleetio": [
+        "dbt-segment"
     ]
 }

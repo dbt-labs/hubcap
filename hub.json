@@ -1,6 +1,13 @@
 {
+    "Aaron-Zhou": [
+        "dbt-synapse-statistics"
+    ],
     "Datavault-UK": [
         "dbtvault"
+    ],
+    "Datomni": [
+        "profitwell_metrics",
+        "ga4_metrics"
     ],
     "Delphi-Data": [
         "dbt_natural_language"
@@ -8,6 +15,9 @@
     "Divergent-Insights": [
         "dbt-snowflake-setup",
         "dbt-dataquality"
+    ],
+    "Fleetio": [
+        "dbt-segment"
     ],
     "LewisDavies": [
         "upstream-prod"
@@ -26,11 +36,11 @@
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],
-    "Snowflake-Labs": [
-        "dbt_constraints"
-    ],
     "ScalefreeCOM": [
         "datavault4dbt"
+    ],
+    "Snowflake-Labs": [
+        "dbt_constraints"
     ],
     "Teradata": [
         "dbt-teradata-utils"
@@ -99,6 +109,10 @@
     ],
     "dbt-msft": [
         "tsql-utils"
+    ],
+    "edanalytics": [
+        "edu_edfi_source",
+        "edu_wh"
     ],
     "elementary-data": [
         "dbt-data-reliability"
@@ -230,6 +244,9 @@
     "jitsucom": [
         "dbt-jitsu"
     ],
+    "jmangroup": [
+        "data_profiler"
+    ],
     "jpmmcneill": [
         "dbt-graph-theory"
     ],
@@ -286,6 +303,9 @@
     "starburstdata": [
         "dbt-trino-utils"
     ],
+    "techindicium": [
+        "dbt-metalog"
+    ],
     "tnightengale": [
         "dbt-meta-testing"
     ],
@@ -302,25 +322,5 @@
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest"
-    ],
-    "jmangroup": [
-        "data_profiler"
-    ],
-    "Datomni": [
-        "profitwell_metrics",
-        "ga4_metrics"
-    ],
-    "Aaron-Zhou": [
-        "dbt-synapse-statistics"
-    ],
-    "edanalytics": [
-        "edu_edfi_source",
-        "edu_wh"
-    ],
-    "techindicium": [
-        "dbt-metalog"
-    ],
-    "Fleetio": [
-        "dbt-segment"
     ]
 }

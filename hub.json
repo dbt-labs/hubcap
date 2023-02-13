@@ -265,6 +265,9 @@
         "dbt-customer-journey-analysis",
         "dbt-events-registry"
     ],
+    "sdebruyn": [
+        "dbt-duckdb-utils"
+    ],
     "sgoley": [
         "dbt-postgres-utils"
     ],
@@ -316,5 +319,8 @@
     ],
     "techindicium": [
         "dbt-metalog"
+    ],
+    "Fleetio": [
+        "dbt-segment"
     ]
 }

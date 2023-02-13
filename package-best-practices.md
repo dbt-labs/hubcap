@@ -35,7 +35,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
     - In particular, packages SHOULD NOT pin to a patch version of their imported package unless they are aware of an incompatibility.
 ### Interoperability
 - Packages MUST NOT override dbt Core behaviour in such a way as to impact other dbt resources (models, tests, etc) not provided by the package.
-- Packages SHOULD use the cross-database macros built into dbt Core where available, such as `{{ except() }}` and `{{ type_string() }}`.
+- Packages SHOULD use the [cross-database macros built into dbt Core](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros) where available, such as `{{ dbt.except() }}` and `{{ dbt.type_string() }}`.
 - Packages SHOULD disambiguate their resource names to avoid clashes with nodes that are likely to already exist in a project. 
     - For example, packages SHOULD NOT provide a model simply called `users`.
 

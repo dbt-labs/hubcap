@@ -1,0 +1,4 @@
+# Reformatting via black and assorted pre-commit hooks.
+dee98c437bf2a9f01082d639c16a7e03d9c426c6
+# Fix flake8 errors and reformatting via black.
+3b6a424737c2c963cb034cc53eedda3b2aaa740f

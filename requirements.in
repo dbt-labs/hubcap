@@ -1,0 +1,4 @@
+gitpython>=3.1.30
+requests
+pyyaml
+semver

@@ -2,6 +2,9 @@
     "Datavault-UK": [
         "dbtvault"
     ],
+    "Delphi-Data": [
+        "dbt_natural_language"
+    ],
     "Divergent-Insights": [
         "dbt-snowflake-setup",
         "dbt-dataquality"
@@ -202,22 +205,33 @@
         "dbt_amplitude",
         "dbt_amplitude_source",
         "dbt_recurly",
-        "dbt_recurly_source"
+        "dbt_recurly_source",
+        "dbt_amazon_ads",
+        "dbt_amazon_ads_source"
     ],
     "get-select": [
-        "dbt-snowflake-monitoring"
+        "dbt-snowflake-monitoring",
+        "dbt-snowflake-query-tags"
     ],
     "gitlabhq": [
         "snowflake_spend"
+    ],
+    "google": [
+        "fhir-dbt-analytics"
     ],
     "hightouchio": [
         "dbt-hightouch"
     ],
     "infinitelambda": [
-        "carbon-analytics"
+        "carbon-analytics",
+        "dq-vault",
+        "dq-tools"
     ],
     "jitsucom": [
         "dbt-jitsu"
+    ],
+    "jpmmcneill": [
+        "dbt-graph-theory"
     ],
     "kristeligt-dagblad": [
         "dbt_ml"
@@ -228,6 +242,10 @@
     "mjirv": [
         "dbt-datamocktool",
         "dbt_product_analytics"
+    ],
+    "narratorai": [
+        "dbt-activity-schema",
+        "dbt-segment-activity-schema"
     ],
     "omnata-labs": [
         "dbt-ml-preprocessing"
@@ -254,7 +272,10 @@
         "dbt-snowplow-utils",
         "dbt-snowplow-web",
         "dbt-snowplow-mobile",
-        "dbt-snowplow-media-player"
+        "dbt-snowplow-media-player",
+        "dbt-snowplow-normalize",
+        "dbt-snowplow-ecommerce",
+        "dbt-snowplow-fractribution"
     ],
     "splitgraph": [
         "ab2ft_stripe"
@@ -266,13 +287,34 @@
         "dbt-meta-testing"
     ],
     "tuva-health": [
-        "core",
-        "chronic_conditions",
+        "the_tuva_project",
+        "cms_chronic_conditions",
+        "claims_preprocessing",
+        "data_profiling",
         "readmissions",
-        "medicare_claims_connector"
+        "terminology",
+        "pmpm",
+        "tuva_chronic_conditions"
     ],
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest"
+    ],
+    "jmangroup": [
+        "data_profiler"
+    ],
+    "Datomni": [
+        "profitwell_metrics",
+        "ga4_metrics"
+    ],
+    "Aaron-Zhou": [
+        "dbt-synapse-statistics"
+    ],
+    "edanalytics": [
+        "edu_edfi_source",
+        "edu_wh"
+    ],
+    "techindicium": [
+        "dbt-metalog"
     ]
 }

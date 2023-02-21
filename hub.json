@@ -282,6 +282,10 @@
         "dbt-customer-journey-analysis",
         "dbt-events-registry"
     ],
+    "Saras-Daton":[
+        "currency_exchange_rates",
+        "amazon_sellerpartner"
+    ],
     "sdebruyn": [
         "dbt-duckdb-utils"
     ],

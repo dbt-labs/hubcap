@@ -221,7 +221,11 @@
         "dbt_recurly",
         "dbt_recurly_source",
         "dbt_amazon_ads",
-        "dbt_amazon_ads_source"
+        "dbt_amazon_ads_source",
+        "dbt_reddit_ads",
+        "dbt_reddit_ads_source",
+        "dbt_recharge",
+        "dbt_recharge_source"
     ],
     "get-select": [
         "dbt-snowflake-monitoring",

@@ -293,7 +293,8 @@
         "amazon_vendorcentral",
         "bing_ads",
         "facebook_ads",
-        "shopify"
+        "shopify",
+        "google_ads"
     ],
     "sdebruyn": [
         "dbt-duckdb-utils"

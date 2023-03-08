@@ -315,7 +315,8 @@
         "dbt-metalog"
     ],
     "tnightengale": [
-        "dbt-meta-testing"
+        "dbt-meta-testing",
+        "dbt-activity-schema"
     ],
     "tuva-health": [
         "the_tuva_project",

@@ -288,7 +288,13 @@
     ],
     "Saras-Daton":[
         "currency_exchange_rates",
-        "amazon_sellerpartner"
+        "amazon_sellerpartner",
+        "amazon_ads",
+        "amazon_vendorcentral",
+        "bing_ads",
+        "facebook_ads",
+        "shopify",
+        "google_ads"
     ],
     "sdebruyn": [
         "dbt-duckdb-utils"

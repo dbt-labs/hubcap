@@ -16,6 +16,9 @@
         "dbt-snowflake-setup",
         "dbt-dataquality"
     ],
+    "EqualExperts": [
+        "dbt-unit-testing"
+    ],
     "Fleetio": [
         "dbt-segment"
     ],

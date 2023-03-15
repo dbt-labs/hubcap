@@ -16,6 +16,9 @@
         "dbt-snowflake-setup",
         "dbt-dataquality"
     ],
+    "dwreeves": [
+        "dbt_linreg"
+    ],
     "EqualExperts": [
         "dbt-unit-testing"
     ],

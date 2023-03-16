@@ -19,6 +19,9 @@
     "dwreeves": [
         "dbt_linreg"
     ],
+    "EqualExperts": [
+        "dbt-unit-testing"
+    ],
     "Fleetio": [
         "dbt-segment"
     ],

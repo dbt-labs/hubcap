@@ -300,7 +300,8 @@
         "bing_ads",
         "facebook_ads",
         "shopify",
-        "google_ads"
+        "google_ads",
+        "unicommerce"
     ],
     "sdebruyn": [
         "dbt-duckdb-utils"

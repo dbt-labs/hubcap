@@ -301,7 +301,10 @@
         "FacebookAds",
         "Shopify",
         "GoogleAds",
-        "Unicommerce"
+        "Unicommerce",
+        "Upscribe",
+        "Recharge",
+        "GoogleAnalytics"
     ],
     "sdebruyn": [
         "dbt-duckdb-utils"

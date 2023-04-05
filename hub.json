@@ -297,13 +297,17 @@
     ],
     "Saras-Daton":[
         "currency_exchange_rates",
-        "amazon_sellerpartner",
-        "amazon_ads",
-        "amazon_vendorcentral",
-        "bing_ads",
-        "facebook_ads",
-        "shopify",
-        "google_ads"
+        "AmazonSellerCentral",
+        "AmazonAds",
+        "AmazonVendorCentral",
+        "BingAds",
+        "FacebookAds",
+        "Shopify",
+        "GoogleAds",
+        "Unicommerce",
+        "Upscribe",
+        "Recharge",
+        "GoogleAnalytics"
     ],
     "sdebruyn": [
         "dbt-duckdb-utils"

@@ -346,5 +346,8 @@
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest"
+    ],
+    "datnguye": [
+        "dbt-translate"
     ]
 }

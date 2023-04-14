@@ -240,6 +240,9 @@
     "gitlabhq": [
         "snowflake_spend"
     ],
+    "GJMcClintock": [
+        "dbt_tld"
+    ],
     "google": [
         "fhir-dbt-analytics"
     ],
@@ -347,5 +350,8 @@
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest"
+    ],
+    "datnguye": [
+        "dbt-translate"
     ]
 }

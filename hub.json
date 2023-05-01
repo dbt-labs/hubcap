@@ -338,7 +338,7 @@
         "dbt-activity-schema"
     ],
     "tuva-health": [
-        "the_tuva_project",
+        "the_tuva_project", 
         "cms_chronic_conditions",
         "claims_preprocessing",
         "data_profiling",

@@ -67,6 +67,9 @@
         "dbt-date",
         "dbt-expectations"
     ],
+    "census": [
+        "dbt_census_utils"
+    ],
     "cerebriumai": [
         "airbyte_dbt_intercom",
         "airbyte_dbt_facebook_ads",

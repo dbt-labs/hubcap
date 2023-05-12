@@ -6,7 +6,7 @@
         "dbt-incremental-stream"
     ],
     "Datavault-UK": [
-        "automate-dv"
+        "dbtvault"
     ],
     "Datomni": [
         "profitwell_metrics",

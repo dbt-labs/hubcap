@@ -248,7 +248,7 @@
     ],
     "grafana":[
         "dbt_leaner_query"
-    ],    
+    ],
     "hightouchio": [
         "dbt-hightouch"
     ],

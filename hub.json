@@ -70,9 +70,6 @@
         "dbt-date",
         "dbt-expectations"
     ],
-    "census": [
-        "dbt_census_utils"
-    ],
     "cerebriumai": [
         "airbyte_dbt_intercom",
         "airbyte_dbt_facebook_ads",
@@ -338,6 +335,9 @@
     ],
     "starburstdata": [
         "dbt-trino-utils"
+    ],
+    "sutrolabs": [
+        "dbt_census_utils"
     ],
     "techindicium": [
         "dbt-metalog"

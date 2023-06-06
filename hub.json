@@ -347,14 +347,7 @@
         "dbt-activity-schema"
     ],
     "tuva-health": [
-        "the_tuva_project",
-        "cms_chronic_conditions",
-        "claims_preprocessing",
-        "data_profiling",
-        "readmissions",
-        "terminology",
-        "pmpm",
-        "tuva_chronic_conditions"
+        "the_tuva_project"
     ],
     "yu-iskw": [
         "dbt-airflow-macros",

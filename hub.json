@@ -355,5 +355,8 @@
     ],
     "datnguye": [
         "dbt-translate"
+    ],
+    "sfu-db": [
+        "dbt-lineagex"
     ]
 }

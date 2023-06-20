@@ -347,7 +347,10 @@
         "dbt-activity-schema"
     ],
     "tuva-health": [
-        "the_tuva_project"
+        "the_tuva_project",
+        "the_tuva_project_demo",
+        "medicare_cclf_connector",
+        "medicare_lds_connector"
     ],
     "yu-iskw": [
         "dbt-airflow-macros",

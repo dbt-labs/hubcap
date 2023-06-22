@@ -311,7 +311,8 @@
         "PinterestAds",
         "Walmart",
         "TiktokAds",
-        "AmazonDSP"
+        "AmazonDSP",
+        "Aftership"
     ],
     "sdebruyn": [
         "dbt-duckdb-utils"

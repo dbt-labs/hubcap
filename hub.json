@@ -2,6 +2,9 @@
     "Aaron-Zhou": [
         "dbt-synapse-statistics"
     ],
+    "Aidbox": [
+        "dbt_fhir"
+    ],
     "arnoN7": [
         "dbt-incremental-stream"
     ],

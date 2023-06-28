@@ -237,7 +237,13 @@
         "dbt_reddit_ads",
         "dbt_reddit_ads_source",
         "dbt_recharge",
-        "dbt_recharge_source"
+        "dbt_recharge_source",
+        "dbt_sap_source",
+        "dbt_sap",
+        "dbt_twilio_source",
+        "dbt_twilio",
+        "dbt_qualtrics_source",
+        "dbt_qualtrics"
     ],
     "get-select": [
         "dbt-snowflake-monitoring",

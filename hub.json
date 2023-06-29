@@ -316,7 +316,12 @@
         "Unicommerce",
         "Upscribe",
         "Recharge",
-        "GoogleAnalytics"
+        "GoogleAnalytics",
+        "PinterestAds",
+        "Walmart",
+        "TiktokAds",
+        "AmazonDSP",
+        "Aftership"
     ],
     "sdebruyn": [
         "dbt-duckdb-utils"

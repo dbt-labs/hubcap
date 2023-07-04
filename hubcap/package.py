@@ -41,6 +41,12 @@ def parse_pkgs(repo_dir):
         with open(repo_dir / Path("packages.yml"), "r") as stream:
             pkgs = yaml.safe_load(stream)
             return pkgs.get("packages", []) if pkgs else []
+    # new in v1.6
+    # a project can declare 'packages' in *either* packages.yml or dependencies.yml, not both
+    elif os.path.exists(repo_dir / "dependencies.yml"):
+        with open(repo_dir / Path("dependencies.yml"), "r") as stream:
+            pkgs = yaml.safe_load(stream)
+            return pkgs.get("packages", []) if pkgs else []
     else:
         return []
 

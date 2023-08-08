@@ -372,5 +372,8 @@
     ],
     "calum-mcg": [
         "dbt-fuzzy-text"
+    ],
+    "rlsalcido24": [
+        "lakehouse_utils"
     ]
 }

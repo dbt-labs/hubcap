@@ -365,7 +365,8 @@
     ],
     "yu-iskw": [
         "dbt-airflow-macros",
-        "dbt-unittest"
+        "dbt-unittest",
+        "dbt-gcp-billing"
     ],
     "datnguye": [
         "dbt-translate"

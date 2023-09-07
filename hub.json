@@ -245,6 +245,9 @@
         "dbt_qualtrics_source",
         "dbt_qualtrics"
     ],
+    "fullstorydev": [
+        "dbt_fullstory"
+    ],
     "get-select": [
         "dbt-snowflake-monitoring",
         "dbt-snowflake-query-tags"

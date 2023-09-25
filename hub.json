@@ -85,7 +85,7 @@
     "data-mie": [
         "dbt-profiler"
     ],
-    "DataLakehouse-io": [
+    "DataLakeHouse-io": [
         "dlh-square-analytics-dbt",
         "dlh-quickbooks-analytics-dbt",
         "dlh-xero-analytics-dbt",

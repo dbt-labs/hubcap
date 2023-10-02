@@ -5,9 +5,6 @@
     "Aidbox": [
         "dbt_fhir"
     ],
-    "arnoN7": [
-        "dbt-incremental-stream"
-    ],
     "Datavault-UK": [
         "dbtvault"
     ],
@@ -22,14 +19,14 @@
         "dbt-snowflake-setup",
         "dbt-dataquality"
     ],
-    "dwreeves": [
-        "dbt_linreg"
-    ],
     "EqualExperts": [
         "dbt-unit-testing"
     ],
     "Fleetio": [
         "dbt-segment"
+    ],
+    "GJMcClintock": [
+        "dbt_tld"
     ],
     "LewisDavies": [
         "upstream-prod"
@@ -48,6 +45,25 @@
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],
+    "Saras-Daton": [
+        "currency_exchange_rates",
+        "AmazonSellerCentral",
+        "AmazonAds",
+        "AmazonVendorCentral",
+        "BingAds",
+        "FacebookAds",
+        "Shopify",
+        "GoogleAds",
+        "Unicommerce",
+        "Upscribe",
+        "Recharge",
+        "GoogleAnalytics",
+        "PinterestAds",
+        "Walmart",
+        "TiktokAds",
+        "AmazonDSP",
+        "Aftership"
+    ],
     "ScalefreeCOM": [
         "datavault4dbt"
     ],
@@ -63,6 +79,9 @@
     "andrewcstewart": [
         "dbt-uaparser"
     ],
+    "arnoN7": [
+        "dbt-incremental-stream"
+    ],
     "avohq": [
         "avo_audit"
     ],
@@ -72,6 +91,9 @@
     "calogica": [
         "dbt-date",
         "dbt-expectations"
+    ],
+    "calum-mcg": [
+        "dbt-fuzzy-text"
     ],
     "cerebriumai": [
         "airbyte_dbt_intercom",
@@ -91,6 +113,9 @@
         "dlh-xero-analytics-dbt",
         "dlh-salesforce-analytics-dbt",
         "dlh-stripe-analytics-dbt"
+    ],
+    "datnguye": [
+        "dbt-translate"
     ],
     "dbt-labs": [
         "dbt-utils",
@@ -121,6 +146,9 @@
     ],
     "dbt-msft": [
         "tsql-utils"
+    ],
+    "dwreeves": [
+        "dbt_linreg"
     ],
     "edanalytics": [
         "edu_edfi_source",
@@ -255,13 +283,10 @@
     "gitlabhq": [
         "snowflake_spend"
     ],
-    "GJMcClintock": [
-        "dbt_tld"
-    ],
     "google": [
         "fhir-dbt-analytics"
     ],
-    "grafana":[
+    "grafana": [
         "dbt_leaner_query"
     ],
     "hightouchio": [
@@ -307,30 +332,14 @@
     "rjh336": [
         "dbt-model-usage"
     ],
+    "rlsalcido24": [
+        "lakehouse_utils"
+    ],
     "rudderlabs": [
         "dbt-sessionization",
         "dbt-id-stitching",
         "dbt-customer-journey-analysis",
         "dbt-events-registry"
-    ],
-    "Saras-Daton":[
-        "currency_exchange_rates",
-        "AmazonSellerCentral",
-        "AmazonAds",
-        "AmazonVendorCentral",
-        "BingAds",
-        "FacebookAds",
-        "Shopify",
-        "GoogleAds",
-        "Unicommerce",
-        "Upscribe",
-        "Recharge",
-        "GoogleAnalytics",
-        "PinterestAds",
-        "Walmart",
-        "TiktokAds",
-        "AmazonDSP",
-        "Aftership"
     ],
     "sdebruyn": [
         "dbt-duckdb-utils"
@@ -370,14 +379,5 @@
         "dbt-airflow-macros",
         "dbt-unittest",
         "dbt-gcp-billing"
-    ],
-    "datnguye": [
-        "dbt-translate"
-    ],
-    "calum-mcg": [
-        "dbt-fuzzy-text"
-    ],
-    "rlsalcido24": [
-        "lakehouse_utils"
     ]
 }

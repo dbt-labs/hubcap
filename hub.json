@@ -152,7 +152,8 @@
     ],
     "edanalytics": [
         "edu_edfi_source",
-        "edu_wh"
+        "edu_wh",
+        "dbt_synth_data"
     ],
     "elementary-data": [
         "dbt-data-reliability"

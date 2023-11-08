@@ -284,6 +284,7 @@
         "snowflake_spend"
     ],
     "google": [
+        "fhir-dbt-utils",
         "fhir-dbt-analytics"
     ],
     "grafana": [

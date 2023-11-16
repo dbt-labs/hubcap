@@ -7,10 +7,9 @@ import yaml
 from git import Repo
 from pathlib import Path
 
-import records
-import version
-
-from git_helper import clone_repo, run_cmd
+from hubcap import records
+from hubcap import version
+from hubcap.git_helper import clone_repo, run_cmd
 
 
 def clone_package_repos(package_maintainer_index, path):
@@ -40,6 +39,12 @@ def parse_require_dbt_version(repo_dir):
 def parse_pkgs(repo_dir):
     if os.path.exists(repo_dir / "packages.yml"):
         with open(repo_dir / Path("packages.yml"), "r") as stream:
+            pkgs = yaml.safe_load(stream)
+            return pkgs.get("packages", []) if pkgs else []
+    # new in v1.6
+    # a project can declare 'packages' in *either* packages.yml or dependencies.yml, not both
+    elif os.path.exists(repo_dir / "dependencies.yml"):
+        with open(repo_dir / Path("dependencies.yml"), "r") as stream:
             pkgs = yaml.safe_load(stream)
             return pkgs.get("packages", []) if pkgs else []
     else:

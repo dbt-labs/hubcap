@@ -20,9 +20,5 @@
    "beautypie":[
       "dbt-google-analytics-360",
       "dbt-zendesk-support"
-   ],
-   "fivetran":[
-      "dbt_zuora",
-      "dbt_zuora_source"
    ]
 }

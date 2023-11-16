@@ -1,10 +1,32 @@
 {
+    "Aaron-Zhou": [
+        "dbt-synapse-statistics"
+    ],
+    "Aidbox": [
+        "dbt_fhir"
+    ],
     "Datavault-UK": [
         "dbtvault"
+    ],
+    "Datomni": [
+        "profitwell_metrics",
+        "ga4_metrics"
+    ],
+    "Delphi-Data": [
+        "dbt_natural_language"
     ],
     "Divergent-Insights": [
         "dbt-snowflake-setup",
         "dbt-dataquality"
+    ],
+    "EqualExperts": [
+        "dbt-unit-testing"
+    ],
+    "Fleetio": [
+        "dbt-segment"
+    ],
+    "GJMcClintock": [
+        "dbt_tld"
     ],
     "LewisDavies": [
         "upstream-prod"
@@ -23,11 +45,30 @@
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],
-    "Snowflake-Labs": [
-        "dbt_constraints"
+    "Saras-Daton": [
+        "currency_exchange_rates",
+        "AmazonSellerCentral",
+        "AmazonAds",
+        "AmazonVendorCentral",
+        "BingAds",
+        "FacebookAds",
+        "Shopify",
+        "GoogleAds",
+        "Unicommerce",
+        "Upscribe",
+        "Recharge",
+        "GoogleAnalytics",
+        "PinterestAds",
+        "Walmart",
+        "TiktokAds",
+        "AmazonDSP",
+        "Aftership"
     ],
     "ScalefreeCOM": [
         "datavault4dbt"
+    ],
+    "Snowflake-Labs": [
+        "dbt_constraints"
     ],
     "Teradata": [
         "dbt-teradata-utils"
@@ -38,6 +79,9 @@
     "andrewcstewart": [
         "dbt-uaparser"
     ],
+    "arnoN7": [
+        "dbt-incremental-stream"
+    ],
     "avohq": [
         "avo_audit"
     ],
@@ -47,6 +91,9 @@
     "calogica": [
         "dbt-date",
         "dbt-expectations"
+    ],
+    "calum-mcg": [
+        "dbt-fuzzy-text"
     ],
     "cerebriumai": [
         "airbyte_dbt_intercom",
@@ -66,6 +113,9 @@
         "dlh-xero-analytics-dbt",
         "dlh-salesforce-analytics-dbt",
         "dlh-stripe-analytics-dbt"
+    ],
+    "datnguye": [
+        "dbt-translate"
     ],
     "dbt-labs": [
         "dbt-utils",
@@ -96,6 +146,13 @@
     ],
     "dbt-msft": [
         "tsql-utils"
+    ],
+    "dwreeves": [
+        "dbt_linreg"
+    ],
+    "edanalytics": [
+        "edu_edfi_source",
+        "edu_wh"
     ],
     "elementary-data": [
         "dbt-data-reliability"
@@ -202,22 +259,53 @@
         "dbt_amplitude",
         "dbt_amplitude_source",
         "dbt_recurly",
-        "dbt_recurly_source"
+        "dbt_recurly_source",
+        "dbt_amazon_ads",
+        "dbt_amazon_ads_source",
+        "dbt_reddit_ads",
+        "dbt_reddit_ads_source",
+        "dbt_recharge",
+        "dbt_recharge_source",
+        "dbt_sap_source",
+        "dbt_sap",
+        "dbt_twilio_source",
+        "dbt_twilio",
+        "dbt_qualtrics_source",
+        "dbt_qualtrics"
+    ],
+    "fullstorydev": [
+        "dbt_fullstory"
     ],
     "get-select": [
-        "dbt-snowflake-monitoring"
+        "dbt-snowflake-monitoring",
+        "dbt-snowflake-query-tags"
     ],
     "gitlabhq": [
         "snowflake_spend"
+    ],
+    "google": [
+        "fhir-dbt-utils",
+        "fhir-dbt-analytics"
+    ],
+    "grafana": [
+        "dbt_leaner_query"
     ],
     "hightouchio": [
         "dbt-hightouch"
     ],
     "infinitelambda": [
-        "carbon-analytics"
+        "carbon-analytics",
+        "dq-vault",
+        "dq-tools"
     ],
     "jitsucom": [
         "dbt-jitsu"
+    ],
+    "jmangroup": [
+        "data_profiler"
+    ],
+    "jpmmcneill": [
+        "dbt-graph-theory"
     ],
     "kristeligt-dagblad": [
         "dbt_ml"
@@ -230,7 +318,8 @@
         "dbt_product_analytics"
     ],
     "narratorai": [
-        "dbt-activity-schema"
+        "dbt-activity-schema",
+        "dbt-segment-activity-schema"
     ],
     "omnata-labs": [
         "dbt-ml-preprocessing"
@@ -244,11 +333,17 @@
     "rjh336": [
         "dbt-model-usage"
     ],
+    "rlsalcido24": [
+        "lakehouse_utils"
+    ],
     "rudderlabs": [
         "dbt-sessionization",
         "dbt-id-stitching",
         "dbt-customer-journey-analysis",
         "dbt-events-registry"
+    ],
+    "sdebruyn": [
+        "dbt-duckdb-utils"
     ],
     "sgoley": [
         "dbt-postgres-utils"
@@ -268,19 +363,22 @@
     "starburstdata": [
         "dbt-trino-utils"
     ],
+    "sutrolabs": [
+        "dbt_census_utils"
+    ],
+    "techindicium": [
+        "dbt-metalog"
+    ],
     "tnightengale": [
-        "dbt-meta-testing"
+        "dbt-meta-testing",
+        "dbt-activity-schema"
     ],
     "tuva-health": [
-        "the_tuva_project",
-        "chronic_conditions",
-        "claims_preprocessing",
-        "data_profiling",
-        "readmissions",
-        "terminology"
+        "the_tuva_project"
     ],
     "yu-iskw": [
         "dbt-airflow-macros",
-        "dbt-unittest"
+        "dbt-unittest",
+        "dbt-gcp-billing"
     ]
 }

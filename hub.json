@@ -355,7 +355,8 @@
         "dbt-snowplow-media-player",
         "dbt-snowplow-normalize",
         "dbt-snowplow-ecommerce",
-        "dbt-snowplow-fractribution"
+        "dbt-snowplow-fractribution",
+        "dbt-snowplow-unified"
     ],
     "splitgraph": [
         "ab2ft_stripe"

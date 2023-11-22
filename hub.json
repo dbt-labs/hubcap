@@ -381,5 +381,8 @@
         "dbt-airflow-macros",
         "dbt-unittest",
         "dbt-gcp-billing"
+    ],
+    "creativeautomation": [
+        "dbt-airbyte-shopify"
     ]
 }

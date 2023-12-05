@@ -104,6 +104,9 @@
         "airbyte_dbt_shopify",
         "airbyte_dbt_stripe"
     ],
+    "creativeautomation": [
+        "dbt-airbyte-shopify"
+    ],
     "data-mie": [
         "dbt-profiler"
     ],

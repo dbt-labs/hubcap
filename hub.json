@@ -324,6 +324,9 @@
         "dbt-activity-schema",
         "dbt-segment-activity-schema"
     ],
+    "oleg-solovyev": [
+        "dbt_facebook_ads"
+    ],
     "omnata-labs": [
         "dbt-ml-preprocessing"
     ],

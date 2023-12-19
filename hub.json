@@ -383,6 +383,7 @@
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest",
-        "dbt-gcp-billing"
+        "dbt-gcp-billing",
+        "dbt-ops"
     ]
 }

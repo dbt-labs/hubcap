@@ -314,6 +314,9 @@
     "jpmmcneill": [
         "dbt-graph-theory"
     ],
+    "kgmcquate": [
+        "dbt-testgen"
+    ],
     "kristeligt-dagblad": [
         "dbt_ml"
     ],

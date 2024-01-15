@@ -275,7 +275,10 @@
         "dbt_twilio_source",
         "dbt_twilio",
         "dbt_qualtrics_source",
-        "dbt_qualtrics"
+        "dbt_qualtrics",
+        "dbt_workday",
+        "dbt_servicenow",
+        "dbt_salesforce_marketing_cloud"
     ],
     "fullstorydev": [
         "dbt_fullstory"
@@ -310,6 +313,9 @@
     ],
     "jpmmcneill": [
         "dbt-graph-theory"
+    ],
+    "kgmcquate": [
+        "dbt-testgen"
     ],
     "kristeligt-dagblad": [
         "dbt_ml"
@@ -387,6 +393,7 @@
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest",
-        "dbt-gcp-billing"
+        "dbt-gcp-billing",
+        "dbt-ops"
     ]
 }

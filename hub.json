@@ -290,6 +290,9 @@
     "gitlabhq": [
         "snowflake_spend"
     ],
+    "gmdata-co": [
+        "dbt-portable-google-sheets"
+    ],
     "google": [
         "fhir-dbt-utils",
         "fhir-dbt-analytics"

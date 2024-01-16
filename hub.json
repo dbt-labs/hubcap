@@ -303,7 +303,8 @@
     "infinitelambda": [
         "carbon-analytics",
         "dq-vault",
-        "dq-tools"
+        "dq-tools",
+        "dbt-data-diff"
     ],
     "jitsucom": [
         "dbt-jitsu"

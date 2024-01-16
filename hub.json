@@ -332,9 +332,6 @@
         "dbt-activity-schema",
         "dbt-segment-activity-schema"
     ],
-    "oleg-solovyev": [
-        "dbt_facebook_ads"
-    ],
     "omnata-labs": [
         "dbt-ml-preprocessing"
     ],
@@ -396,5 +393,8 @@
         "dbt-unittest",
         "dbt-gcp-billing",
         "dbt-ops"
+    ],
+    "windsor-ai": [
+        "dbt_facebook_ads"
     ]
 }

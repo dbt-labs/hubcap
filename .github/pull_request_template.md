@@ -8,6 +8,7 @@ Link to your package's repository:
 _This checklist is a cut down version of the [best practices](../blob/main/package-best-practices.md) that we have identified as the package hub has grown. Although meeting these checklist items is not a prerequisite to being added to the Hub, we have found that packages which don't conform provide a worse user experience._
 
 ### First run experience
+- [ ] (Required): The package includes a [licence file detectable by GitHub](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-license-to-a-repository), such as the Apache 2.0 or MIT licence.
 - [ ] The package includes a README which explains how to get started with the package and customise its behaviour
 - [ ] The README indicates which data warehouses/platforms are expected to work with this package
 

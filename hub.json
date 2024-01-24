@@ -5,6 +5,9 @@
     "Aidbox": [
         "dbt_fhir"
     ],
+    "AxelThevenot": [
+        "dbt-assertions"
+    ],
     "Datavault-UK": [
         "dbtvault"
     ],

@@ -6,7 +6,8 @@
         "dbt_fhir"
     ],
     "AxelThevenot": [
-        "dbt-assertions"
+        "dbt-assertions",
+        "dbt-star"
     ],
     "Datavault-UK": [
         "dbtvault"

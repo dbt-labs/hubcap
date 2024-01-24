@@ -399,5 +399,8 @@
     ],
     "windsor-ai": [
         "dbt_facebook_ads"
+    ],
+    "bcodell": [
+        "dbt-activity-schema"
     ]
 }

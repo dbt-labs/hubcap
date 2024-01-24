@@ -310,7 +310,8 @@
         "carbon-analytics",
         "dq-vault",
         "dq-tools",
-        "dbt-data-diff"
+        "dbt-data-diff",
+        "dbt-snowflake-evaluator"
     ],
     "jitsucom": [
         "dbt-jitsu"

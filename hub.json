@@ -390,7 +390,7 @@
         "dbt_census_utils"
     ],
     "TasmanAnalytics":[
-        "tasman_dbt_mta"
+        "tasman-dbt-mta"
     ],
     "techindicium": [
         "dbt-metalog"

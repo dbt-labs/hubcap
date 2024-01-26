@@ -89,6 +89,9 @@
     "avohq": [
         "avo_audit"
     ],
+    "bcodell": [
+        "dbt-activity-schema"
+    ],
     "brooklyn-data": [
         "dbt_artifacts"
     ],
@@ -396,13 +399,13 @@
     "tuva-health": [
         "the_tuva_project"
     ],
+    "windsor-ai": [
+        "dbt_facebook_ads"
+    ],
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest",
         "dbt-gcp-billing",
         "dbt-ops"
-    ],
-    "windsor-ai": [
-        "dbt_facebook_ads"
     ]
 }

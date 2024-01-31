@@ -5,6 +5,10 @@
     "Aidbox": [
         "dbt_fhir"
     ],
+    "AxelThevenot": [
+        "dbt-assertions",
+        "dbt-star"
+    ],
     "Datavault-UK": [
         "dbtvault"
     ],
@@ -85,6 +89,9 @@
     "avohq": [
         "avo_audit"
     ],
+    "bcodell": [
+        "dbt-activity-schema"
+    ],
     "brooklyn-data": [
         "dbt_artifacts"
     ],
@@ -103,6 +110,9 @@
         "airbyte_dbt_pipedrive",
         "airbyte_dbt_shopify",
         "airbyte_dbt_stripe"
+    ],
+    "creativeautomation": [
+        "dbt-airbyte-shopify"
     ],
     "data-mie": [
         "dbt-profiler"
@@ -152,7 +162,8 @@
     ],
     "edanalytics": [
         "edu_edfi_source",
-        "edu_wh"
+        "edu_wh",
+        "dbt_synth_data"
     ],
     "elementary-data": [
         "dbt-data-reliability"
@@ -271,7 +282,10 @@
         "dbt_twilio_source",
         "dbt_twilio",
         "dbt_qualtrics_source",
-        "dbt_qualtrics"
+        "dbt_qualtrics",
+        "dbt_workday",
+        "dbt_servicenow",
+        "dbt_salesforce_marketing_cloud"
     ],
     "fullstorydev": [
         "dbt_fullstory"
@@ -282,6 +296,9 @@
     ],
     "gitlabhq": [
         "snowflake_spend"
+    ],
+    "gmdata-co": [
+        "dbt-portable-google-sheets"
     ],
     "google": [
         "fhir-dbt-utils",
@@ -296,7 +313,9 @@
     "infinitelambda": [
         "carbon-analytics",
         "dq-vault",
-        "dq-tools"
+        "dq-tools",
+        "dbt-data-diff",
+        "dbt-snowflake-evaluator"
     ],
     "jitsucom": [
         "dbt-jitsu"
@@ -306,6 +325,9 @@
     ],
     "jpmmcneill": [
         "dbt-graph-theory"
+    ],
+    "kgmcquate": [
+        "dbt-testgen"
     ],
     "kristeligt-dagblad": [
         "dbt_ml"
@@ -377,9 +399,13 @@
     "tuva-health": [
         "the_tuva_project"
     ],
+    "windsor-ai": [
+        "dbt_facebook_ads"
+    ],
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest",
-        "dbt-gcp-billing"
+        "dbt-gcp-billing",
+        "dbt-ops"
     ]
 }

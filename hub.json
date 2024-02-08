@@ -378,7 +378,8 @@
         "dbt-snowplow-normalize",
         "dbt-snowplow-ecommerce",
         "dbt-snowplow-fractribution",
-        "dbt-snowplow-unified"
+        "dbt-snowplow-unified",
+        "dbt-snowplow-attribution"
     ],
     "splitgraph": [
         "ab2ft_stripe"

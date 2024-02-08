@@ -389,6 +389,9 @@
     "sutrolabs": [
         "dbt_census_utils"
     ],
+    "TasmanAnalytics":[
+        "tasman-dbt-mta"
+    ],
     "techindicium": [
         "dbt-metalog"
     ],

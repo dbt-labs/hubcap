@@ -315,7 +315,8 @@
         "dq-vault",
         "dq-tools",
         "dbt-data-diff",
-        "dbt-snowflake-evaluator"
+        "dbt-snowflake-evaluator",
+        "dbt-tags"
     ],
     "jitsucom": [
         "dbt-jitsu"

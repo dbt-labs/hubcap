@@ -335,6 +335,9 @@
     "lalalilo": [
         "athena-utils"
     ],
+    "metaops-solutions": [
+        "dbt-camunda"
+    ],
     "mjirv": [
         "dbt-datamocktool",
         "dbt_product_analytics"

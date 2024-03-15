@@ -29,6 +29,9 @@
     "Fleetio": [
         "dbt-segment"
     ],
+    "Flexor": [
+        "flexor"
+    ],
     "GJMcClintock": [
         "dbt_tld"
     ],

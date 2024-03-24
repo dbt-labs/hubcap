@@ -95,6 +95,9 @@
     "bcodell": [
         "dbt-activity-schema"
     ],
+    "bqbooster": [
+        "dbt-bigquery-monitoring"
+    ],
     "brooklyn-data": [
         "dbt_artifacts"
     ],

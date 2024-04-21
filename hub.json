@@ -26,6 +26,9 @@
         "dbt-snowflake-setup",
         "dbt-dataquality"
     ],
+    "dlt-hub": [
+        "dbt_ga4"
+    ],
     "EqualExperts": [
         "dbt-unit-testing"
     ],

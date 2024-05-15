@@ -12,6 +12,9 @@
     "BfdCampos": [
         "source_db"
     ],
+    "data-diving": [
+        "dbt_diving"
+    ],
     "Datavault-UK": [
         "dbtvault"
     ],

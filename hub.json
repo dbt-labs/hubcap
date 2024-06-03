@@ -333,6 +333,9 @@
         "dbt-snowflake-evaluator",
         "dbt-tags"
     ],
+    "irvingpop": [
+        "dbt_otel_export"
+    ],
     "jitsucom": [
         "dbt-jitsu"
     ],

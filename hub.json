@@ -5,6 +5,9 @@
     "Aidbox": [
         "dbt_fhir"
     ],
+    "alittlesliceoftom": [
+        "insert_by_timeperiod"
+    ],
     "AxelThevenot": [
         "dbt-assertions",
         "dbt-star"

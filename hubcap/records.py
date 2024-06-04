@@ -4,6 +4,10 @@ import hashlib
 import json
 import logging
 import os
+import tarfile
+from datetime import datetime, timezone
+from io import BytesIO
+
 import requests
 import subprocess
 
@@ -188,7 +192,7 @@ class UpdateTask(object):
                 except Exception:
                     return {}
 
-    def download(self, url):
+    def download(self, url: str) -> bytes:
         """Get some content to create a sha (very surely) unique to that package version"""
         response = requests.get(url)
         response.raise_for_status()
@@ -199,15 +203,18 @@ class UpdateTask(object):
 
         return file_buf
 
-    def get_sha1(self, url):
+    def get_sha1(self, content_bytes: bytes) -> str:
         """used to create a unique sha for each release"""
-        logging.info(f"    downloading: {url}")
-        contents = self.download(url)
         hasher = hashlib.sha1()
-        hasher.update(contents)
+        hasher.update(content_bytes)
         digest = hasher.hexdigest()
         logging.info(f"      SHA1: {digest}")
         return digest
+
+    def get_published_at(self, tar_bytes: bytes) -> str:
+        """infer the published_at date from the modification date of the tarball"""
+        with tarfile.open(fileobj=BytesIO(tar_bytes), mode="r:gz") as tar:
+            return datetime.fromtimestamp(tar.next().mtime, tz=timezone.utc).isoformat()
 
     def make_spec(
         self, org, repo, package_name, packages, require_dbt_version, version
@@ -216,14 +223,19 @@ class UpdateTask(object):
         tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(
             org, repo, version
         )
-        sha1 = self.get_sha1(tarball_url)
+
+        logging.info(f"    downloading: {tarball_url}")
+        tar_bytes = self.download(tarball_url)
+
+        sha1 = self.get_sha1(tar_bytes)
+        published_at = self.get_published_at(tar_bytes)
 
         # note: some packages do not have a packages.yml
         return {
             "id": "{}/{}/{}".format(org, package_name, version),
             "name": package_name,
             "version": version,
-            "published_at": "1970-01-01T00:00:00.000000+00:00",
+            "published_at": published_at,
             "packages": packages,
             "require_dbt_version": require_dbt_version,
             "works_with": [],

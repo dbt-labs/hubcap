@@ -87,7 +87,7 @@
         "datavault4dbt"
     ],
     "shankararul": [
-        "dbt_utils_medley"
+        "dbt_eda_tools"
     ],
     "Snowflake-Labs": [
         "dbt_constraints"

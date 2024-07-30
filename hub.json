@@ -1,10 +1,10 @@
 {
-    "Aaron-Zhou": [
-        "dbt-synapse-statistics"
-    ],
     "1997mahadi": [
       "dbt-dlt-ingestion-pipeline"
    ],
+    "Aaron-Zhou": [
+        "dbt-synapse-statistics"
+    ],
     "Aidbox": [
         "dbt_fhir"
     ],
@@ -443,5 +443,3 @@
         "dbt-ops"
     ]
 }
-
-

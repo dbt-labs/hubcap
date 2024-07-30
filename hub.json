@@ -86,6 +86,9 @@
     "ScalefreeCOM": [
         "datavault4dbt"
     ],
+    "shankararul": [
+        "dbt_eda_tools"
+    ],
     "Snowflake-Labs": [
         "dbt_constraints"
     ],

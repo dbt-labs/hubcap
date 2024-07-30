@@ -1,4 +1,7 @@
 {
+    "1997mahadi": [
+      "dbt-dlt-ingestion-pipeline"
+   ],
     "Aaron-Zhou": [
         "dbt-synapse-statistics"
     ],

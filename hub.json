@@ -309,7 +309,8 @@
         "dbt_qualtrics",
         "dbt_workday",
         "dbt_servicenow",
-        "dbt_salesforce_marketing_cloud"
+        "dbt_salesforce_marketing_cloud",
+        "dbt_aws_cloud_cost"
     ],
     "fullstorydev": [
         "dbt_fullstory"

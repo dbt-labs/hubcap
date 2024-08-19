@@ -1,7 +1,7 @@
 {
     "1997mahadi": [
-      "dbt-dlt-ingestion-pipeline"
-   ],
+        "dbt-dlt-ingestion-pipeline"
+    ],
     "Aaron-Zhou": [
         "dbt-synapse-statistics"
     ],
@@ -63,6 +63,9 @@
     ],
     "MaterializeInc": [
         "materialize-dbt-utils"
+    ],
+    "Matts52": [
+        "dbt-ml-inline-preprocessing"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
@@ -423,7 +426,7 @@
     "sutrolabs": [
         "dbt_census_utils"
     ],
-    "TasmanAnalytics":[
+    "TasmanAnalytics": [
         "tasman-dbt-mta",
         "tasman-dbt-revenuecat"
     ],

@@ -428,7 +428,8 @@
     ],
     "TasmanAnalytics": [
         "tasman-dbt-mta",
-        "tasman-dbt-revenuecat"
+        "tasman-dbt-revenuecat",
+        "tasman-identity-graph"
     ],
     "techindicium": [
         "dbt-metalog"

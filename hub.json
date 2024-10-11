@@ -313,7 +313,9 @@
         "dbt_workday",
         "dbt_servicenow",
         "dbt_salesforce_marketing_cloud",
-        "dbt_aws_cloud_cost"
+        "dbt_aws_cloud_cost",
+        "dbt_ga4_export",
+        "dbt_unified_rag"
     ],
     "fullstorydev": [
         "dbt_fullstory"

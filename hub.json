@@ -36,7 +36,8 @@
         "dbt-dataquality"
     ],
     "dlt-hub": [
-        "dbt_ga4"
+        "dbt_ga4",
+        "dlt-dbt-shopify"
     ],
     "EqualExperts": [
         "dbt-unit-testing"

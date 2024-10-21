@@ -37,7 +37,8 @@
     ],
     "dlt-hub": [
         "dbt_ga4",
-        "dlt-dbt-shopify"
+        "dlt-dbt-shopify",
+        "dlt-dbt-salesforce"
     ],
     "EqualExperts": [
         "dbt-unit-testing"

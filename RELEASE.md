@@ -19,8 +19,13 @@ The commands below assume a production application named `dbt-hubcap`. Replace w
     - Job: `python3 hubcap.py`
     - Schedule: Every hour at :00
     - Dyno size: Hobby / Standard-1X
-1. Configure the `CONFIG` environment variable: [Settings > Config Vars > Reveal Config Vars](https://dashboard.heroku.com/apps/dbt-hubcap/settings)
+1. Configure environment variables: [Settings > Config Vars > Reveal Config Vars](https://dashboard.heroku.com/apps/dbt-hubcap/settings)
     - `CONFIG`: copy format from `config.example.json` and adjust values as needed
+    - `GIT_EXEC_PATH`: `/app/.apt/usr/lib/git-core`
+1. Setup `git` to be available at app run time. See [these](https://devcenter.heroku.com/articles/heroku-24-stack#changes-to-git) instructions for context.
+    ```shell
+    heroku buildpacks:add --index 1 heroku-community/apt --app dbt-hubcap
+    ```
 1. (Re-)deploy the application using the instructions below. See [these](https://dashboard.heroku.com/apps/dbt-hubcap/deploy/heroku-git) instructions for context.
 
 

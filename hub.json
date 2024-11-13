@@ -66,7 +66,8 @@
         "materialize-dbt-utils"
     ],
     "Matts52": [
-        "dbt-ml-inline-preprocessing"
+        "dbt-ml-inline-preprocessing",
+        "dbt-set-similarity"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"

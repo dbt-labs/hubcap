@@ -349,7 +349,8 @@
         "dbt-data-diff",
         "dbt-snowflake-evaluator",
         "dbt-tags",
-        "dbt-alert"
+        "dbt-alert",
+        "dbt-audit-helper-ext"
     ],
     "irvingpop": [
         "dbt_otel_export"

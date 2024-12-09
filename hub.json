@@ -38,7 +38,12 @@
     "dlt-hub": [
         "dbt_ga4",
         "dlt-dbt-shopify",
-        "dlt-dbt-stripe"
+        "dlt-dbt-stripe",
+        "dlt-dbt-salesforce",
+        "dlt-dbt-pipedrive",
+        "dlt-dbt-hubspot",
+        "dlt-dbt-freshdesk",
+        "dlt-dbt-chess"
     ],
     "EqualExperts": [
         "dbt-unit-testing"

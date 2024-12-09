@@ -31,5 +31,5 @@ _This checklist is a cut down version of the [best practices](../blob/main/packa
 - [ ] The package disambiguates its resource names to avoid clashes with nodes that are likely to already exist in a project. For example, packages should not provide a model simply called `users`.
 
 ### Versioning
-- [ ] (Required): The package's git tags validates against the regex defined in [version.py](/hubcap/version.py)
+- [ ] (Required): The package's git tags validates against the regex defined in `hubcap/version.py` ([examples](https://regex101.com/r/OHA92c)). 
 - [ ] The package's version follows the guidance of Semantic Versioning 2.0.0. (Note in particular the recommendation for production-ready packages to be version 1.0.0 or above)

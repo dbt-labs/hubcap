@@ -75,6 +75,9 @@
         "dbt-ml-inline-preprocessing",
         "dbt-set-similarity"
     ],
+    "metaplane" : [
+        "dbt-expectations"
+    ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],

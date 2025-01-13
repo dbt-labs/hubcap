@@ -196,7 +196,8 @@
         "tsql-utils"
     ],
     "dwreeves": [
-        "dbt_linreg"
+        "dbt_linreg",
+        "dbt_pca"
     ],
     "edanalytics": [
         "edu_edfi_source",

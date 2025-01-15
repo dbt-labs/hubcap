@@ -190,7 +190,8 @@
         "dbt-audit-helper",
         "dbt-external-tables",
         "dbt_metrics",
-        "dbt-project-evaluator"
+        "dbt-project-evaluator",
+        "dbt-semantic-interfaces"
     ],
     "dbt-msft": [
         "tsql-utils"

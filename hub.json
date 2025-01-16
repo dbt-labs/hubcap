@@ -1,4 +1,7 @@
 {
+    "1997mahadi": [
+        "dbt-dlt-ingestion-pipeline"
+    ],
     "Aaron-Zhou": [
         "dbt-synapse-statistics"
     ],
@@ -33,7 +36,14 @@
         "dbt-dataquality"
     ],
     "dlt-hub": [
-        "dbt_ga4"
+        "dbt_ga4",
+        "dlt-dbt-shopify",
+        "dlt-dbt-stripe",
+        "dlt-dbt-salesforce",
+        "dlt-dbt-pipedrive",
+        "dlt-dbt-hubspot",
+        "dlt-dbt-freshdesk",
+        "dlt-dbt-chess"
     ],
     "EqualExperts": [
         "dbt-unit-testing"
@@ -61,6 +71,13 @@
     "MaterializeInc": [
         "materialize-dbt-utils"
     ],
+    "Matts52": [
+        "dbt-ml-inline-preprocessing",
+        "dbt-set-similarity"
+    ],
+    "metaplane" : [
+        "dbt-expectations"
+    ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],
@@ -85,6 +102,9 @@
     ],
     "ScalefreeCOM": [
         "datavault4dbt"
+    ],
+    "shankararul": [
+        "dbt_eda_tools"
     ],
     "Snowflake-Labs": [
         "dbt_constraints"
@@ -176,7 +196,8 @@
         "tsql-utils"
     ],
     "dwreeves": [
-        "dbt_linreg"
+        "dbt_linreg",
+        "dbt_pca"
     ],
     "edanalytics": [
         "edu_edfi_source",
@@ -303,7 +324,10 @@
         "dbt_qualtrics",
         "dbt_workday",
         "dbt_servicenow",
-        "dbt_salesforce_marketing_cloud"
+        "dbt_salesforce_marketing_cloud",
+        "dbt_aws_cloud_cost",
+        "dbt_ga4_export",
+        "dbt_unified_rag"
     ],
     "fullstorydev": [
         "dbt_fullstory"
@@ -334,7 +358,9 @@
         "dq-tools",
         "dbt-data-diff",
         "dbt-snowflake-evaluator",
-        "dbt-tags"
+        "dbt-tags",
+        "dbt-alert",
+        "dbt-audit-helper-ext"
     ],
     "irvingpop": [
         "dbt_otel_export"
@@ -415,9 +441,10 @@
     "sutrolabs": [
         "dbt_census_utils"
     ],
-    "TasmanAnalytics":[
+    "TasmanAnalytics": [
         "tasman-dbt-mta",
-        "tasman-dbt-revenuecat"
+        "tasman-dbt-revenuecat",
+        "tasman-identity-graph"
     ],
     "techindicium": [
         "dbt-metalog"

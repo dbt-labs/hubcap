@@ -327,7 +327,9 @@
         "dbt_salesforce_marketing_cloud",
         "dbt_aws_cloud_cost",
         "dbt_ga4_export",
-        "dbt_unified_rag"
+        "dbt_unified_rag",
+        "dbt_amazon_selling_partner",
+        "dbt_dynamics_365_crm"
     ],
     "fullstorydev": [
         "dbt_fullstory"

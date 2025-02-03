@@ -461,6 +461,9 @@
     "windsor-ai": [
         "dbt_facebook_ads"
     ],
+    "Xebia Data": [
+        "dbt-date"
+    ],
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest",

@@ -43,7 +43,11 @@
         "dlt-dbt-pipedrive",
         "dlt-dbt-hubspot",
         "dlt-dbt-freshdesk",
-        "dlt-dbt-chess"
+        "dlt-dbt-chess",
+        "dlt-dbt-github",
+        "dlt-dbt-zendesk",
+        "dlt-dbt-jira",
+        "dlt-dbt-asana"
     ],
     "EqualExperts": [
         "dbt-unit-testing"

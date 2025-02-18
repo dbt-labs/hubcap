@@ -344,6 +344,9 @@
     "gmdata-co": [
         "dbt-portable-google-sheets"
     ],
+    "godatadriven": [
+        "dbt-date"
+    ],
     "google": [
         "fhir-dbt-utils",
         "fhir-dbt-analytics"
@@ -460,9 +463,6 @@
     ],
     "windsor-ai": [
         "dbt_facebook_ads"
-    ],
-    "Xebia Data": [
-        "dbt-date"
     ],
     "yu-iskw": [
         "dbt-airflow-macros",

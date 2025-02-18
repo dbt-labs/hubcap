@@ -344,6 +344,9 @@
     "gmdata-co": [
         "dbt-portable-google-sheets"
     ],
+    "godatadriven": [
+        "dbt-date"
+    ],
     "google": [
         "fhir-dbt-utils",
         "fhir-dbt-analytics"

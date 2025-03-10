@@ -47,9 +47,7 @@
         "dlt-dbt-github",
         "dlt-dbt-zendesk",
         "dlt-dbt-jira",
-        "dlt-dbt-asana",
-        "dlt-dbt-personio",
-        "dlt-dbt-workable"
+        "dlt-dbt-asana"
     ],
     "EqualExperts": [
         "dbt-unit-testing"

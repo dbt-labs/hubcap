@@ -8,6 +8,9 @@
     "Aidbox": [
         "dbt_fhir"
     ],
+    "AltimateAI": [
+        "altimate-dbt-snowflake-query-tags"
+    ],
     "M-KOPA": [
         "insert_by_timeperiod"
     ],

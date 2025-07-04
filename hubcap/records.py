@@ -28,7 +28,7 @@ class PullRequestStrategy(ABC):
 
 class IndividualPullRequests(PullRequestStrategy):
     def pull_request_title(self, org: str, repo: str) -> str:
-        return f"HubCap: Bump {org}/{repo}"
+        return f"hubcap: Bump {org}/{repo}"
 
     def branch_name(self, org: str, repo: str) -> str:
         return f"bump-{org}-{repo}-{helper.NOW}"
@@ -36,7 +36,7 @@ class IndividualPullRequests(PullRequestStrategy):
 
 class ConsolididatedPullRequest(PullRequestStrategy):
     def pull_request_title(self, org: str, repo: str) -> str:
-        return "HubCap: Bump package versions"
+        return "hubcap: Bump package versions"
 
     def branch_name(self, org: str, repo: str) -> str:
         return f"bump-package-versions-{helper.NOW}"

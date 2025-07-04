@@ -179,14 +179,14 @@ def main():
                 logging.error(f"Error opening pull requests: {str(e)}")
                 return 1
 
-        logging.info("HubCap execution completed successfully")
+        logging.info("hubcap execution completed successfully")
         return 0
 
     except KeyboardInterrupt:
-        logging.info("HubCap execution interrupted by user")
+        logging.info("hubcap execution interrupted by user")
         return 130
     except Exception as e:
-        logging.error(f"Unexpected error in HubCap execution: {str(e)}")
+        logging.error(f"Unexpected error in hubcap execution: {str(e)}")
         return 1
 
 

@@ -1,12 +1,483 @@
 {
+    "1997mahadi": [
+        "dbt-dlt-ingestion-pipeline"
+    ],
+    "Aaron-Zhou": [
+        "dbt-synapse-statistics"
+    ],
+    "Aidbox": [
+        "dbt_fhir"
+    ],
+    "AltimateAI": [
+        "altimate-dbt-snowflake-query-tags"
+    ],
+    "M-KOPA": [
+        "insert_by_timeperiod"
+    ],
+    "AxelThevenot": [
+        "dbt-assertions",
+        "dbt-star"
+    ],
+    "BfdCampos": [
+        "source_db"
+    ],
+    "data-diving": [
+        "dbt_diving"
+    ],
+    "Datavault-UK": [
+        "dbtvault"
+    ],
+    "Datomni": [
+        "profitwell_metrics",
+        "ga4_metrics"
+    ],
+    "Delphi-Data": [
+        "dbt_natural_language"
+    ],
+    "Divergent-Insights": [
+        "dbt-snowflake-setup",
+        "dbt-dataquality"
+    ],
+    "dlt-hub": [
+        "dbt_ga4",
+        "dlt-dbt-shopify",
+        "dlt-dbt-stripe",
+        "dlt-dbt-salesforce",
+        "dlt-dbt-pipedrive",
+        "dlt-dbt-hubspot",
+        "dlt-dbt-freshdesk",
+        "dlt-dbt-chess",
+        "dlt-dbt-github",
+        "dlt-dbt-zendesk",
+        "dlt-dbt-jira",
+        "dlt-dbt-asana",
+        "dlt-dbt-personio",
+        "dlt-dbt-workable"
+    ],
+    "EqualExperts": [
+        "dbt-unit-testing"
+    ],
+    "Fleetio": [
+        "dbt-segment"
+    ],
+    "flexor-ai": [
+        "flexor-dbt"
+    ],
+    "GJMcClintock": [
+        "dbt_tld"
+    ],
+    "LewisDavies": [
+        "upstream-prod"
+    ],
+    "Matatika": [
+        "dbt-tap-googleads",
+        "dbt-tap-solarvista",
+        "dbt-tap-meltano",
+        "dbt-tap-trello",
+        "dbt-tap-google-analytics",
+        "dbt-tap-spotify"
+    ],
+    "MaterializeInc": [
+        "materialize-dbt-utils"
+    ],
+    "Matts52": [
+        "dbt-ml-inline-preprocessing",
+        "dbt-set-similarity",
+        "dbt-stat-test"
+    ],
+    "metaplane" : [
+        "dbt-expectations"
+    ],
+    "Montreal-Analytics": [
+        "dbt-snowflake-utils"
+    ],
     "Saras-Daton": [
-        "Aftership",
-        "klaviyo-fivetran-to-daton"
+        "currency_exchange_rates",
+        "AmazonSellerCentral",
+        "AmazonAds",
+        "AmazonVendorCentral",
+        "BingAds",
+        "FacebookAds",
+        "Shopify",
+        "GoogleAds",
+        "Unicommerce",
+        "Upscribe",
+        "Recharge",
+        "GoogleAnalytics",
+        "PinterestAds",
+        "Walmart",
+        "TiktokAds",
+        "AmazonDSP",
+        "Aftership"
     ],
-    "xoniks": [
-        "dbt-test-results"
+    "ScalefreeCOM": [
+        "datavault4dbt"
     ],
-    "bssulfikkar": [
-        "dbt-cross-server-ref"
+    "shankararul": [
+        "dbt_eda_tools"
+    ],
+    "Snowflake-Labs": [
+        "dbt_constraints"
+    ],
+    "Teradata": [
+        "dbt-teradata-utils"
+    ],
+    "Velir": [
+        "dbt-ga4"
+    ],
+    "andrewcstewart": [
+        "dbt-uaparser"
+    ],
+    "arnoN7": [
+        "dbt-incremental-stream"
+    ],
+    "avohq": [
+        "avo_audit"
+    ],
+    "bcodell": [
+        "dbt-activity-schema"
+    ],
+    "bqbooster": [
+        "dbt-bigquery-monitoring"
+    ],
+    "brooklyn-data": [
+        "dbt_artifacts"
+    ],
+    "calogica": [
+        "dbt-date",
+        "dbt-expectations"
+    ],
+    "calum-mcg": [
+        "dbt-fuzzy-text"
+    ],
+    "cerebriumai": [
+        "airbyte_dbt_intercom",
+        "airbyte_dbt_facebook_ads",
+        "airbyte_dbt_github",
+        "airbyte_dbt_google_ads",
+        "airbyte_dbt_pipedrive",
+        "airbyte_dbt_shopify",
+        "airbyte_dbt_stripe"
+    ],
+    "creativeautomation": [
+        "dbt-airbyte-shopify"
+    ],
+    "data-mie": [
+        "dbt-profiler"
+    ],
+    "datalakehouse": [
+        "dlh-square-analytics-dbt",
+        "dlh-quickbooks-analytics-dbt",
+        "dlh-xero-analytics-dbt",
+        "dlh-salesforce-analytics-dbt",
+        "dlh-stripe-analytics-dbt"
+    ],
+    "datnguye": [
+        "dbt-translate"
+    ],
+    "dbt-labs": [
+        "dbt-utils",
+        "dbt-event-logging",
+        "facebook-ads",
+        "shopify",
+        "recurly",
+        "purecloud",
+        "zendesk",
+        "stripe",
+        "adwords",
+        "snowplow",
+        "outbrain",
+        "quickbooks",
+        "bing-ads",
+        "taboola",
+        "heap",
+        "redshift",
+        "segment",
+        "ecommerce",
+        "spark-utils",
+        "stitch-utils",
+        "dbt-codegen",
+        "dbt-audit-helper",
+        "dbt-external-tables",
+        "dbt_metrics",
+        "dbt-project-evaluator"
+    ],
+    "dbt-msft": [
+        "tsql-utils"
+    ],
+    "dwreeves": [
+        "dbt_linreg",
+        "dbt_pca"
+    ],
+    "edanalytics": [
+        "edu_edfi_source",
+        "edu_wh",
+        "dbt_synth_data"
+    ],
+    "elementary-data": [
+        "dbt-data-reliability"
+    ],
+    "emilyriederer": [
+        "dbtplyr"
+    ],
+    "entechlog": [
+        "dbt-snow-mask",
+        "dbt-snow-utils"
+    ],
+    "everpeace": [
+        "dbt-models-metadata"
+    ],
+    "fal-ai": [
+        "dbt_feature_store"
+    ],
+    "fivetran": [
+        "dbt_netsuite",
+        "dbt_netsuite_source",
+        "dbt_mailchimp",
+        "dbt_mailchimp_source",
+        "dbt_salesforce",
+        "dbt_salesforce_source",
+        "dbt_github",
+        "dbt_github_source",
+        "dbt_marketo",
+        "dbt_marketo_source",
+        "dbt_asana",
+        "dbt_asana_source",
+        "dbt_hubspot",
+        "dbt_hubspot_source",
+        "dbt_stripe",
+        "dbt_stripe_source",
+        "dbt_linkedin",
+        "dbt_linkedin_source",
+        "dbt_zendesk",
+        "dbt_zendesk_source",
+        "dbt_pinterest",
+        "dbt_pinterest_source",
+        "dbt_facebook_ads",
+        "dbt_facebook_ads_creative_history",
+        "dbt_facebook_ads_source",
+        "dbt_microsoft_ads",
+        "dbt_microsoft_ads_source",
+        "dbt_fivetran_log",
+        "dbt_jira",
+        "dbt_jira_source",
+        "dbt_shopify",
+        "dbt_shopify_source",
+        "dbt_mixpanel",
+        "dbt_twitter",
+        "dbt_twitter_source",
+        "dbt_ad_reporting",
+        "dbt_google_ads",
+        "dbt_google_ads_source",
+        "dbt_quickbooks",
+        "dbt_quickbooks_source",
+        "dbt_intercom",
+        "dbt_intercom_source",
+        "dbt_pardot",
+        "dbt_pardot_source",
+        "dbt_greenhouse",
+        "dbt_greenhouse_source",
+        "dbt_lever",
+        "dbt_lever_source",
+        "dbt_zuora",
+        "dbt_zuora_source",
+        "dbt_fivetran_utils",
+        "dbt_xero",
+        "dbt_xero_source",
+        "dbt_klaviyo",
+        "dbt_klaviyo_source",
+        "dbt_snapchat_ads",
+        "dbt_snapchat_ads_source",
+        "dbt_iterable",
+        "dbt_iterable_source",
+        "dbt_salesforce_formula_utils",
+        "dbt_youtube_analytics",
+        "dbt_youtube_analytics_source",
+        "dbt_pendo",
+        "dbt_pendo_source",
+        "dbt_tiktok_ads",
+        "dbt_tiktok_ads_source",
+        "dbt_shopify_holistic_reporting",
+        "dbt_facebook_pages",
+        "dbt_facebook_pages_source",
+        "dbt_instagram_business",
+        "dbt_instagram_business_source",
+        "dbt_twitter_organic",
+        "dbt_twitter_organic_source",
+        "dbt_linkedin_pages",
+        "dbt_linkedin_pages_source",
+        "dbt_social_media_reporting",
+        "dbt_sage_intacct",
+        "dbt_sage_intacct_source",
+        "dbt_google_play",
+        "dbt_google_play_source",
+        "dbt_apple_store",
+        "dbt_apple_store_source",
+        "dbt_app_reporting",
+        "dbt_apple_search_ads",
+        "dbt_apple_search_ads_source",
+        "dbt_amplitude",
+        "dbt_amplitude_source",
+        "dbt_recurly",
+        "dbt_recurly_source",
+        "dbt_amazon_ads",
+        "dbt_amazon_ads_source",
+        "dbt_reddit_ads",
+        "dbt_reddit_ads_source",
+        "dbt_recharge",
+        "dbt_recharge_source",
+        "dbt_sap_source",
+        "dbt_sap",
+        "dbt_twilio_source",
+        "dbt_twilio",
+        "dbt_qualtrics_source",
+        "dbt_qualtrics",
+        "dbt_workday",
+        "dbt_servicenow",
+        "dbt_salesforce_marketing_cloud",
+        "dbt_aws_cloud_cost",
+        "dbt_ga4_export",
+        "dbt_unified_rag",
+        "dbt_amazon_selling_partner",
+        "dbt_dynamics_365_crm"
+    ],
+    "fullstorydev": [
+        "dbt_fullstory"
+    ],
+    "get-select": [
+        "dbt-snowflake-monitoring",
+        "dbt-snowflake-query-tags"
+    ],
+    "gitlabhq": [
+        "snowflake_spend"
+    ],
+    "gmdata-co": [
+        "dbt-portable-google-sheets"
+    ],
+    "godatadriven": [
+        "dbt-date"
+    ],
+    "google": [
+        "fhir-dbt-utils",
+        "fhir-dbt-analytics"
+    ],
+    "grafana": [
+        "dbt_leaner_query"
+    ],
+    "hightouchio": [
+        "dbt-hightouch"
+    ],
+    "infinitelambda": [
+        "carbon-analytics",
+        "dq-vault",
+        "dq-tools",
+        "dbt-data-diff",
+        "dbt-snowflake-evaluator",
+        "dbt-tags",
+        "dbt-alert",
+        "dbt-audit-helper-ext"
+    ],
+    "irvingpop": [
+        "dbt_otel_export"
+    ],
+    "jitsucom": [
+        "dbt-jitsu"
+    ],
+    "jmangroup": [
+        "data_profiler"
+    ],
+    "jpmmcneill": [
+        "dbt-graph-theory"
+    ],
+    "kgmcquate": [
+        "dbt-testgen"
+    ],
+    "kristeligt-dagblad": [
+        "dbt_ml"
+    ],
+    "lalalilo": [
+        "athena-utils"
+    ],
+    "metaops-solutions": [
+        "dbt-camunda"
+    ],
+    "mjirv": [
+        "dbt-datamocktool",
+        "dbt_product_analytics"
+    ],
+    "narratorai": [
+        "dbt-activity-schema",
+        "dbt-segment-activity-schema"
+    ],
+    "omnata-labs": [
+        "dbt-ml-preprocessing"
+    ],
+    "pvcy": [
+        "dbt-privacy"
+    ],
+    "re-data": [
+        "dbt-re-data"
+    ],
+    "rjh336": [
+        "dbt-model-usage"
+    ],
+    "rlsalcido24": [
+        "lakehouse_utils"
+    ],
+    "rudderlabs": [
+        "dbt-sessionization",
+        "dbt-id-stitching",
+        "dbt-customer-journey-analysis",
+        "dbt-events-registry"
+    ],
+    "sdebruyn": [
+        "dbt-duckdb-utils"
+    ],
+    "sgoley": [
+        "dbt-postgres-utils"
+    ],
+    "snowplow": [
+        "dbt-snowplow-utils",
+        "dbt-snowplow-web",
+        "dbt-snowplow-mobile",
+        "dbt-snowplow-media-player",
+        "dbt-snowplow-normalize",
+        "dbt-snowplow-ecommerce",
+        "dbt-snowplow-fractribution",
+        "dbt-snowplow-unified",
+        "dbt-snowplow-attribution"
+    ],
+    "splitgraph": [
+        "ab2ft_stripe"
+    ],
+    "starburstdata": [
+        "dbt-trino-utils"
+    ],
+    "sutrolabs": [
+        "dbt_census_utils"
+    ],
+    "TasmanAnalytics": [
+        "tasman-dbt-mta",
+        "tasman-dbt-revenuecat",
+        "tasman-identity-graph"
+    ],
+    "techindicium": [
+        "dbt-metalog"
+    ],
+    "tnightengale": [
+        "dbt-meta-testing",
+        "dbt-activity-schema"
+    ],
+    "tuva-health": [
+        "the_tuva_project"
+    ],
+    "windsor-ai": [
+        "dbt_facebook_ads"
+    ],
+    "yu-iskw": [
+        "dbt-airflow-macros",
+        "dbt-unittest",
+        "dbt-gcp-billing",
+        "dbt-ops"
     ]
 }

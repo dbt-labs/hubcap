@@ -108,8 +108,7 @@
         "Walmart",
         "TiktokAds",
         "AmazonDSP",
-        "Aftership",
-        "klaviyo-fivetran-to-daton"
+        "Aftership"
     ],
     "ScalefreeCOM": [
         "datavault4dbt"

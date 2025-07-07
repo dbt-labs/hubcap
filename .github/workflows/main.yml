@@ -47,7 +47,10 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "CONFIG=$(cat config.json)" >> $GITHUB_ENV
+          echo "CONFIG<<EOF" >> $GITHUB_ENV
+          cat config.json >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
 
       - name: Run hubcap dry run
         run: python3 .github/hubcap_dry_run.py

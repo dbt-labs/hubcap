@@ -62,7 +62,8 @@ jobs:
         if: always()
         run: |
           if grep -q 'ERROR' hubcap.log; then
-            echo "Found ERROR events in hubcap.log"
+            echo "Found ERROR events in hubcap.log:"
+            grep 'ERROR' hubcap.log
             exit 1
           else
             echo "No ERROR-level log entries found."

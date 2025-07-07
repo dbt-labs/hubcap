@@ -53,7 +53,7 @@ jobs:
 
 
       - name: Run hubcap dry run
-        run: PYTHONPATH=${{ github.workspace }} python3 .github/hubcap_dry_run.py
+        run: PYTHONPATH=${{ github.workspace }} python3 hubcap.py
 
   code-quality:
     name: code-quality

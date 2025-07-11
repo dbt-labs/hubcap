@@ -109,7 +109,8 @@
         "TiktokAds",
         "AmazonDSP",
         "Aftership",
-        "klaviyo-fivetran-to-daton"
+        "klaviyo-fivetran-to-daton",
+        "shopify-fivetran-to-daton
     ],
     "ScalefreeCOM": [
         "datavault4dbt"

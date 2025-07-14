@@ -4,7 +4,8 @@ import datetime
 import json
 import logging
 import os
-from typing import Dict, Any
+from contextlib import contextmanager
+from typing import Dict, Any, List
 
 from pathlib import Path
 
@@ -30,6 +31,17 @@ logging.basicConfig(
 )
 
 
+@contextmanager
+def change_directory(path):
+    """Context manager for temporarily changing directory"""
+    prev_path = os.getcwd()
+    try:
+        os.chdir(path)
+        yield
+    finally:
+        os.chdir(prev_path)
+
+
 def build_config() -> Dict[str, Any]:
     """Pull the config env variable which holds github secrets"""
     try:
@@ -52,9 +64,59 @@ def build_config() -> Dict[str, Any]:
         raise ConfigurationError(f"Unexpected error loading configuration: {str(e)}")
 
 
+def _get_maintainers() -> List[str]:
+    """Get list of maintainers from the packages directory"""
+    try:
+        packages_path = Path("data") / Path("packages")
+        maintainers = [d.name for d in packages_path.iterdir() if d.is_dir()]
+        return maintainers
+    except OSError as e:
+        raise FileOperationError(f"Error reading maintainers directory: {str(e)}")
+
+
+def _get_packages_for_maintainer(maintainer: str) -> List[str]:
+    """Get list of packages for a specific maintainer"""
+    try:
+        maintainer_path = Path("data") / Path("packages") / Path(maintainer)
+        packages = [p.name for p in maintainer_path.iterdir() if p.is_dir()]
+        return packages
+    except OSError as e:
+        logging.error(f"Error reading packages for maintainer {maintainer}: {str(e)}")
+        return []
+
+
+def _get_versions_for_package(maintainer: str, package: str) -> List[str]:
+    """Get list of versions for a specific package"""
+    try:
+        package_path = Path("data") / "packages" / maintainer / package
+        if not package_path.exists():
+            logging.error(f"Package path does not exist: {package_path}")
+            return []
+
+        versions_dir = package_path / "versions"
+        if not versions_dir.exists():
+            return []
+
+        try:
+            version_files = list(versions_dir.glob("*.json"))
+            versions = [
+                f.stem  # Use stem to get filename without extension
+                for f in version_files
+                if f.is_file()
+            ]
+            return versions
+        except OSError as e:
+            logging.error(
+                f"Error reading versions for {maintainer}/{package}: {str(e)}"
+            )
+            return []
+    except Exception as e:
+        logging.error(f"Error processing package {maintainer}/{package}: {str(e)}")
+        return []
+
+
 def build_pkg_version_index(hub_path) -> Dict[tuple, list]:
     """traverse the hub repo and load all versions for every package of every org into memory"""
-
     try:
         # Validate hub_path exists and is a directory
         hub_path = Path(hub_path)
@@ -68,85 +130,22 @@ def build_pkg_version_index(hub_path) -> Dict[tuple, list]:
         if not packages_dir.exists():
             raise FileOperationError(f"Packages directory not found: {packages_dir}")
 
-        # store previous path for easy return at function exit
-        prev_path = os.getcwd()
-        os.chdir(hub_path)
-
-        try:
-            # Get list of maintainers
-            maintainers = []
-            try:
-                maintainers = [
-                    d
-                    for d in os.listdir(Path("data") / Path("packages"))
-                    if (Path("data") / Path("packages") / d).is_dir()
-                ]
-            except OSError as e:
-                raise FileOperationError(
-                    f"Error reading maintainers directory: {str(e)}"
-                )
+        with change_directory(hub_path):
+            maintainers = _get_maintainers()
 
             if not maintainers:
-                logging.warning("No maintainers found in packages directory")
+                logging.error("No maintainers found in packages directory")
                 return {}
 
-            maintainer_package_map = {}
-            for maintainer in maintainers:
-                try:
-                    maintainer_path = Path("data") / Path("packages") / Path(maintainer)
-                    packages = [
-                        p
-                        for p in os.listdir(maintainer_path)
-                        if (maintainer_path / p).is_dir()
-                    ]
-                    maintainer_package_map[maintainer] = packages
-                except OSError as e:
-                    logging.warning(
-                        f"Error reading packages for maintainer {maintainer}: {str(e)}"
-                    )
-                    maintainer_package_map[maintainer] = []
-
             package_version_index = {}
-            for maintainer in maintainer_package_map.keys():
-                for package in maintainer_package_map[maintainer]:
-                    try:
-                        package_path = Path("data") / "packages" / maintainer / package
-                        if not package_path.exists():
-                            logging.warning(
-                                f"Package path does not exist: {package_path}"
-                            )
-                            continue
+            for maintainer in maintainers:
+                packages = _get_packages_for_maintainer(maintainer)
 
-                        # Find all version JSON files
-                        versions = []
-                        versions_dir = package_path / "versions"
-                        if versions_dir.exists():
-                            try:
-                                version_files = list(versions_dir.glob("*.json"))
-                                versions = [
-                                    os.path.basename(f)[
-                                        : -len(".json")
-                                    ]  # include semver in filename only
-                                    for f in version_files
-                                    if f.is_file()
-                                ]
-                            except OSError as e:
-                                logging.warning(
-                                    f"Error reading versions for {maintainer}/{package}: {str(e)}"
-                                )
-                                versions = []
-
-                        package_version_index[(package, maintainer)] = versions
-                    except Exception as e:
-                        logging.warning(
-                            f"Error processing package {maintainer}/{package}: {str(e)}"
-                        )
-                        package_version_index[(package, maintainer)] = []
+                for package in packages:
+                    versions = _get_versions_for_package(maintainer, package)
+                    package_version_index[(package, maintainer)] = versions
 
             return package_version_index
-
-        finally:
-            os.chdir(prev_path)
 
     except Exception as e:
         if isinstance(e, (ConfigurationError, FileOperationError)):

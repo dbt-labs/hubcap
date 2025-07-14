@@ -10,6 +10,65 @@ jobs:
       - name: Validate JSON
         run: "cat hub.json | python3 -m json.tool"
 
+  hubcap-dry-run:
+    name: Hubcap Dry Run
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --user --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install -r requirements-dev.txt
+
+      - name: Create test config
+        run: |
+          cat > config.json << EOF
+          {
+            "org": "dbt-labs",
+            "repo": "hub.getdbt.com",
+            "push_branches": false,
+            "one_branch_per_repo": true,
+            "user": {
+              "name": "github-actions",
+              "email": "github-actions@github.com",
+              "token": "dummy-token"
+            }
+          }
+          EOF
+
+      - name: Set environment variables
+        run: |
+          echo "CONFIG<<EOF" >> $GITHUB_ENV
+          cat config.json >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+
+      - name: Run hubcap dry run
+        run: |
+          set -o pipefail
+          # tee to capture the full output (stdout+stderr) into hubcap.log
+          PYTHONPATH=${{ github.workspace }} python3 hubcap.py 2>&1 | tee hubcap.log
+
+      - name: Check for any hubcap errors
+        if: always()
+        run: |
+          if grep -q 'ERROR' hubcap.log; then
+            echo "Found ERROR events in hubcap.log:"
+            grep 'ERROR' hubcap.log
+            exit 1
+          else
+            echo "No ERROR-level log entries found."
+          fi
+
   code-quality:
     name: code-quality
 

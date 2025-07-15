@@ -481,5 +481,8 @@
         "dbt-unittest",
         "dbt-gcp-billing",
         "dbt-ops"
+    ],
+    "xoniks": [
+        "dbt-test-results"
     ]
 }

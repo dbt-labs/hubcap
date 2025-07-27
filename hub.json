@@ -476,6 +476,9 @@
     "windsor-ai": [
         "dbt_facebook_ads"
     ],
+    "xoniks": [
+        "dbt-test-results"
+    ],
     "yu-iskw": [
         "dbt-airflow-macros",
         "dbt-unittest",

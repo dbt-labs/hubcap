@@ -482,7 +482,8 @@
     ],
     "windsor-ai": [
         "dbt_facebook_ads",
-        "dbt-bigquery-package-for-salesforce"
+        "dbt-bigquery-package-for-salesforce",
+        "dbt-facebook-big_query"
     ],
     "xoniks": [
         "dbt-test-results"

@@ -43,6 +43,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      - name: Install dbt fusion
+        run: |
+          curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --update
+
       - name: Configure environment
         env:
           HUBCAP_CONFIG: ${{ secrets.HUBCAP_CONFIG }}

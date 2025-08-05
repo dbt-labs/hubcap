@@ -30,8 +30,8 @@ jobs:
 
       - name: Install dependencies with uv
         run: |
-          uv pip install -r requirements.txt
-          uv pip install -r requirements-dev.txt
+          uv pip install --system -r requirements.txt
+          uv pip install --system -r requirements-dev.txt
 
       - name: Create test config
         run: |
@@ -95,10 +95,10 @@ jobs:
 
       - name: Install python dependencies with uv
         run: |
-          uv pip install pre-commit
+          uv pip install --system pre-commit
           pre-commit --version
-          uv pip install -r requirements.txt
-          uv pip install -r requirements-dev.txt
+          uv pip install --system -r requirements.txt
+          uv pip install --system -r requirements-dev.txt
       - name: Run pre-commit hooks
         run: pre-commit run --all-files --show-diff-on-failure
 
@@ -130,8 +130,8 @@ jobs:
 
       - name: Install dependencies with uv
         run: |
-          uv pip install -r requirements.txt
-          uv pip install -r requirements-dev.txt
+          uv pip install --system -r requirements.txt
+          uv pip install --system -r requirements-dev.txt
 
       - name: Install dbt fusion (for integration tests)
         run: |

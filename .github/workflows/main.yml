@@ -55,6 +55,9 @@ jobs:
           cat config.json >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
+      - name: Install dbt fusion (for integration tests)
+        run: |
+          curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --update
 
       - name: Run hubcap dry run
         run: |

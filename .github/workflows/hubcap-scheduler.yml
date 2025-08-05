@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: ${{ github.event.inputs.environment || 'production' }}
-    
+
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "Using $ENVIRONMENT environment configuration"
           echo "$HUBCAP_CONFIG" > base_config.json
-          
+
           # Modify config for dry run if requested
           if [ "$INPUT_DRY_RUN" = "true" ]; then
             echo "Enabling dry-run mode (push_branches = false)"
@@ -60,12 +60,12 @@ jobs:
             echo "Running in live mode (push_branches = true)"
             cp base_config.json config.json
           fi
-          
+
           # Set the CONFIG environment variable for hubcap.py
           echo "CONFIG<<EOF" >> $GITHUB_ENV
           cat config.json >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          
+
           # Log the configuration (without sensitive data)
           echo "Configuration summary:"
           jq 'del(.user.token)' config.json
@@ -79,7 +79,7 @@ jobs:
         if: always()
         run: |
           echo "=== Execution Summary ==="
-          
+
           # Check for errors
           if grep -q 'ERROR' hubcap.log; then
             echo "❌ Found ERROR events in execution:"
@@ -88,7 +88,7 @@ jobs:
           else
             echo "✅ No ERROR-level log entries found"
           fi
-          
+
           # Check for successful completion
           if grep -q 'hubcap execution completed successfully' hubcap.log; then
             echo "✅ Hubcap completed successfully"
@@ -100,7 +100,7 @@ jobs:
             echo "❌ Hubcap did not complete successfully"
             echo "EXECUTION_STATUS=failed" >> $GITHUB_ENV
           fi
-          
+
           # Summary of what was processed
           if grep -q 'Pushing branches:' hubcap.log; then
             echo "📝 Branches processed:"

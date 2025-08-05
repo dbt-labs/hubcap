@@ -231,7 +231,9 @@ class UpdateTask(object):
             require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
             os.chdir(main_dir)
             # check fusion compatibility
-            is_fusion_compatible = check_fusion_schema_compatibility(Path(os.getcwd()))
+            is_fusion_compatible = check_fusion_schema_compatibility(
+                self.local_path_to_repo
+            )
             self.fusion_compatibility[tag] = is_fusion_compatible
             # return to hub and build spec
             package_spec = self.make_spec(

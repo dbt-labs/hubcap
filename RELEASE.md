@@ -84,3 +84,32 @@ heroku  https://git.heroku.com/dbt-hubcap.git (push)
 origin  git@github.com:dbt-labs/hubcap.git (fetch)
 origin  git@github.com:dbt-labs/hubcap.git (push)
 ```
+
+## GitHub Actions production setup
+
+**Current deployment method**. See [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md) for detailed setup instructions.
+
+### Overview
+- **Schedule**: Runs automatically every hour at `:00`
+- **Environments**: Separate `production` and `test` environments
+- **Configuration**: Environment-specific secrets containing JSON configuration
+- **Manual execution**: Can be triggered manually via GitHub UI or CLI
+
+### Quick setup
+1. Create `production` and `test` environments in repository settings
+2. Add `HUBCAP_CONFIG` secret to each environment with appropriate JSON configuration
+3. The workflow runs automatically on schedule or can be triggered manually
+
+### Manual execution examples
+```bash
+# Test environment with dry run (no PRs created)
+gh workflow run "Hubcap Scheduler" --field environment=test --field dry_run=true
+
+# Production environment (live)
+gh workflow run "Hubcap Scheduler" --field environment=production --field dry_run=false
+```
+
+### Monitoring
+- View execution logs in repository **Actions** tab
+- Each run creates artifacts with logs and generated files
+- Failed executions send notifications (if configured)

@@ -1,0 +1,157 @@
+name: Hubcap Scheduler
+
+on:
+  # TODO: Re-enable when you move from heroku to github actions
+  # schedule:
+    # Run every hour at :00 for production
+    # - cron: '0 * * * *'
+  pull_request:
+    # Run on PRs in dry-run mode for testing
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run against'
+        required: true
+        default: 'test'
+        type: choice
+        options:
+        - 'test'
+        - 'production'
+      dry_run:
+        description: 'Run in dry-run mode (no PRs created)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+        - 'true'
+        - 'false'
+
+jobs:
+  hubcap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: ${{ github.event.inputs.environment || 'production' }}
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install dependencies with uv
+        run: |
+          uv pip install --system -r requirements.txt
+          # Install dev requirements for PR testing
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            uv pip install --system -r requirements-dev.txt
+          fi
+
+      - name: Install dbt fusion
+        run: |
+          curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --update
+
+      - name: Configure environment
+        env:
+          HUBCAP_CONFIG: ${{ secrets.HUBCAP_CONFIG }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run || (github.event_name == 'pull_request' && 'true') || 'false' }}
+          ENVIRONMENT: ${{ github.event.inputs.environment || (github.event_name == 'pull_request' && 'test') || 'production' }}
+        run: |
+          echo "Using $ENVIRONMENT environment configuration"
+
+          # Create config based on event type
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Use test config for PR events (secrets may not be available for forks)
+            cat > base_config.json << EOF
+          {
+            "org": "dbt-labs",
+            "repo": "hub.getdbt.com",
+            "push_branches": false,
+            "one_branch_per_repo": true,
+            "user": {
+              "name": "github-actions",
+              "email": "github-actions@github.com",
+              "token": "dummy-token"
+            }
+          }
+          EOF
+          else
+            # Use production config from secrets
+            echo "$HUBCAP_CONFIG" > base_config.json
+          fi
+
+          # Modify config for dry run if requested
+          if [ "$INPUT_DRY_RUN" = "true" ]; then
+            echo "Enabling dry-run mode (push_branches = false)"
+            jq '.push_branches = false' base_config.json > config.json
+          else
+            echo "Running in live mode (push_branches = true)"
+            cp base_config.json config.json
+          fi
+
+          # Set the CONFIG environment variable for hubcap.py
+          echo "CONFIG<<EOF" >> $GITHUB_ENV
+          cat config.json >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          # Log the configuration (without sensitive data)
+          echo "Configuration summary:"
+          jq 'del(.user.token)' config.json
+
+      - name: Run hubcap
+        run: |
+          echo "Starting hubcap execution..."
+          uv run python hubcap.py 2>&1 | tee hubcap.log
+
+      - name: Check execution results
+        if: always()
+        run: |
+          echo "=== Execution Summary ==="
+
+          # Check for errors
+          if grep -q 'ERROR' hubcap.log; then
+            echo "❌ Found ERROR events in execution:"
+            grep 'ERROR' hubcap.log
+            echo "EXECUTION_STATUS=failed" >> $GITHUB_ENV
+          else
+            echo "✅ No ERROR-level log entries found"
+          fi
+
+          # Check for successful completion
+          if grep -q 'hubcap execution completed successfully' hubcap.log; then
+            echo "✅ Hubcap completed successfully"
+            echo "EXECUTION_STATUS=success" >> $GITHUB_ENV
+          elif grep -q 'No packages have new versions to update' hubcap.log; then
+            echo "✅ Hubcap completed successfully (no updates needed)"
+            echo "EXECUTION_STATUS=success" >> $GITHUB_ENV
+          else
+            echo "❌ Hubcap did not complete successfully"
+            echo "EXECUTION_STATUS=failed" >> $GITHUB_ENV
+          fi
+
+          # Summary of what was processed
+          if grep -q 'Pushing branches:' hubcap.log; then
+            echo "📝 Branches processed:"
+            grep 'Pushing branches:' hubcap.log
+          fi
+
+      - name: Upload execution artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hubcap-execution-${{ github.event.inputs.environment || 'production' }}-${{ github.run_number }}
+          path: hubcap.log
+          retention-days: 30
+
+      - name: Fail job if execution failed
+        if: always() && env.EXECUTION_STATUS == 'failed'
+        run: |
+          echo "❌ Hubcap execution failed - check logs above"
+          exit 1

@@ -39,6 +39,7 @@ export CONFIG=$(<config.json)
 
 ## Run in test mode
 
+### Local testing
 - Set `"repo": "hub.getdbt.com-test"` within `config.json` (or specify some other non-production repository).
 - Optional: set `"push_branches": false` within `config.json`.
 
@@ -46,6 +47,18 @@ Run:
 ```shell
 python3 hubcap.py
 ```
+
+### GitHub Actions testing
+You can also test using the GitHub Actions workflow:
+```shell
+# Test with dry run (no PRs created)
+gh workflow run "Hubcap Scheduler" --field environment=test --field dry_run=true
+
+# Test with live PR creation to test repo
+gh workflow run "Hubcap Scheduler" --field environment=test --field dry_run=false
+```
+
+See [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md) for setup instructions.
 
 ## Run in production mode
 

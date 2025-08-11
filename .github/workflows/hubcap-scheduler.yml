@@ -1,5 +1,8 @@
 name: Hubcap Scheduler
 
+permissions:
+  contents: read
+
 on:
   # TODO: Re-enable when you move from heroku to github actions
   # schedule:
@@ -100,10 +103,6 @@ jobs:
           echo "CONFIG<<EOF" >> $GITHUB_ENV
           cat config.json >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-
-          # Log the configuration (without sensitive data)
-          echo "Configuration summary:"
-          jq 'del(.user.token)' config.json
 
       - name: Run hubcap
         run: |

@@ -4,6 +4,8 @@ on:
   schedule:
     # Run every hour at :00 for production
     - cron: '0 * * * *'
+  pull_request:
+    # Run on PRs in dry-run mode for testing
   workflow_dispatch:
     inputs:
       environment:
@@ -46,6 +48,10 @@ jobs:
       - name: Install dependencies with uv
         run: |
           uv pip install --system -r requirements.txt
+          # Install dev requirements for PR testing
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            uv pip install --system -r requirements-dev.txt
+          fi
 
       - name: Install dbt fusion
         run: |
@@ -54,11 +60,31 @@ jobs:
       - name: Configure environment
         env:
           HUBCAP_CONFIG: ${{ secrets.HUBCAP_CONFIG }}
-          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
-          ENVIRONMENT: ${{ github.event.inputs.environment || 'production' }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run || (github.event_name == 'pull_request' && 'true') || 'false' }}
+          ENVIRONMENT: ${{ github.event.inputs.environment || (github.event_name == 'pull_request' && 'test') || 'production' }}
         run: |
           echo "Using $ENVIRONMENT environment configuration"
-          echo "$HUBCAP_CONFIG" > base_config.json
+
+          # Create config based on event type
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Use test config for PR events (secrets may not be available for forks)
+            cat > base_config.json << EOF
+          {
+            "org": "dbt-labs",
+            "repo": "hub.getdbt.com",
+            "push_branches": false,
+            "one_branch_per_repo": true,
+            "user": {
+              "name": "github-actions",
+              "email": "github-actions@github.com",
+              "token": "dummy-token"
+            }
+          }
+          EOF
+          else
+            # Use production config from secrets
+            echo "$HUBCAP_CONFIG" > base_config.json
+          fi
 
           # Modify config for dry run if requested
           if [ "$INPUT_DRY_RUN" = "true" ]; then

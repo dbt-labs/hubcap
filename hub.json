@@ -66,6 +66,9 @@
     "GJMcClintock": [
         "dbt_tld"
     ],
+    "henryupton": [
+        "dbt_snowflake_incremental_scd2"
+    ],
     "LewisDavies": [
         "upstream-prod"
     ],

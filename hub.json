@@ -21,6 +21,9 @@
     "BfdCampos": [
         "source_db"
     ],
+    "bssulfikkar": [
+        "dbt-cross-server-ref"
+    ],
     "data-diving": [
         "dbt_diving"
     ],

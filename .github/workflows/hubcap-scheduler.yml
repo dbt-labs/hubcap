@@ -5,9 +5,9 @@ permissions:
 
 on:
   # TODO: Re-enable when you move from heroku to github actions
-  # schedule:
+  schedule:
     # Run every hour at :00 for production
-    # - cron: '0 * * * *'
+    - cron: '0 * * * *'
   pull_request:
     # Run on PRs in dry-run mode for testing
   workflow_dispatch:
@@ -33,7 +33,7 @@ jobs:
   hubcap:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    environment: ${{ github.event.inputs.environment || 'production' }}
+    environment: ${{ github.event.inputs.environment || (github.event_name == 'pull_request' && 'test') || 'production' }}
 
     steps:
       - name: Check out the repository

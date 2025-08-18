@@ -1,9 +1,13 @@
 name: Hubcap Scheduler
 
+permissions:
+  contents: read
+
 on:
-  schedule:
+  # TODO: Re-enable when you move from heroku to github actions
+  # schedule:
     # Run every hour at :00 for production
-    - cron: '0 * * * *'
+    # - cron: '0 * * * *'
   pull_request:
     # Run on PRs in dry-run mode for testing
   workflow_dispatch:
@@ -99,10 +103,6 @@ jobs:
           echo "CONFIG<<EOF" >> $GITHUB_ENV
           cat config.json >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-
-          # Log the configuration (without sensitive data)
-          echo "Configuration summary:"
-          jq 'del(.user.token)' config.json
 
       - name: Run hubcap
         run: |

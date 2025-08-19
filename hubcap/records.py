@@ -6,8 +6,6 @@ import logging
 import os
 import requests
 import subprocess
-import shutil
-import tempfile
 
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -226,45 +224,24 @@ class UpdateTask(object):
 
         # create a version spec for each tag
         for tag in self.new_tags:
-            # Create an isolated git worktree for this tag
-            worktree_parent = tempfile.mkdtemp(prefix="hubcap-wt-")
-            worktree_path = Path(worktree_parent) / f"wt-{tag}"
-            try:
-                # Add the worktree for the specific tag
-                prev_cwd = os.getcwd()
-                try:
-                    os.chdir(self.local_path_to_repo)
-                    git_helper.run_cmd(
-                        f'git worktree add --detach "{str(worktree_path)}" "tags/{tag}"'
-                    )
-                finally:
-                    os.chdir(prev_cwd)
+            # go to repo dir to checkout tag and tag-commit specific package list
+            os.chdir(self.local_path_to_repo)
+            git_helper.run_cmd(f"git checkout tags/{tag}")
+            packages = package.parse_pkgs(Path(os.getcwd()))
+            require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
+            os.chdir(main_dir)
 
-                # Parse package metadata from the isolated worktree
-                packages = package.parse_pkgs(worktree_path)
-                require_dbt_version = package.parse_require_dbt_version(worktree_path)
+            # check fusion compatibility
+            is_fusion_compatible = check_fusion_schema_compatibility(
+                self.local_path_to_repo
+            )
+            self.fusion_compatibility[tag] = is_fusion_compatible
 
-                # Check fusion compatibility within the isolated worktree
-                is_fusion_compatible = check_fusion_schema_compatibility(worktree_path)
-                self.fusion_compatibility[tag] = is_fusion_compatible
-            finally:
-                # Remove the worktree and its parent temp directory
-                prev_cwd = os.getcwd()
-                try:
-                    os.chdir(self.local_path_to_repo)
-                    try:
-                        git_helper.run_cmd(
-                            f'git worktree remove --force "{str(worktree_path)}"'
-                        )
-                    except Exception:
-                        # Best-effort cleanup; continue
-                        pass
-                finally:
-                    os.chdir(prev_cwd)
-                try:
-                    shutil.rmtree(worktree_parent, ignore_errors=True)
-                except Exception:
-                    pass
+            # Reset and clean the repo to ensure clean state after fusion check
+            os.chdir(self.local_path_to_repo)
+            git_helper.run_cmd("git reset --hard HEAD")
+            git_helper.run_cmd("git clean -fd")
+            os.chdir(main_dir)
 
             # return to hub and build spec
             package_spec = self.make_spec(

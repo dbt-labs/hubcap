@@ -211,73 +211,117 @@ class UpdateTask(object):
         self.fusion_compatibility = {}
 
     def run(self, main_dir, pr_strategy):
-        os.chdir(main_dir)
-        # Ensure versions directory for a hub package entry
-        Path.mkdir(self.hub_version_index_path, parents=True, exist_ok=True)
+        original_dir = os.getcwd()
+        branch_name = None
 
-        branch_name = self.cut_version_branch(pr_strategy)
-
-        # create an updated version of the repo's index.json
-        index_filepath = (
-            Path(os.path.dirname(self.hub_version_index_path)) / "index.json"
-        )
-
-        # create a version spec for each tag
-        for tag in self.new_tags:
-            # go to repo dir to checkout tag and tag-commit specific package list
-            os.chdir(self.local_path_to_repo)
-            git_helper.run_cmd(f"git checkout tags/{tag}")
-            packages = package.parse_pkgs(Path(os.getcwd()))
-            require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
+        try:
             os.chdir(main_dir)
+            # Ensure versions directory for a hub package entry
+            Path.mkdir(self.hub_version_index_path, parents=True, exist_ok=True)
 
-            # check fusion compatibility
-            is_fusion_compatible = check_fusion_schema_compatibility(
-                self.local_path_to_repo
+            branch_name = self.cut_version_branch(pr_strategy)
+
+            # create an updated version of the repo's index.json
+            index_filepath = (
+                Path(os.path.dirname(self.hub_version_index_path)) / "index.json"
             )
-            self.fusion_compatibility[tag] = is_fusion_compatible
 
-            # Reset and clean the repo to ensure clean state after fusion check
-            os.chdir(self.local_path_to_repo)
-            git_helper.run_cmd("git reset --hard HEAD")
-            git_helper.run_cmd("git clean -fd")
-            os.chdir(main_dir)
+            # create a version spec for each tag
+            for tag in self.new_tags:
+                try:
+                    # go to repo dir to checkout tag and tag-commit specific package list
+                    os.chdir(self.local_path_to_repo)
+                    git_helper.run_cmd(f"git checkout tags/{tag}")
+                    packages = package.parse_pkgs(Path(os.getcwd()))
+                    require_dbt_version = package.parse_require_dbt_version(
+                        Path(os.getcwd())
+                    )
+                    os.chdir(main_dir)
 
-            # return to hub and build spec
-            package_spec = self.make_spec(
+                    # check fusion compatibility
+                    is_fusion_compatible = check_fusion_schema_compatibility(
+                        self.local_path_to_repo
+                    )
+                    self.fusion_compatibility[tag] = is_fusion_compatible
+
+                    # Reset and clean the repo to ensure clean state after fusion check
+                    os.chdir(self.local_path_to_repo)
+                    git_helper.run_cmd("git reset --hard HEAD")
+                    git_helper.run_cmd("git clean -fd")
+                    os.chdir(main_dir)
+
+                    # return to hub and build spec
+                    package_spec = self.make_spec(
+                        self.github_username,
+                        self.github_repo_name,
+                        self.package_name,
+                        packages,
+                        require_dbt_version,
+                        tag,
+                        is_fusion_compatible,
+                    )
+
+                    version_path = self.hub_version_index_path / Path(f"{tag}.json")
+                    with open(version_path, "w") as f:
+                        logging.info(f"writing spec to {version_path}")
+                        f.write(str(json.dumps(package_spec, indent=4)))
+
+                    msg = f"hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}"
+                    logging.info(msg)
+                    git_helper.run_cmd("git add -A")
+                    subprocess.run(
+                        args=["git", "commit", "-am", f"{msg}"], capture_output=True
+                    )
+
+                except Exception as e:
+                    logging.error(f"Error processing tag {tag}: {str(e)}")
+                    # Ensure we're back in main_dir before continuing
+                    os.chdir(main_dir)
+                    raise
+
+            new_index_entry = self.make_index(
                 self.github_username,
                 self.github_repo_name,
                 self.package_name,
-                packages,
-                require_dbt_version,
-                tag,
-                is_fusion_compatible,
+                self.fetch_index_file_contents(index_filepath),
+                set(self.new_tags) | set(self.existing_tags),
+                self.fusion_compatibility,
             )
+            with open(index_filepath, "w") as f:
+                logging.info(f"writing index.json to {index_filepath}")
+                f.write(str(json.dumps(new_index_entry, indent=4)))
 
-            version_path = self.hub_version_index_path / Path(f"{tag}.json")
-            with open(version_path, "w") as f:
-                logging.info(f"writing spec to {version_path}")
-                f.write(str(json.dumps(package_spec, indent=4)))
-
-            msg = f"hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}"
+            # Commit the updated index.json file
+            msg = f"hubcap: Update index.json for {self.github_username}/{self.github_repo_name}"
             logging.info(msg)
             git_helper.run_cmd("git add -A")
             subprocess.run(args=["git", "commit", "-am", f"{msg}"], capture_output=True)
 
-        new_index_entry = self.make_index(
-            self.github_username,
-            self.github_repo_name,
-            self.package_name,
-            self.fetch_index_file_contents(index_filepath),
-            set(self.new_tags) | set(self.existing_tags),
-            self.fusion_compatibility,
-        )
-        with open(index_filepath, "w") as f:
-            logging.info(f"writing index.json to {index_filepath}")
-            f.write(str(json.dumps(new_index_entry, indent=4)))
+            # if successful return branchname
+            return branch_name, self.github_username, self.github_repo_name
 
-        # if succesful return branchname
-        return branch_name, self.github_username, self.github_repo_name
+        except Exception as e:
+            # Clean up on failure
+            logging.error(f"Error in UpdateTask.run(): {str(e)}")
+            os.chdir(main_dir)
+
+            # If we created a branch but failed, try to clean it up
+            if branch_name:
+                try:
+                    # Switch to main branch
+                    git_helper.run_cmd("git checkout -q main")
+                    # Delete the problematic branch
+                    git_helper.run_cmd(f"git branch -D {branch_name}")
+                    logging.info(f"Cleaned up failed branch: {branch_name}")
+                except Exception as cleanup_error:
+                    logging.warning(
+                        f"Failed to clean up branch {branch_name}: {str(cleanup_error)}"
+                    )
+
+            raise
+        finally:
+            # Always restore original directory
+            os.chdir(original_dir)
 
     def cut_version_branch(self, pr_strategy):
         """designed to be run in a hub repo which is sibling to package code repos"""
@@ -286,11 +330,25 @@ class UpdateTask(object):
         )
         helper.logging.info(f"checking out branch {branch_name} in the hub repo")
 
+        # First, try to create a new branch
         completed_subprocess = subprocess.run(
-            ["git", "checkout", "-q", "-b", branch_name]
+            ["git", "checkout", "-q", "-b", branch_name], capture_output=True
         )
+
         if completed_subprocess.returncode == 128:
-            git_helper.run_cmd(f"git checkout -q {branch_name}")
+            # Branch already exists, delete it and recreate from main/master
+            logging.warning(
+                f"Branch {branch_name} already exists. Deleting and recreating from main branch."
+            )
+
+            # Switch to main branch first
+            git_helper.run_cmd("git checkout -q main")
+
+            # Delete the existing branch
+            git_helper.run_cmd(f"git branch -D {branch_name}")
+
+            # Create the branch again from main
+            git_helper.run_cmd(f"git checkout -q -b {branch_name}")
 
         return branch_name
 

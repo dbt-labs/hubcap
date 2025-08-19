@@ -319,7 +319,9 @@ class UpdateTask(object):
             "namespace": org_name,
             "description": description,
             "latest": latest_version.replace("=", ""),  # LOL
-            "latest-fusion-schema-compat": fusion_compatibility[latest_version],
+            "latest-fusion-schema-compat": fusion_compatibility.get(
+                latest_version, False
+            ),
             "assets": assets,
         }
 

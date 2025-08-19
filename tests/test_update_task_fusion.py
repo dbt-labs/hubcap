@@ -187,7 +187,7 @@ packages:
             index_spec = json.load(f)
 
         # Index should have fusion compatibility of the latest version (1.1.0)
-        self.assertEqual(index_spec["fusion-schema-compat"], True)
+        self.assertEqual(index_spec["latest-fusion-schema-compat"], True)
         self.assertEqual(index_spec["name"], "test_package")
         self.assertEqual(index_spec["namespace"], "test_org")
         self.assertEqual(index_spec["latest"], "1.1.0")
@@ -282,7 +282,7 @@ packages:
             index_spec = json.load(f)
 
         # Index should have fusion compatibility of the latest version (1.1.0)
-        self.assertEqual(index_spec["fusion-schema-compat"], False)
+        self.assertEqual(index_spec["latest-fusion-schema-compat"], False)
         self.assertEqual(index_spec["name"], "test_package")
         self.assertEqual(index_spec["namespace"], "test_org")
         self.assertEqual(index_spec["latest"], "1.1.0")
@@ -362,7 +362,7 @@ packages:
             index_spec = json.load(f)
 
         self.assertEqual(
-            index_spec["fusion-schema-compat"], True
+            index_spec["latest-fusion-schema-compat"], True
         )  # Latest version (1.1.0) is compatible
         self.assertEqual(index_spec["latest"], "1.1.0")
 
@@ -391,7 +391,7 @@ packages:
             "namespace": "test_org",
             "description": "A test package for fusion compatibility",
             "latest": "0.9.0",
-            "fusion-schema-compat": False,  # Old version was incompatible
+            "latest-fusion-schema-compat": False,  # Old version was incompatible
             "assets": {"logo": "logos/custom.svg"},
         }
 
@@ -429,7 +429,7 @@ packages:
         # Should update latest version and fusion compatibility
         self.assertEqual(updated_index["latest"], "1.1.0")  # Latest new tag
         self.assertEqual(
-            updated_index["fusion-schema-compat"], True
+            updated_index["latest-fusion-schema-compat"], True
         )  # New latest version is compatible
         self.assertEqual(updated_index["name"], "test_package")
         self.assertEqual(updated_index["namespace"], "test_org")

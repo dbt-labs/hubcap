@@ -484,5 +484,8 @@
         "dbt-unittest",
         "dbt-gcp-billing",
         "dbt-ops"
+    ],
+    "versent-dimensional": [
+        "dbt-versent-dimensional-automate"
     ]
 }

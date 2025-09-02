@@ -66,6 +66,9 @@
     "GJMcClintock": [
         "dbt_tld"
     ],
+    "henryupton": [
+        "dbt-scd2-utils"
+    ],
     "LewisDavies": [
         "upstream-prod"
     ],

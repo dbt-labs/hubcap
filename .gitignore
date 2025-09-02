@@ -1,4 +1,6 @@
 env/
+.env/
+.venv/
 git-tmp/
 target/
 *.swp

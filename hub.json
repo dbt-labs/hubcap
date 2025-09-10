@@ -119,7 +119,8 @@
         "dbt_eda_tools"
     ],
     "Snowflake-Labs": [
-        "dbt_constraints"
+        "dbt_constraints",
+        "dbt_semantic_view"
     ],
     "Teradata": [
         "dbt-teradata-utils"

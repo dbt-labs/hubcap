@@ -486,5 +486,8 @@
         "dbt-unittest",
         "dbt-gcp-billing",
         "dbt-ops"
+    ],
+    "YukiTechnologies": [
+        "yuki-snowflake-dbt-tags"
     ]
 }

@@ -475,7 +475,7 @@
     ],
     "windsor-ai": [
         "dbt_facebook_ads",
-        "dbt-salesforce-campaign-funnel-big_query"
+        "salesforce_campaign_funnel"
     ],
     "xoniks": [
         "dbt-test-results"

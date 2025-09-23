@@ -57,6 +57,9 @@
     "EqualExperts": [
         "dbt-unit-testing"
     ],
+    "firebolt-db": [
+        "dbt_artifacts_firebolt"
+    ],
     "Fleetio": [
         "dbt-segment"
     ],

@@ -475,7 +475,8 @@
         "the_tuva_project"
     ],
     "windsor-ai": [
-        "dbt_facebook_ads"
+        "dbt_facebook_ads",
+        "salesforce_campaign_funnel"
     ],
     "xoniks": [
         "dbt-test-results"

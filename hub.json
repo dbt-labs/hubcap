@@ -477,6 +477,9 @@
     "tuva-health": [
         "the_tuva_project"
     ],
+    "versent-dimensional": [
+        "dbt_versent_dimensional_automate"
+    ],
     "windsor-ai": [
         "dbt_facebook_ads",
         "dbt-bigquery-package-for-salesforce"

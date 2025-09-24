@@ -57,6 +57,9 @@
     "EqualExperts": [
         "dbt-unit-testing"
     ],
+    "firebolt-db": [
+        "dbt_artifacts_firebolt"
+    ],
     "Fleetio": [
         "dbt-segment"
     ],
@@ -119,7 +122,8 @@
         "dbt_eda_tools"
     ],
     "Snowflake-Labs": [
-        "dbt_constraints"
+        "dbt_constraints",
+        "dbt_semantic_view"
     ],
     "Teradata": [
         "dbt-teradata-utils"
@@ -473,8 +477,12 @@
     "tuva-health": [
         "the_tuva_project"
     ],
+    "versent-dimensional": [
+        "dbt_versent_dimensional_automate"
+    ],
     "windsor-ai": [
-        "dbt_facebook_ads"
+        "dbt_facebook_ads",
+        "dbt-bigquery-package-for-salesforce"
     ],
     "xoniks": [
         "dbt-test-results"
@@ -485,7 +493,7 @@
         "dbt-gcp-billing",
         "dbt-ops"
     ],
-    "versent-dimensional": [
-        "dbt_versent_dimensional_automate"
+    "YukiTechnologies": [
+        "yuki-snowflake-dbt-tags"
     ]
 }

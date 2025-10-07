@@ -407,6 +407,9 @@
     "lalalilo": [
         "athena-utils"
     ],
+    "masthead-data": [
+        "dbt-reservations"
+    ],
     "metaops-solutions": [
         "dbt-camunda"
     ],

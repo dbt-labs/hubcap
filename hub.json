@@ -89,7 +89,8 @@
     "Matts52": [
         "dbt-ml-inline-preprocessing",
         "dbt-set-similarity",
-        "dbt-stat-test"
+        "dbt-stat-test",
+        "dbt-ml-eval"
     ],
     "metaplane" : [
         "dbt-expectations"

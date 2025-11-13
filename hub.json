@@ -502,5 +502,8 @@
     ],
     "YukiTechnologies": [
         "yuki-snowflake-dbt-tags"
+    ],
+    "datooine": [ 
+        "dbt-buckets"
     ]
 }

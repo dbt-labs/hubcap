@@ -17,8 +17,8 @@ dependencies = [
     "urllib3==1.26.12",
 ]
 
-[dependency-groups]
-dev = [
+[project.optional-dependencies]
+test = [
     "black==22.6.0",
     "pip-tools>=7.5.2",
     "pre-commit>=4.5.0",

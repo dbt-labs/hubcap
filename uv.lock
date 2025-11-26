@@ -156,8 +156,8 @@ dependencies = [
     { name = "urllib3" },
 ]
 
-[package.dev-dependencies]
-dev = [
+[package.optional-dependencies]
+test = [
     { name = "black" },
     { name = "pip-tools" },
     { name = "pre-commit" },
@@ -167,26 +167,23 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "black", marker = "extra == 'test'", specifier = "==22.6.0" },
     { name = "certifi", specifier = "==2022.12.7" },
     { name = "charset-normalizer", specifier = "==2.1.1" },
     { name = "gitdb", specifier = "==4.0.9" },
     { name = "gitpython", specifier = "==3.1.30" },
     { name = "idna", specifier = "==3.4" },
+    { name = "pip-tools", marker = "extra == 'test'", specifier = ">=7.5.2" },
+    { name = "pre-commit", marker = "extra == 'test'", specifier = ">=4.5.0" },
+    { name = "pytest", marker = "extra == 'test'", specifier = ">=9.0.1" },
     { name = "pyyaml", specifier = "==6.0" },
     { name = "requests", specifier = "==2.28.1" },
     { name = "semver", specifier = "==2.13.0" },
     { name = "smmap", specifier = "==5.0.0" },
+    { name = "tox", marker = "extra == 'test'", specifier = ">=4.32.0" },
     { name = "urllib3", specifier = "==1.26.12" },
 ]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "black", specifier = "==22.6.0" },
-    { name = "pip-tools", specifier = ">=7.5.2" },
-    { name = "pre-commit", specifier = ">=4.5.0" },
-    { name = "pytest", specifier = ">=9.0.1" },
-    { name = "tox", specifier = ">=4.32.0" },
-]
+provides-extras = ["test"]
 
 [[package]]
 name = "identify"

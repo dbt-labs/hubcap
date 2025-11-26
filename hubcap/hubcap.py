@@ -16,6 +16,11 @@ from hubcap.git_helper import (
 from hubcap.records import IndividualPullRequests, ConsolididatedPullRequest
 
 
+def app():
+    exit_code = main()
+    sys.exit(exit_code)
+
+
 def main():
     try:
         # ==
@@ -191,5 +196,4 @@ def main():
 
 
 if __name__ == "__main__":
-    exit_code = main()
-    sys.exit(exit_code)
+    app()

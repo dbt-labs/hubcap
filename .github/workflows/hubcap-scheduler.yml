@@ -51,10 +51,10 @@ jobs:
 
       - name: Install dependencies with uv
         run: |
-          uv pip install --system -r requirements.txt
+          uv sync
           # Install dev requirements for PR testing
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            uv pip install --system -r requirements-dev.txt
+            uv sync --extra test
           fi
 
       - name: Install dbt fusion
@@ -107,7 +107,7 @@ jobs:
       - name: Run hubcap
         run: |
           echo "Starting hubcap execution..."
-          uv run python hubcap.py 2>&1 | tee hubcap.log
+          uv run hubcap 2>&1 | tee hubcap.log
 
       - name: Check execution results
         if: always()

@@ -32,10 +32,9 @@ jobs:
 
       - name: Install python dependencies with uv
         run: |
-          uv pip install --system pre-commit
+          uv tool install pre-commit --with pre-commit-uv
           pre-commit --version
-          uv pip install --system -r requirements.txt
-          uv pip install --system -r requirements-dev.txt
+          uv sync --extra test
       - name: Run pre-commit hooks
         run: pre-commit run --all-files --show-diff-on-failure
 
@@ -67,8 +66,7 @@ jobs:
 
       - name: Install dependencies with uv
         run: |
-          uv pip install --system -r requirements.txt
-          uv pip install --system -r requirements-dev.txt
+          uv sync --extra test
 
       - name: Install dbt fusion (for integration tests)
         run: |

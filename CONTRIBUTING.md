@@ -2,15 +2,14 @@
 
 ## Virtual environment
 
+This package is managed with `uv`. You can run it using `uv run hubcap` in the project root.
+
 ### Install dependencies
-Instructions for POSIX bash/zsh (see [here](https://docs.python.org/3/library/venv.html) for syntax for other shells):
+To run tests and develop locally, install the additional dev dependencies: 
 ```shell
-python3 -m venv env
-source env/bin/activate
-python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt -r requirements-dev.txt
-source env/bin/activate
-pre-commit install
+uv tool install pre-commit --with pre-commit-uv
+pre-commit --version
+uv sync --extra test
 ```
 
 ## Setup
@@ -45,7 +44,12 @@ export CONFIG=$(<config.json)
 
 Run:
 ```shell
-python3 hubcap.py
+uv run hubcap
+```
+
+Run pre-commit hooks manually:
+```shell
+pre-commit run --all-files --show-diff-on-failure
 ```
 
 ### GitHub Actions testing
@@ -68,13 +72,13 @@ See [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md) for setup instructions.
 
 Run:
 ```shell
-python3 hubcap.py
+uv run hubcap
 ```
 
 ## Testing locally
 
 ```shell
-python -m pytest
+uv run pytest
 ```
 
 Or just:
@@ -95,12 +99,6 @@ For Apple M1 Mac users, might need to do this:
 act --container-architecture linux/amd64
 ```
 
-## Generate requirements.txt
+## Adding dependencies
 
-Put any first degree dependencies within `requirements.in`, then run:
-
-```shell
-pip-compile
-```
-
-It will generate a new version of `requirements.txt` with each transitive dependency pinned to a specific version.
+Add all dependencies with uv: `uv add <package-name>`

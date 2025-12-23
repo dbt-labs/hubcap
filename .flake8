@@ -3,9 +3,11 @@ select =
     E
     W
     F
+# W503 and E203 are ignored to make Flake8 work like black
+# E501 is ignored because long line checking is done in black
 ignore =
-    W503 # makes Flake8 work like black
+    W503
     W504
-    E203 # makes Flake8 work like black
+    E203
     E741
-    E501 # long line checking is done in black
+    E501

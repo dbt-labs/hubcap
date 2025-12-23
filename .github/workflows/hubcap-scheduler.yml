@@ -75,7 +75,7 @@ jobs:
             cat > base_config.json << EOF
           {
             "org": "dbt-labs",
-            "repo": "hub.getdbt.com",
+            "repo": "hub.getdbt.com-test",
             "push_branches": false,
             "one_branch_per_repo": true,
             "user": {

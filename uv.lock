@@ -98,6 +98,15 @@ wheels = [
 ]
 
 [[package]]
+name = "dbt-fusion-package-tools"
+version = "0.17.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/25/abc1c8f8f63805c02ae1f046fe9b3a519a56556e55a4985349faff73a4d3/dbt_fusion_package_tools-0.17.4.tar.gz", hash = "sha256:89a204b6510d3fb9fbfb29a8af103fded4c5c07a9b36a9285b02df0594d5b3bc", size = 1055, upload-time = "2025-12-09T03:10:37.523Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/36/ed/9fc062a8af24d42285a2a0737eedc44505755bf3e6f455cb3fff024167f1/dbt_fusion_package_tools-0.17.4-py3-none-any.whl", hash = "sha256:e469bfabe6ff079f966eb0658c47f8107893534087af12477415931ebf1a12a5", size = 1875, upload-time = "2025-12-09T03:10:35.279Z" },
+]
+
+[[package]]
 name = "distlib"
 version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -146,6 +155,7 @@ source = { editable = "." }
 dependencies = [
     { name = "certifi" },
     { name = "charset-normalizer" },
+    { name = "dbt-fusion-package-tools" },
     { name = "gitdb" },
     { name = "gitpython" },
     { name = "idna" },
@@ -170,6 +180,7 @@ requires-dist = [
     { name = "black", marker = "extra == 'test'", specifier = "==22.6.0" },
     { name = "certifi", specifier = "==2022.12.7" },
     { name = "charset-normalizer", specifier = "==2.1.1" },
+    { name = "dbt-fusion-package-tools" },
     { name = "gitdb", specifier = "==4.0.9" },
     { name = "gitpython", specifier = "==3.1.30" },
     { name = "idna", specifier = "==3.4" },

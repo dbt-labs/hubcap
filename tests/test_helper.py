@@ -3,9 +3,6 @@
 import json
 import os
 import pytest
-import tempfile
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 from hubcap import helper
 

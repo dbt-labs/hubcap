@@ -1,9 +1,6 @@
 """Tests for the package module."""
 
-import os
 import pytest
-import yaml
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from hubcap import package

@@ -2,10 +2,8 @@
 
 import json
 import pytest
-from pathlib import Path
 
 from hubcap import package_maintainers
-from hubcap.records import PackageMaintainer
 
 
 class TestLoadPackageMaintainers:

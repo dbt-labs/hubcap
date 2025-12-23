@@ -1,10 +1,8 @@
 """Tests for the git_helper module."""
 
-import os
 import subprocess
 import pytest
-from pathlib import Path
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
 from hubcap.git_helper import (
     run_cmd,

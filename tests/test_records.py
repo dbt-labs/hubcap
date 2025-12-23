@@ -1,17 +1,12 @@
 """Tests for the records module."""
 
-import pytest
-from unittest.mock import MagicMock
-from pathlib import Path
 
 from hubcap.records import (
-    PullRequestStrategy,
     IndividualPullRequests,
     ConsolididatedPullRequest,
     PackageMaintainer,
     UpdateTask,
 )
-from hubcap import helper
 
 
 class TestIndividualPullRequests:
@@ -330,7 +325,6 @@ class TestUpdateTask:
     def test_update_task_make_spec(self, temp_dir):
         """Test the make_spec method of UpdateTask."""
         from unittest.mock import patch
-        import json
 
         local_path = temp_dir / "test_repo"
         local_path.mkdir()

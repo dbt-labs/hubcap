@@ -24,11 +24,17 @@ test = [
     "pip-tools>=7.5.2",
     "pre-commit>=4.5.0",
     "pytest>=9.0.1",
+    "pytest-cov>=4.0.0",
     "tox>=4.32.0",
 ]
 
 [project.scripts]
 hubcap = "hubcap.hubcap:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hubcap"]
+exclude = ["tests", "target", "hubcap.egg-info"]
 
 [build-system]
 requires = ["setuptools"]

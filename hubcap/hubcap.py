@@ -56,6 +56,7 @@ def main():
         )
         git_tmp = "target"
         TMP_DIR = Path(git_tmp).resolve()
+        selected_package_maintainers = config.get("selected_package_maintainers")
 
         try:
             PACKAGE_MAINTAINERS = package_maintainers.load_package_maintainers()
@@ -69,6 +70,22 @@ def main():
         except Exception as e:
             logging.error(f"Unexpected error loading package maintainers: {str(e)}")
             return 1
+        # allow only running on a subset of maintainers for testing purposes
+        if (
+            selected_package_maintainers
+            and isinstance(selected_package_maintainers, list)
+            and len(selected_package_maintainers) > 0
+        ):
+            maintainer_subset = [
+                maintainer
+                for maintainer in PACKAGE_MAINTAINERS
+                if maintainer.get_name() in set(selected_package_maintainers)
+            ]
+            if len(maintainer_subset) > 0:
+                PACKAGE_MAINTAINERS = maintainer_subset
+            logging.info(
+                f"Running only for package maintainers specified in config: {[maintainer.get_name() for maintainer in PACKAGE_MAINTAINERS]}"
+            )
 
         if one_branch_per_repo:
             pr_strategy = IndividualPullRequests()

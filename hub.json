@@ -92,7 +92,7 @@
         "dbt-stat-test",
         "dbt-ml-eval"
     ],
-    "metaplane" : [
+    "metaplane": [
         "dbt-expectations"
     ],
     "Montreal-Analytics": [
@@ -506,5 +506,8 @@
     ],
     "datooine": [
         "dbt-buckets"
+    ],
+    "blueprint-data": [
+        "dbt-warehouse-profiler"
     ]
 }

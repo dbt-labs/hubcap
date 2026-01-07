@@ -1,0 +1,23 @@
+[run]
+branch = True
+omit =
+    */tests/*
+    */site-packages/*
+    hubcap/hubcap.py
+    hubcap/release_carrier.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+    @abstractmethod
+    @abstractproperty
+    class .*\(Protocol\):
+precision = 2
+
+[html]
+directory = htmlcov

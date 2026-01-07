@@ -31,3 +31,8 @@ config_resources.csv
 project2/*
 
 .DS_Store
+
+# generated coverage files
+.coverage
+coverage.xml
+htmlcov

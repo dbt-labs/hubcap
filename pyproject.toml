@@ -7,11 +7,12 @@ requires-python = ">=3.11"
 dependencies = [
     "certifi==2022.12.7",
     "charset-normalizer==2.1.1",
+    "dbt-fusion-package-tools>=0.18.1",
     "gitdb==4.0.9",
-    "gitpython==3.1.30",
+    "gitpython>=3.1.45",
     "idna==3.4",
-    "pyyaml==6.0",
-    "requests==2.28.1",
+    "pyyaml>=6.0.2",
+    "requests==2.32.5",
     "semver==2.13.0",
     "smmap==5.0.0",
     "urllib3==1.26.12",
@@ -23,11 +24,17 @@ test = [
     "pip-tools>=7.5.2",
     "pre-commit>=4.5.0",
     "pytest>=9.0.1",
+    "pytest-cov>=4.0.0",
     "tox>=4.32.0",
 ]
 
 [project.scripts]
 hubcap = "hubcap.hubcap:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hubcap"]
+exclude = ["tests", "target", "hubcap.egg-info"]
 
 [build-system]
 requires = ["setuptools"]

@@ -41,6 +41,8 @@ export CONFIG=$(<config.json)
 ### Local testing
 - Set `"repo": "hub.getdbt.com-test"` within `config.json` (or specify some other non-production repository).
 - Optional: set `"push_branches": false` within `config.json`.
+- Optional: add `"selected_package_maintainers": ["maintainer1", "maintainer2, "etc"]` to run only on a subset of maintainers
+- Don't forget to run `export CONFIG=$(<config.json)` again after making any changes
 
 Run:
 ```shell

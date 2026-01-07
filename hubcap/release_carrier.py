@@ -250,8 +250,10 @@ def open_new_prs(
                         base=default_branch,
                     )
                 else:
-                    logging.info(f"Not pushing and PRing branch {branch}")
-
+                    logging.info(
+                        f"Not pushing and PRing branch {branch} in dry run mode"
+                    )
+                    logging.info(f"Diff from dry run: {target_repo.git.diff('HEAD~1')}")
             except Exception as e:
                 logging.error(f"Error processing branch {branch}: {str(e)}")
                 continue

@@ -16,6 +16,124 @@ from hubcap import package
 from hubcap import version
 
 
+def check_fusion_schema_compatibility(repo_path: Path) -> bool:
+    """
+    Check if a dbt package is fusion schema compatible by running 'dbtf parse'.
+
+    Args:
+        repo_path: Path to the dbt package repository
+
+    Returns:
+        True if fusion compatible (dbtf parse exits with code 0), False otherwise
+    """
+    # Add a test profiles.yml to the current directory
+    profiles_path = repo_path / Path("profiles.yml")
+    try:
+        with open(profiles_path, "a") as f:
+            f.write(
+                "\n"
+                "test_schema_compat:\n"
+                "  target: dev\n"
+                "  outputs:\n"
+                "    dev:\n"
+                "      type: postgres\n"
+                "      host: localhost\n"
+                "      port: 5432\n"
+                "      user: postgres\n"
+                "      password: postgres\n"
+                "      dbname: postgres\n"
+                "      schema: public\n"
+            )
+
+        # Ensure the `_DBT_FUSION_STRICT_MODE` is set (this will ensure fusion errors on schema violations)
+        os.environ["_DBT_FUSION_STRICT_MODE"] = "1"
+
+        # Run dbtf parse command (try dbtf first, fall back to dbt)
+        try:
+            # Try dbtf first (without shell=True to get proper FileNotFoundError)
+            result = subprocess.run(
+                [
+                    "dbtf",
+                    "parse",
+                    "--profile",
+                    "test_schema_compat",
+                    "--project-dir",
+                    str(repo_path),
+                ],
+                capture_output=True,
+                timeout=60,
+            )
+            # If dbtf command exists but returns error mentioning it's not found, fall back to dbt
+            if (
+                result.returncode != 0
+                and result.stderr
+                and b"not found" in result.stderr
+            ):
+                raise FileNotFoundError("dbtf command not found")
+        except FileNotFoundError:
+            # Fall back to dbt command, but validate that this is dbt-fusion
+            version_result = subprocess.run(
+                ["dbt", "--version"], capture_output=True, timeout=60
+            )
+            if b"dbt-fusion" not in version_result.stdout:
+                raise FileNotFoundError(
+                    "dbt-fusion command not found - regular dbt-core detected instead"
+                )
+
+            # Run dbt parse since we have dbt-fusion
+            result = subprocess.run(
+                [
+                    "dbt",
+                    "parse",
+                    "--profile",
+                    "test_schema_compat",
+                    "--project-dir",
+                    str(repo_path),
+                ],
+                capture_output=True,
+                timeout=60,
+            )
+
+        # Return True if exit code is 0 (success)
+        is_compatible = result.returncode == 0
+
+        if is_compatible:
+            logging.info(f"Package at {repo_path} is fusion schema compatible")
+        else:
+            logging.info(f"Package at {repo_path} is not fusion schema compatible")
+
+        # Remove the test profile
+        os.remove(profiles_path)
+
+        return is_compatible
+
+    except subprocess.TimeoutExpired:
+        logging.warning(f"dbtf parse timed out for package at {repo_path}")
+        try:
+            os.remove(profiles_path)
+        except Exception:
+            pass
+        return False
+    except FileNotFoundError:
+        logging.warning(
+            f"dbtf command not found - skipping fusion compatibility check for {repo_path}"
+        )
+        try:
+            os.remove(profiles_path)
+        except Exception:
+            pass
+        return False
+    except Exception as e:
+        logging.warning(
+            f"Error checking fusion compatibility for {repo_path}: {str(e)}"
+        )
+        try:
+            os.remove(profiles_path)
+        except Exception:
+            pass
+        return False
+
+
 class PullRequestStrategy(ABC):
     @abstractmethod
     def pull_request_title(self, org: str, repo: str) -> str:
@@ -89,6 +207,8 @@ class UpdateTask(object):
         self.package_name = package_name
         self.existing_tags = existing_tags
         self.new_tags = new_tags
+        # Track fusion compatibility for each tag
+        self.fusion_compatibility = {}
 
     def run(self, main_dir, pr_strategy):
         os.chdir(main_dir)
@@ -101,16 +221,6 @@ class UpdateTask(object):
         index_filepath = (
             Path(os.path.dirname(self.hub_version_index_path)) / "index.json"
         )
-        new_index_entry = self.make_index(
-            self.github_username,
-            self.github_repo_name,
-            self.package_name,
-            self.fetch_index_file_contents(index_filepath),
-            set(self.new_tags) | set(self.existing_tags),
-        )
-        with open(index_filepath, "w") as f:
-            logging.info(f"writing index.json to {index_filepath}")
-            f.write(str(json.dumps(new_index_entry, indent=4)))
 
         # create a version spec for each tag
         for tag in self.new_tags:
@@ -119,9 +229,21 @@ class UpdateTask(object):
             git_helper.run_cmd(f"git checkout tags/{tag}")
             packages = package.parse_pkgs(Path(os.getcwd()))
             require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
+            os.chdir(main_dir)
+
+            # check fusion compatibility
+            is_fusion_compatible = check_fusion_schema_compatibility(
+                self.local_path_to_repo
+            )
+            self.fusion_compatibility[tag] = is_fusion_compatible
+
+            # Reset and clean the repo to ensure clean state after fusion check
+            os.chdir(self.local_path_to_repo)
+            git_helper.run_cmd("git reset --hard HEAD")
+            git_helper.run_cmd("git clean -fd")
+            os.chdir(main_dir)
 
             # return to hub and build spec
-            os.chdir(main_dir)
             package_spec = self.make_spec(
                 self.github_username,
                 self.github_repo_name,
@@ -129,6 +251,7 @@ class UpdateTask(object):
                 packages,
                 require_dbt_version,
                 tag,
+                is_fusion_compatible,
             )
 
             version_path = self.hub_version_index_path / Path(f"{tag}.json")
@@ -141,7 +264,25 @@ class UpdateTask(object):
             git_helper.run_cmd("git add -A")
             subprocess.run(args=["git", "commit", "-am", f"{msg}"], capture_output=True)
 
-        # if succesful return branchname
+        new_index_entry = self.make_index(
+            self.github_username,
+            self.github_repo_name,
+            self.package_name,
+            self.fetch_index_file_contents(index_filepath),
+            set(self.new_tags) | set(self.existing_tags),
+            self.fusion_compatibility,
+        )
+        with open(index_filepath, "w") as f:
+            logging.info(f"writing index.json to {index_filepath}")
+            f.write(str(json.dumps(new_index_entry, indent=4)))
+
+        # Commit the updated index.json file
+        msg = f"hubcap: Update index.json for {self.github_username}/{self.github_repo_name}"
+        logging.info(msg)
+        git_helper.run_cmd("git add -A")
+        subprocess.run(args=["git", "commit", "-am", f"{msg}"], capture_output=True)
+
+        # if successful return branchname
         return branch_name, self.github_username, self.github_repo_name
 
     def cut_version_branch(self, pr_strategy):
@@ -159,7 +300,9 @@ class UpdateTask(object):
 
         return branch_name
 
-    def make_index(self, org_name, repo, package_name, existing, tags):
+    def make_index(
+        self, org_name, repo, package_name, existing, tags, fusion_compatibility
+    ):
         description = "dbt models for {}".format(repo)
         assets = {"logo": "logos/placeholder.svg"}
 
@@ -176,6 +319,9 @@ class UpdateTask(object):
             "namespace": org_name,
             "description": description,
             "latest": latest_version.replace("=", ""),  # LOL
+            "latest-fusion-schema-compat": fusion_compatibility.get(
+                latest_version, False
+            ),
             "assets": assets,
         }
 
@@ -210,7 +356,14 @@ class UpdateTask(object):
         return digest
 
     def make_spec(
-        self, org, repo, package_name, packages, require_dbt_version, version
+        self,
+        org,
+        repo,
+        package_name,
+        packages,
+        require_dbt_version,
+        version,
+        fusion_schema_compat=False,
     ):
         """The hub needs these specs for packages to be discoverable by deps and on the web"""
         tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(
@@ -235,4 +388,5 @@ class UpdateTask(object):
                 ),
             },
             "downloads": {"tarball": tarball_url, "format": "tgz", "sha1": sha1},
+            "fusion-schema-compat": fusion_schema_compat,
         }

@@ -1,6 +1,8 @@
 # Release instructions
 
-This application is hosted on [Heroku](https://www.heroku.com), but it can also be executed in production mode locally.
+This application runs on [GitHub Actions](https://github.com/features/actions) and can also be executed in production mode locally. 
+
+**Note**: This application was previously hosted on Heroku. See [GitHub Actions Setup Guide](GITHUB_ACTIONS_SETUP.md) for current deployment instructions.
 
 ## Design overview
 It is designed to do the following:

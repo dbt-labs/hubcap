@@ -1,5 +1,7 @@
 """Interface for objects useful to processing hub entries"""
 
+from typing import Optional
+from dbt_fusion_package_tools.compatibility import FusionConformanceResult
 import hashlib
 import json
 import logging
@@ -210,7 +212,7 @@ class UpdateTask(object):
         return digest
 
     def make_spec(
-        self, org, repo, package_name, packages, require_dbt_version, version
+        self, org, repo, package_name, packages, require_dbt_version, version, conformance_output: Optional[FusionConformanceResult]=None
     ):
         """The hub needs these specs for packages to be discoverable by deps and on the web"""
         tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(
@@ -219,7 +221,7 @@ class UpdateTask(object):
         sha1 = self.get_sha1(tarball_url)
 
         # note: some packages do not have a packages.yml
-        return {
+        spec = {
             "id": "{}/{}/{}".format(org, package_name, version),
             "name": package_name,
             "version": version,
@@ -236,3 +238,6 @@ class UpdateTask(object):
             },
             "downloads": {"tarball": tarball_url, "format": "tgz", "sha1": sha1},
         }
+        if conformance_output is not None:
+            spec["fusion_compatibility"] = conformance_output.to_dict()
+        return spec

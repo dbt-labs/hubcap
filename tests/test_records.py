@@ -9,6 +9,7 @@ from hubcap.records import (
 )
 
 
+
 class TestIndividualPullRequests:
     """Tests for IndividualPullRequests strategy."""
 
@@ -360,3 +361,45 @@ class TestUpdateTask:
             assert spec["id"] == "dbt-labs/dbt_utils/1.0.0"
             assert "downloads" in spec
             assert "_source" in spec
+            assert "fusion_compatibility" not in spec
+
+
+    def test_update_task_make_spec_with_conformance(self, temp_dir, mock_fusion_conformance_output):
+        """Test the make_spec method of UpdateTask."""
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+        )
+
+        # Mock the requests.get to avoid actual network call
+        with patch("hubcap.records.requests.get") as mock_get:
+            mock_response = type(
+                "MockResponse",
+                (),
+                {
+                    "iter_content": lambda self, size: [b"test content"],
+                    "raise_for_status": lambda self: None,
+                },
+            )()
+            mock_get.return_value = mock_response
+
+            spec = task.make_spec(
+                "dbt-labs", "dbt-utils", "dbt_utils", [], [">=1.0.0"], "1.0.0", conformance_output=mock_fusion_conformance_output
+            )
+
+            assert spec["name"] == "dbt_utils"
+            assert spec["version"] == "1.0.0"
+            assert spec["id"] == "dbt-labs/dbt_utils/1.0.0"
+            assert "downloads" in spec
+            assert "_source" in spec
+            assert "fusion_compatibility" in spec

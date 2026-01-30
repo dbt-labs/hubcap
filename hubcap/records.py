@@ -95,10 +95,18 @@ class UpdateTask(object):
 
     def run_parse_conformance(self, version_tag: str, fusion_binary=None):
         try:
-            result = run_conformance_for_version(self.local_path_to_repo, self.package_name, version_tag, self.package_name, fusion_binary=fusion_binary)
+            result = run_conformance_for_version(
+                self.local_path_to_repo,
+                self.package_name,
+                version_tag,
+                self.package_name,
+                fusion_binary=fusion_binary,
+            )
             return result
         except Exception as e:
-            logging.warning(f"parse conformance failed for {self.package_name} {version_tag}: {e}")
+            logging.warning(
+                f"parse conformance failed for {self.package_name} {version_tag}: {e}"
+            )
             return
 
     def run(self, main_dir, pr_strategy):
@@ -221,7 +229,14 @@ class UpdateTask(object):
         return digest
 
     def make_spec(
-        self, org, repo, package_name, packages, require_dbt_version, version, conformance_output: Optional[FusionConformanceResult]=None
+        self,
+        org,
+        repo,
+        package_name,
+        packages,
+        require_dbt_version,
+        version,
+        conformance_output: Optional[FusionConformanceResult] = None,
     ):
         """The hub needs these specs for packages to be discoverable by deps and on the web"""
         tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(

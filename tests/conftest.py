@@ -5,7 +5,11 @@ import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock
 import pytest
-from dbt_fusion_package_tools.compatibility import FusionConformanceResult, ParseConformanceLogOutput, FusionLogMessage
+from dbt_fusion_package_tools.compatibility import (
+    FusionConformanceResult,
+    ParseConformanceLogOutput,
+    FusionLogMessage,
+)
 
 
 @pytest.fixture
@@ -145,18 +149,15 @@ def mock_repo():
 def mock_fusion_conformance_output():
     """Provide a mock FusionConformanceResult object."""
     return FusionConformanceResult(
-        version="1.0.0", 
-        require_dbt_version_defined=True, 
+        version="1.0.0",
+        require_dbt_version_defined=True,
         require_dbt_version_compatible=True,
         parse_compatibility_result=ParseConformanceLogOutput(
             parse_exit_code=1,
             total_errors=1,
             total_warnings=0,
-            errors=[FusionLogMessage(
-                body="Sample error message",
-                error_code=1060
-            )],
+            errors=[FusionLogMessage(body="Sample error message", error_code=1060)],
             warnings=[],
             fusion_version="2.0.0-preview-v101",
-        )
+        ),
     )

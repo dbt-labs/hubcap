@@ -1,5 +1,8 @@
 """Interface for objects useful to processing hub entries"""
 
+from dbt_fusion_package_tools.check_parse_conformance import run_conformance_for_version
+from dbt_fusion_package_tools.compatibility import FusionConformanceResult
+from typing import Optional
 import hashlib
 import json
 import logging
@@ -89,6 +92,22 @@ class UpdateTask(object):
         self.package_name = package_name
         self.existing_tags = existing_tags
         self.new_tags = new_tags
+
+    def run_parse_conformance(self, version_tag: str, fusion_binary=None):
+        try:
+            result = run_conformance_for_version(
+                self.local_path_to_repo,
+                self.package_name,
+                version_tag,
+                self.package_name,
+                fusion_binary=fusion_binary,
+            )
+            return result
+        except Exception as e:
+            logging.warning(
+                f"parse conformance failed for {self.package_name} {version_tag}: {e}"
+            )
+            return
 
     def run(self, main_dir, pr_strategy):
         os.chdir(main_dir)
@@ -210,7 +229,14 @@ class UpdateTask(object):
         return digest
 
     def make_spec(
-        self, org, repo, package_name, packages, require_dbt_version, version
+        self,
+        org,
+        repo,
+        package_name,
+        packages,
+        require_dbt_version,
+        version,
+        conformance_output: Optional[FusionConformanceResult] = None,
     ):
         """The hub needs these specs for packages to be discoverable by deps and on the web"""
         tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(
@@ -219,7 +245,7 @@ class UpdateTask(object):
         sha1 = self.get_sha1(tarball_url)
 
         # note: some packages do not have a packages.yml
-        return {
+        spec = {
             "id": "{}/{}/{}".format(org, package_name, version),
             "name": package_name,
             "version": version,
@@ -236,3 +262,6 @@ class UpdateTask(object):
             },
             "downloads": {"tarball": tarball_url, "format": "tgz", "sha1": sha1},
         }
+        if conformance_output is not None:
+            spec["fusion_compatibility"] = conformance_output.to_dict()
+        return spec

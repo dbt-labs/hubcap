@@ -323,7 +323,7 @@ class TestUpdateTask:
         assert result == {}
 
     def test_update_task_make_spec(self, temp_dir):
-        """Test the make_spec method of UpdateTask."""
+        """Test the make_spec method of UpdateTask without conformance output."""
         from unittest.mock import patch
 
         local_path = temp_dir / "test_repo"
@@ -360,3 +360,178 @@ class TestUpdateTask:
             assert spec["id"] == "dbt-labs/dbt_utils/1.0.0"
             assert "downloads" in spec
             assert "_source" in spec
+            assert "fusion_compatibility" not in spec
+
+    def test_update_task_make_spec_with_conformance(
+        self, temp_dir, mock_fusion_conformance_output
+    ):
+        """Test the make_spec method of UpdateTask when conformance output is provided."""
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+        )
+
+        # Mock the requests.get to avoid actual network call
+        with patch("hubcap.records.requests.get") as mock_get:
+            mock_response = type(
+                "MockResponse",
+                (),
+                {
+                    "iter_content": lambda self, size: [b"test content"],
+                    "raise_for_status": lambda self: None,
+                },
+            )()
+            mock_get.return_value = mock_response
+
+            spec = task.make_spec(
+                "dbt-labs",
+                "dbt-utils",
+                "dbt_utils",
+                [],
+                [">=1.0.0"],
+                "1.0.0",
+                conformance_output=mock_fusion_conformance_output,
+            )
+
+            assert spec["name"] == "dbt_utils"
+            assert spec["version"] == "1.0.0"
+            assert spec["id"] == "dbt-labs/dbt_utils/1.0.0"
+            assert "downloads" in spec
+            assert "_source" in spec
+            assert "fusion_compatibility" in spec
+
+    def test_update_task_make_spec_with_conformance_none(self, temp_dir):
+        """Test the make_spec method of UpdateTask with conformance output=None."""
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+        )
+
+        # Mock the requests.get to avoid actual network call
+        with patch("hubcap.records.requests.get") as mock_get:
+            mock_response = type(
+                "MockResponse",
+                (),
+                {
+                    "iter_content": lambda self, size: [b"test content"],
+                    "raise_for_status": lambda self: None,
+                },
+            )()
+            mock_get.return_value = mock_response
+
+            spec = task.make_spec(
+                "dbt-labs",
+                "dbt-utils",
+                "dbt_utils",
+                [],
+                [">=1.0.0"],
+                "1.0.0",
+                conformance_output=None,
+            )
+
+            assert spec["name"] == "dbt_utils"
+            assert spec["version"] == "1.0.0"
+            assert spec["id"] == "dbt-labs/dbt_utils/1.0.0"
+            assert "downloads" in spec
+            assert "_source" in spec
+            assert "fusion_compatibility" not in spec
+
+    def test_run_parse_conformance_success(
+        self, temp_dir, mock_fusion_conformance_output
+    ):
+        """Test the run_parse_conformance method of UpdateTask when conformance succeeds."""
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+        )
+
+        # Mock the actual parse conformance run with successful output
+        with patch("hubcap.records.run_conformance_for_version") as mock_parse:
+            mock_parse.return_value = mock_fusion_conformance_output
+
+            parse_conformance = task.run_parse_conformance(version_tag="1.0.0")
+
+            assert parse_conformance is not None
+            assert parse_conformance == mock_fusion_conformance_output
+
+    def test_run_parse_conformance_exception(self, temp_dir):
+        """Test the make_spec method of UpdateTask with a miscellaneous exception."""
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+        )
+
+        # Mock the actual parse conformance run with an exception
+        with patch("hubcap.records.run_conformance_for_version") as mock_parse:
+            mock_parse.side_effect = Exception("mocked error")
+
+            parse_conformance = task.run_parse_conformance(version_tag="1.0.0")
+
+            assert parse_conformance is None
+
+    def test_run_parse_conformance_parse_exception(self, temp_dir):
+        """Test the make_spec method of UpdateTask with a exception during parse."""
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+        )
+
+        # Mock an exception within the parse itself
+        with patch(
+            "dbt_fusion_package_tools.check_parse_conformance.check_fusion_schema_compatibility"
+        ) as mock_parse:
+            mock_parse.side_effect = Exception("mocked error")
+
+            parse_conformance = task.run_parse_conformance(version_tag="1.0.0")
+
+            assert parse_conformance is None

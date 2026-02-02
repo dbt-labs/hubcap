@@ -452,6 +452,9 @@
     "sgoley": [
         "dbt-postgres-utils"
     ],
+    "smithclay": [
+        "dbt_opentelemetry"
+    ],
     "snowplow": [
         "dbt-snowplow-utils",
         "dbt-snowplow-web",

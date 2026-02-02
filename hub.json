@@ -425,6 +425,9 @@
     "omnata-labs": [
         "dbt-ml-preprocessing"
     ],
+    "paradime-io": [
+        "dbt-llm-evals"
+    ],
     "pvcy": [
         "dbt-privacy"
     ],

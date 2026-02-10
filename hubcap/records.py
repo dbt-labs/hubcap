@@ -264,4 +264,7 @@ class UpdateTask(object):
         }
         if conformance_output is not None:
             spec["fusion_compatibility"] = conformance_output.to_dict()
+            spec["fusion_compatibility"]["fusion_compatible_download"] = {}
+        else:
+            spec["fusion_compatibility"] = {}
         return spec

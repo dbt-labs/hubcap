@@ -360,7 +360,8 @@ class TestUpdateTask:
             assert spec["id"] == "dbt-labs/dbt_utils/1.0.0"
             assert "downloads" in spec
             assert "_source" in spec
-            assert "fusion_compatibility" not in spec
+            assert "fusion_compatibility" in spec
+            assert spec["fusion_compatibility"] == {}
 
     def test_update_task_make_spec_with_conformance(
         self, temp_dir, mock_fusion_conformance_output
@@ -454,7 +455,8 @@ class TestUpdateTask:
             assert spec["id"] == "dbt-labs/dbt_utils/1.0.0"
             assert "downloads" in spec
             assert "_source" in spec
-            assert "fusion_compatibility" not in spec
+            assert "fusion_compatibility" in spec
+            assert spec["fusion_compatibility"] == {}
 
     def test_run_parse_conformance_success(
         self, temp_dir, mock_fusion_conformance_output

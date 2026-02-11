@@ -72,6 +72,9 @@
     "henryupton": [
         "dbt-scd2-utils"
     ],
+    "kanoniv": [
+        "dbt-kanoniv"
+    ],
     "LewisDavies": [
         "upstream-prod"
     ],

@@ -516,5 +516,8 @@
     ],
     "datooine": [
         "dbt-buckets"
+    ],
+    "teoria": [
+        "dbt-iceberg-utils"
     ]
 }

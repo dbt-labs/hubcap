@@ -488,6 +488,9 @@
         "dbt-meta-testing",
         "dbt-activity-schema"
     ],
+    "tripleaceme": [
+        "dbt-doc-tracker"
+    ],
     "tuva-health": [
         "the_tuva_project"
     ],

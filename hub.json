@@ -355,6 +355,9 @@
     "fullstorydev": [
         "dbt_fullstory"
     ],
+    "gauthierpiarrette": [
+        "dbt-timefence"
+    ],
     "get-select": [
         "dbt-snowflake-monitoring",
         "dbt-snowflake-query-tags"

@@ -92,7 +92,7 @@ jobs:
           fi
 
           # Add Fusion binary path from env var
-          jq --arg fusion_path "$FUSION_BINARY" '.fusion_binary_path = $fusion_path' > base_config_fusion.json
+          jq --arg fusion_path "$FUSION_BINARY" '.fusion_binary_path = $fusion_path' base_config.json > base_config_fusion.json
 
           # Modify config for dry run if requested
           if [ "$INPUT_DRY_RUN" = "true" ]; then

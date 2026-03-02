@@ -143,6 +143,9 @@ class UpdateTask(object):
             git_helper.run_cmd(f"git checkout tags/{tag}")
             packages = package.parse_pkgs(Path(os.getcwd()))
             require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
+            conformance_result: Optional[
+                FusionConformanceResult
+            ] = self.run_parse_conformance(str(tag), "dbtf")
 
             # return to hub and build spec
             os.chdir(main_dir)
@@ -153,6 +156,7 @@ class UpdateTask(object):
                 packages,
                 require_dbt_version,
                 tag,
+                conformance_result,
             )
 
             version_path = self.hub_version_index_path / Path(f"{tag}.json")
@@ -222,7 +226,8 @@ class UpdateTask(object):
                     )
                     if isinstance(existing_index_file_json, dict):
                         return {
-                            str(key): value for key, value in existing_index_file_json.items()
+                            str(key): value
+                            for key, value in existing_index_file_json.items()
                         }
                     else:
                         logging.error(

@@ -268,7 +268,7 @@ def commit_version_updates_to_hub(
 
             # good house keeping
             os.chdir(hub_dir_path)
-            cmd = f"git checkout {default_branch}"
+            cmd = f"git checkout --force {default_branch}"
             run_cmd(cmd)
         except Exception as e:
             logging.error(

@@ -145,7 +145,7 @@ class UpdateTask(object):
             require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
             conformance_result: Optional[
                 FusionConformanceResult
-            ] = self.run_parse_conformance(str(tag), "dbtf")
+            ] = self.run_parse_conformance(str(tag), "/home/runner/.local/bin/dbt")
 
             # return to hub and build spec
             os.chdir(main_dir)
@@ -155,16 +155,16 @@ class UpdateTask(object):
                 self.package_name,
                 packages,
                 require_dbt_version,
-                tag,
+                str(tag),
                 conformance_result,
             )
 
-            version_path = self.hub_version_index_path / Path(f"{tag}.json")
+            version_path: Path = self.hub_version_index_path / Path(f"{tag}.json")
             with open(version_path, "w") as f:
                 logging.info(f"writing spec to {version_path}")
                 f.write(str(json.dumps(package_spec, indent=4)))
 
-            msg = f"hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}"
+            msg: str = f"hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}"
             logging.info(msg)
             git_helper.run_cmd("git add -A")
             subprocess.run(args=["git", "commit", "-am", f"{msg}"], capture_output=True)
@@ -266,12 +266,12 @@ class UpdateTask(object):
 
     def make_spec(
         self,
-        org,
-        repo,
-        package_name,
-        packages,
-        require_dbt_version,
-        version,
+        org: str,
+        repo: str,
+        package_name: str,
+        packages: list[dict[str, Any]],
+        require_dbt_version: list[str],
+        version: str,
         conformance_output: Optional[FusionConformanceResult] = None,
     ):
         """The hub needs these specs for packages to be discoverable by deps and on the web"""

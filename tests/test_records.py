@@ -320,7 +320,7 @@ class TestUpdateTask:
         test_file.write_text("{invalid json")
 
         result = task.fetch_index_file_contents(test_file)
-        assert result == {}
+        assert result is None
 
     def test_update_task_make_spec(self, temp_dir):
         """Test the make_spec method of UpdateTask without conformance output."""

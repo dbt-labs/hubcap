@@ -222,7 +222,7 @@ class UpdateTask(object):
                     )
                     if isinstance(existing_index_file_json, dict):
                         return {
-                            str(key): value for key, value in existing_index_file_json
+                            str(key): value for key, value in existing_index_file_json.items()
                         }
                     else:
                         logging.error(

@@ -119,9 +119,10 @@ jobs:
           echo "=== Execution Summary ==="
 
           # Check for errors
-          if grep -q 'ERROR' hubcap.log; then
+          # Space after ERROR differentiates error logs from parse errors
+          if grep -q 'ERROR ' hubcap.log; then
             echo "❌ Found ERROR events in execution:"
-            grep 'ERROR' hubcap.log
+            grep 'ERROR ' hubcap.log
             echo "EXECUTION_STATUS=failed" >> $GITHUB_ENV
           else
             echo "✅ No ERROR-level log entries found"

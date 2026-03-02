@@ -6,6 +6,7 @@ import yaml
 from typing import List, Dict, Any
 
 from git import Repo
+from git.types import PathLike
 from pathlib import Path
 
 from hubcap import records
@@ -161,7 +162,11 @@ def parse_pkgs(repo_dir) -> List[Dict[str, Any]]:
 
 
 def get_update_tasks(
-    maintainers: list[records.PackageMaintainer], version_index, path: Path, hub_repo
+    maintainers: list[records.PackageMaintainer],
+    version_index,
+    path: Path,
+    hub_repo,
+    fusion_binary_path: PathLike,
 ):
     """build list of tasks for package version-bump commits"""
 
@@ -228,6 +233,7 @@ def get_update_tasks(
                     existing_tags=existing_tags,
                     new_tags=new_tags,
                     hub_repo=hub_repo,
+                    fusion_binary_path=fusion_binary_path,
                 )
             # Cannot create update task for package without new tags
             else:

@@ -77,6 +77,7 @@ class UpdateTask(object):
         existing_tags: list,
         new_tags: list,
         hub_repo: str,
+        fusion_binary_path: PathLike,
     ):
         self.github_username = github_username
         self.github_repo_name = github_repo_name
@@ -93,6 +94,7 @@ class UpdateTask(object):
         self.package_name = package_name
         self.existing_tags = existing_tags
         self.new_tags = new_tags
+        self.fusion_binary_path = fusion_binary_path
 
     def run_parse_conformance(
         self, version_tag: str, fusion_binary=None
@@ -145,7 +147,7 @@ class UpdateTask(object):
             require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
             conformance_result: Optional[
                 FusionConformanceResult
-            ] = self.run_parse_conformance(str(tag), "/home/runner/.local/bin/dbt")
+            ] = self.run_parse_conformance(str(tag), self.fusion_binary_path)
 
             # return to hub and build spec
             os.chdir(main_dir)

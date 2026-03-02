@@ -1,6 +1,7 @@
 """Tests for the records module."""
 
 
+from hubcap.hubcap import DEFAULT_FUSION_BINARY_PATH
 from hubcap.records import (
     IndividualPullRequests,
     ConsolididatedPullRequest,
@@ -139,6 +140,7 @@ class TestUpdateTask:
             existing_tags=["1.0.0"],
             new_tags=["1.0.1", "1.0.2"],
             hub_repo="hub.getdbt.com",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         assert task.github_username == "test-org"
@@ -160,6 +162,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=[],
             hub_repo="hub.getdbt.com",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Check the path construction
@@ -180,6 +183,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=[],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         assert task.existing_tags == []
@@ -201,6 +205,7 @@ class TestUpdateTask:
             existing_tags=existing,
             new_tags=new,
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         assert len(task.existing_tags) == 10
@@ -219,6 +224,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=["1.0.0", "1.0.1"],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         index = task.make_index(
@@ -243,6 +249,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=[],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         existing_index = {
@@ -268,6 +275,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=[],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         nonexistent_file = temp_dir / "nonexistent.json"
@@ -290,6 +298,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=[],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Create a test file
@@ -313,6 +322,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=[],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Create invalid JSON file
@@ -337,6 +347,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=["1.0.0"],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Mock the requests.get to avoid actual network call
@@ -380,6 +391,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=["1.0.0"],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Mock the requests.get to avoid actual network call
@@ -426,6 +438,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=["1.0.0"],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Mock the requests.get to avoid actual network call
@@ -475,6 +488,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=["1.0.0"],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Mock the actual parse conformance run with successful output
@@ -501,6 +515,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=["1.0.0"],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Mock the actual parse conformance run with an exception
@@ -526,6 +541,7 @@ class TestUpdateTask:
             existing_tags=[],
             new_tags=["1.0.0"],
             hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
         )
 
         # Mock an exception within the parse itself

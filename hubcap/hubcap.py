@@ -1,4 +1,5 @@
 import logging
+from git.types import PathLike
 import sys
 from pathlib import Path
 
@@ -14,6 +15,9 @@ from hubcap.git_helper import (
     GitOperationError,
 )
 from hubcap.records import IndividualPullRequests, ConsolididatedPullRequest
+
+# Default if no path is specified in config.json
+DEFAULT_FUSION_BINARY_PATH = Path.home() / ".local" / "bin" / "dbt"
 
 
 def app():
@@ -57,6 +61,9 @@ def main():
         git_tmp = "target"
         TMP_DIR = Path(git_tmp).resolve()
         selected_package_maintainers = config.get("selected_package_maintainers")
+        fusion_binary_path: PathLike = config.get(
+            "fusion_binary_path", DEFAULT_FUSION_BINARY_PATH.resolve()
+        )
 
         try:
             PACKAGE_MAINTAINERS = package_maintainers.load_package_maintainers()
@@ -156,7 +163,11 @@ def main():
         logging.info("collecting the new version tags for packages checked into hub")
         try:
             update_tasks = package.get_update_tasks(
-                PACKAGE_MAINTAINERS, HUB_VERSION_INDEX, TMP_DIR, github_repo
+                PACKAGE_MAINTAINERS,
+                HUB_VERSION_INDEX,
+                TMP_DIR,
+                github_repo,
+                fusion_binary_path,
             )
         except Exception as e:
             logging.error(f"Error getting update tasks: {str(e)}")

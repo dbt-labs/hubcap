@@ -140,7 +140,7 @@ class UpdateTask(object):
         for tag in self.new_tags:
             # go to repo dir to checkout tag and tag-commit specific package list
             os.chdir(self.local_path_to_repo)
-            git_helper.run_cmd(f"git checkout tags/{tag}")
+            git_helper.run_cmd(f"git checkout --force tags/{tag}")
             packages = package.parse_pkgs(Path(os.getcwd()))
             require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
             conformance_result: Optional[

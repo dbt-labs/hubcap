@@ -29,7 +29,7 @@ Save the token to a secure location. Click the "Configure SSO" button and "Autho
 ```shell
 cp config.example.json config.json
 
-# Add the relevant GitHub username, email address and token
+# Add the relevant GitHub username, email address, token, and Fusion binary path
 $EDITOR config.json
 
 # Export the JSON credentials into an environment variable

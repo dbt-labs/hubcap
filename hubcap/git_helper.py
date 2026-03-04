@@ -18,20 +18,20 @@ class GitOperationError(Exception):
     pass
 
 
-def run_cmd(cmd, quiet=False):
+def run_cmd(cmd: str, quiet=False):
     """Dispatching commands to shell from inside Python needs an exit status wrapper"""
     try:
-        proc = subprocess.run(
+        proc: subprocess.CompletedProcess[bytes] = subprocess.run(
             args=cmd.split(), capture_output=True, timeout=300
         )  # 5 minute timeout
 
         if proc.returncode:
-            stderr_output = proc.stderr.decode("utf-8").rstrip()
+            stderr_output: str = proc.stderr.decode("utf-8").rstrip()
             logging.warning(f"Command failed: {cmd}")
             logging.warning(f"Error: {stderr_output}")
             raise GitOperationError(f"Command failed: {cmd}. Error: {stderr_output}")
 
-        output = proc.stdout.decode("utf-8").rstrip()
+        output: str = proc.stdout.decode("utf-8").rstrip()
 
         if not quiet:
             logging.info(output)

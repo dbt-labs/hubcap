@@ -66,6 +66,7 @@ jobs:
           HUBCAP_CONFIG: ${{ secrets.HUBCAP_CONFIG }}
           INPUT_DRY_RUN: ${{ github.event.inputs.dry_run || (github.event_name == 'pull_request' && 'true') || 'false' }}
           ENVIRONMENT: ${{ github.event.inputs.environment || (github.event_name == 'pull_request' && 'test') || 'production' }}
+          FUSION_BINARY: '/home/runner/.local/bin/dbt'
         run: |
           echo "Using $ENVIRONMENT environment configuration"
 
@@ -90,13 +91,16 @@ jobs:
             echo "$HUBCAP_CONFIG" > base_config.json
           fi
 
+          # Add Fusion binary path from env var
+          jq --arg fusion_path "$FUSION_BINARY" '.fusion_binary_path = $fusion_path' base_config.json > base_config_fusion.json
+
           # Modify config for dry run if requested
           if [ "$INPUT_DRY_RUN" = "true" ]; then
             echo "Enabling dry-run mode (push_branches = false)"
-            jq '.push_branches = false' base_config.json > config.json
+            jq '.push_branches = false' base_config_fusion.json > config.json
           else
             echo "Running in live mode (push_branches = true)"
-            cp base_config.json config.json
+            cp base_config_fusion.json config.json
           fi
 
           # Set the CONFIG environment variable for hubcap.py
@@ -115,9 +119,10 @@ jobs:
           echo "=== Execution Summary ==="
 
           # Check for errors
-          if grep -q 'ERROR' hubcap.log; then
+          # Space after ERROR differentiates error logs from parse errors
+          if grep -q 'ERROR ' hubcap.log; then
             echo "❌ Found ERROR events in execution:"
-            grep 'ERROR' hubcap.log
+            grep 'ERROR ' hubcap.log
             echo "EXECUTION_STATUS=failed" >> $GITHUB_ENV
           else
             echo "✅ No ERROR-level log entries found"

@@ -359,6 +359,7 @@
         "dbt-timefence"
     ],
     "get-select": [
+        "dbt-query-tags",
         "dbt-snowflake-monitoring",
         "dbt-snowflake-query-tags"
     ],

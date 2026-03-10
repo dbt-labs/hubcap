@@ -195,7 +195,7 @@ toml = [
 
 [[package]]
 name = "dbt-fusion-package-tools"
-version = "0.20.0"
+version = "0.20.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -206,9 +206,9 @@ dependencies = [
     { name = "rich" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5f/88/0aeaaea9c23abdcc661d66123c1413d13ee45d1f7257580eaa915cb04524/dbt_fusion_package_tools-0.20.0.tar.gz", hash = "sha256:c8501d88d1de11b8799de8b7d0aec2926e445321c327631d7f5f607aa9f1b7e6", size = 45239, upload-time = "2026-02-19T22:10:40.622Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/17/b4/2930d1846080c27894ced798f5ab939554fc518fbc3d0c4cda26b63242c3/dbt_fusion_package_tools-0.20.1.tar.gz", hash = "sha256:4119bc1348350e373b81fe99f3507aa0fc7b2259ab8454a06d8e6a92af3d991c", size = 45286, upload-time = "2026-03-09T22:28:55.883Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/09/22/57e1b163b5e084ccd521f5a53bfc2427f7c1ed55739b72d037169067a672/dbt_fusion_package_tools-0.20.0-py3-none-any.whl", hash = "sha256:54cb764d5d3f31b680aeab45517f9acf5d4858a0e9e3b4078c3d356410e09e1d", size = 56231, upload-time = "2026-02-19T22:10:34.035Z" },
+    { url = "https://files.pythonhosted.org/packages/57/f9/ab99d82346c8e665661213f79bef1917ed0ea2adee1039c26638d915bca3/dbt_fusion_package_tools-0.20.1-py3-none-any.whl", hash = "sha256:063e73d65e4a24035fb8cf5595f28167d2b1cefbea59de5631ac8edaf70b05be", size = 56276, upload-time = "2026-03-09T22:28:53.567Z" },
 ]
 
 [[package]]
@@ -298,7 +298,7 @@ requires-dist = [
     { name = "black", marker = "extra == 'test'", specifier = "==22.6.0" },
     { name = "certifi", specifier = "==2022.12.7" },
     { name = "charset-normalizer", specifier = "==2.1.1" },
-    { name = "dbt-fusion-package-tools", specifier = ">=0.20.0" },
+    { name = "dbt-fusion-package-tools", specifier = ">=0.20.1" },
     { name = "gitdb", specifier = "==4.0.9" },
     { name = "gitpython", specifier = ">=3.1.45" },
     { name = "idna", specifier = "==3.4" },

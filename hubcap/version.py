@@ -7,7 +7,6 @@ from typing import List, Optional
 from hubcap.exceptions import VersionError
 
 
-
 def parse_semver_tag(tag: str) -> Optional[re.Match[str]]:
     """use regexes to parse the semver tag into groups"""
     try:

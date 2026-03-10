@@ -11,7 +11,6 @@ from git.exc import GitCommandError
 from hubcap.exceptions import ReleaseCarrierError
 
 
-
 def make_pr(org, repo, head, user_creds, url, pr_strategy, base="main"):
     """Create POST content which in turns create a hub new-version PR"""
     try:

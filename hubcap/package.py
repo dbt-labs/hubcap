@@ -15,7 +15,6 @@ from hubcap.git_helper import clone_repo, run_cmd, GitOperationError
 from hubcap.exceptions import PackageError
 
 
-
 def clone_package_repos(package_maintainer_index, path):
     """clone all package repos listed in index to path"""
     failed_repos = []

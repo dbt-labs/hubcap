@@ -7,7 +7,6 @@ from hubcap.records import PackageMaintainer
 from hubcap.exceptions import PackageMaintainerError
 
 
-
 def load_package_maintainers() -> List[PackageMaintainer]:
     """Hub's state determined by packages and their maintainers listed in hub.json"""
     try:

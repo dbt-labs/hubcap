@@ -3,6 +3,7 @@ class GitOperationError(Exception):
 
     pass
 
+
 class ConfigurationError(Exception):
     """Custom exception for configuration errors"""
 
@@ -14,20 +15,24 @@ class FileOperationError(Exception):
 
     pass
 
+
 class PackageMaintainerError(Exception):
     """Custom exception for package maintainer loading errors"""
 
     pass
+
 
 class PackageError(Exception):
     """Custom exception for package operation failures"""
 
     pass
 
+
 class ReleaseCarrierError(Exception):
     """Custom exception for release carrier operation failures"""
 
     pass
+
 
 class VersionError(Exception):
     """Custom exception for version operation errors"""

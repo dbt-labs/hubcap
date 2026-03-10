@@ -29,12 +29,14 @@ Save the token to a secure location. Click the "Configure SSO" button and "Autho
 ```shell
 cp config.example.json config.json
 
-# Add the relevant GitHub username, email address, token, and Fusion binary path
+# Add the relevant GitHub username, email address, and token
 $EDITOR config.json
 
 # Export the JSON credentials into an environment variable
 export CONFIG=$(<config.json)
 ```
+
+If you have Fusion installed in a location other than the default (`~/.local/bin/dbt`), you will also need to add a line to `config.json` that sets `fusion_binary_path` to the correct path.
 
 ## Run in test mode
 

@@ -7,6 +7,5 @@
     "org": "dbt-labs",
     "repo": "hub.getdbt.com-test",
     "push_branches": true,
-    "one_branch_per_repo": true,
-    "fusion_binary_path": "/Users/yourusernamehere/.local/bin/dbt"
+    "one_branch_per_repo": true
 }

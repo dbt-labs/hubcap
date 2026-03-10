@@ -1,5 +1,5 @@
 import logging
-from git.types import PathLike
+from hubcap.types import PathLike
 import sys
 from pathlib import Path
 

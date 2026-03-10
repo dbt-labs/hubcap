@@ -4,12 +4,8 @@ import re
 import semver
 import logging
 from typing import List, Optional
+from hubcap.exceptions import VersionError
 
-
-class VersionError(Exception):
-    """Custom exception for version operation errors"""
-
-    pass
 
 
 def parse_semver_tag(tag: str) -> Optional[re.Match[str]]:

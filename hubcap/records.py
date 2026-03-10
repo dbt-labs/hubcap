@@ -2,7 +2,7 @@
 
 from dbt_fusion_package_tools.check_parse_conformance import run_conformance_for_version
 from dbt_fusion_package_tools.compatibility import FusionConformanceResult
-from git.types import PathLike
+from hubcap.types import PathLike
 from typing import Any, Optional
 import hashlib
 import json

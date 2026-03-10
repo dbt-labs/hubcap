@@ -10,12 +10,7 @@ from git import cmd
 from git import Repo
 from git.exc import GitCommandError
 from pathlib import Path
-
-
-class GitOperationError(Exception):
-    """Custom exception for git operation failures"""
-
-    pass
+from .exceptions import GitOperationError
 
 
 def run_cmd(cmd: str, quiet=False):

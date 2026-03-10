@@ -8,12 +8,8 @@ from typing import List, Tuple
 from git import Repo
 from git.remote import Remote
 from git.exc import GitCommandError
+from hubcap.exceptions import ReleaseCarrierError
 
-
-class ReleaseCarrierError(Exception):
-    """Custom exception for release carrier operation failures"""
-
-    pass
 
 
 def make_pr(org, repo, head, user_creds, url, pr_strategy, base="main"):

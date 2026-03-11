@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, patch
 
 from hubcap import package
 from hubcap.records import PackageMaintainer
+from hubcap.hubcap import DEFAULT_FUSION_BINARY_PATH
 
 
 class TestParsePkgName:
@@ -205,7 +206,11 @@ class TestGetUpdateTasks:
 
         with patch("hubcap.package.Repo"):
             tasks = package.get_update_tasks(
-                [maintainer], version_index, temp_dir, "hub.getdbt.com"
+                [maintainer],
+                version_index,
+                temp_dir,
+                "hub.getdbt.com",
+                DEFAULT_FUSION_BINARY_PATH,
             )
 
         assert len(tasks) == 1
@@ -233,7 +238,11 @@ class TestGetUpdateTasks:
 
         with patch("hubcap.package.Repo"):
             tasks = package.get_update_tasks(
-                [maintainer], version_index, temp_dir, "hub.getdbt.com"
+                [maintainer],
+                version_index,
+                temp_dir,
+                "hub.getdbt.com",
+                DEFAULT_FUSION_BINARY_PATH,
             )
 
         assert len(tasks) == 0
@@ -248,7 +257,11 @@ class TestGetUpdateTasks:
         version_index = {}
 
         tasks = package.get_update_tasks(
-            [maintainer], version_index, temp_dir, "hub.getdbt.com"
+            [maintainer],
+            version_index,
+            temp_dir,
+            "hub.getdbt.com",
+            DEFAULT_FUSION_BINARY_PATH,
         )
 
         assert len(tasks) == 0
@@ -259,7 +272,11 @@ class TestGetUpdateTasks:
         version_index = {}
 
         tasks = package.get_update_tasks(
-            [maintainer], version_index, temp_dir, "hub.getdbt.com"
+            [maintainer],
+            version_index,
+            temp_dir,
+            "hub.getdbt.com",
+            DEFAULT_FUSION_BINARY_PATH,
         )
 
         assert len(tasks) == 0

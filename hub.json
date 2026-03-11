@@ -72,7 +72,7 @@
     "henryupton": [
         "dbt-scd2-utils"
     ],
-    "kanoniv": [
+    "kanoniv":  [
         "dbt-kanoniv"
     ],
     "LewisDavies": [

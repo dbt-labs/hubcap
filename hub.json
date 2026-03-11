@@ -496,6 +496,7 @@
         "dbt-activity-schema"
     ],
     "tripleaceme": [
+        "dbt-doc-inherit",
         "dbt-doc-tracker"
     ],
     "tuva-health": [

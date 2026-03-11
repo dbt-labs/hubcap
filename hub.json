@@ -355,7 +355,11 @@
     "fullstorydev": [
         "dbt_fullstory"
     ],
+    "gauthierpiarrette": [
+        "dbt-timefence"
+    ],
     "get-select": [
+        "dbt-query-tags",
         "dbt-snowflake-monitoring",
         "dbt-snowflake-query-tags"
     ],
@@ -494,7 +498,7 @@
     "tuva-health": [
         "the_tuva_project"
     ],
-    "versent-dimensional": [
+    "versent": [
         "dbt_versent_dimensional_automate"
     ],
     "vladimir-vvalov": [
@@ -519,5 +523,8 @@
     ],
     "datooine": [
         "dbt-buckets"
+    ],
+    "teoria": [
+        "dbt-iceberg-utils"
     ]
 }

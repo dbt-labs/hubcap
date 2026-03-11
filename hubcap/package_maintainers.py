@@ -4,12 +4,7 @@ from typing import List
 from pathlib import Path
 
 from hubcap.records import PackageMaintainer
-
-
-class PackageMaintainerError(Exception):
-    """Custom exception for package maintainer loading errors"""
-
-    pass
+from hubcap.exceptions import PackageMaintainerError
 
 
 def load_package_maintainers() -> List[PackageMaintainer]:

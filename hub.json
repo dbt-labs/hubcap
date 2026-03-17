@@ -21,6 +21,9 @@
     "BfdCampos": [
         "source_db"
     ],
+    "bchaoss": [
+        "dbt_pre_period_selector"
+    ],
     "data-diving": [
         "dbt_diving"
     ],

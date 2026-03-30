@@ -7,6 +7,12 @@ Link to your package's repository:
 ## Checklist
 _This checklist is a cut down version of the [best practices](../blob/main/package-best-practices.md) that we have identified as the package hub has grown. Although meeting these checklist items is not a prerequisite to being added to the Hub, we have found that packages which don't conform provide a worse user experience._
 
+### Real world usage
+
+Using coding agents to help you build your package is totally fine, but please don't submit it to the package hub until you've used it in your own production environment for an extended period of time.
+
+- [ ] (Required): I have been using this package in production and am satisfied with its behavior.
+
 ### First run experience
 - [ ] (Required): The package includes a [licence file detectable by GitHub](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-license-to-a-repository), such as the Apache 2.0 or MIT licence.
 - [ ] The package includes a README which explains how to get started with the package and customise its behaviour

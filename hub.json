@@ -458,7 +458,8 @@
         "dbt-duckdb-utils"
     ],
     "sgoley": [
-        "dbt-postgres-utils"
+        "dbt-postgres-utils",
+        "dbt-holidates"
     ],
     "smithclay": [
         "dbt_opentelemetry"

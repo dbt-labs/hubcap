@@ -96,7 +96,7 @@
         "dbt-ml-eval",
         "dbt-orphan"
     ],
-    "metaplane" : [
+    "metaplane": [
         "dbt-expectations"
     ],
     "Montreal-Analytics": [
@@ -141,6 +141,9 @@
     ],
     "andrewcstewart": [
         "dbt-uaparser"
+    ],
+    "anentropic": [
+        "dbt-duckdb-semantic-views"
     ],
     "arnoN7": [
         "dbt-incremental-stream"

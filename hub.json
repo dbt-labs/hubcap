@@ -96,7 +96,7 @@
         "dbt-ml-eval",
         "dbt-orphan"
     ],
-    "metaplane" : [
+    "metaplane": [
         "dbt-expectations"
     ],
     "Montreal-Analytics": [
@@ -531,5 +531,8 @@
     ],
     "teoria": [
         "dbt-iceberg-utils"
+    ],
+    "UniRate-API": [
+        "dbt-unirate"
     ]
 }

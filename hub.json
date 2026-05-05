@@ -503,6 +503,9 @@
     "tuva-health": [
         "the_tuva_project"
     ],
+    "vahid110": [
+        "dbt-dqlens"
+    ],
     "versent": [
         "dbt_versent_dimensional_automate"
     ],

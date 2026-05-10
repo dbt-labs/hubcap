@@ -99,6 +99,9 @@
     "metaplane" : [
         "dbt-expectations"
     ],
+    "monitorial-io" : [
+        "dbt-snowflake-cortex"
+    ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],

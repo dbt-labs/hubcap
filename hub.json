@@ -129,6 +129,9 @@
     "shankararul": [
         "dbt_eda_tools"
     ],
+    {
+  "git": "https://github.com/smudvar/dbt-healthcare-standards.git"
+}
     "Snowflake-Labs": [
         "dbt_constraints",
         "dbt_semantic_view"
@@ -464,6 +467,9 @@
     "smithclay": [
         "dbt_opentelemetry"
     ],
+    "smudvar": [
+    "dbt-healthcare-standards"
+        ],
     "snowplow": [
         "dbt-snowplow-utils",
         "dbt-snowplow-web",

@@ -6,17 +6,13 @@ import yaml
 from typing import List, Dict, Any
 
 from git import Repo
+from hubcap.types import PathLike
 from pathlib import Path
 
 from hubcap import records
 from hubcap import version
 from hubcap.git_helper import clone_repo, run_cmd, GitOperationError
-
-
-class PackageError(Exception):
-    """Custom exception for package operation failures"""
-
-    pass
+from hubcap.exceptions import PackageError
 
 
 def clone_package_repos(package_maintainer_index, path):
@@ -50,7 +46,7 @@ def clone_package_repos(package_maintainer_index, path):
     return failed_repos
 
 
-def parse_pkg_name(repo_dir) -> str:
+def parse_pkg_name(repo_dir: Path) -> str:
     """Parse package name from dbt_project.yml with error handling"""
     try:
         dbt_project_path = repo_dir / Path("dbt_project.yml")
@@ -160,7 +156,13 @@ def parse_pkgs(repo_dir) -> List[Dict[str, Any]]:
         return []
 
 
-def get_update_tasks(maintainers, version_index, path, hub_repo):
+def get_update_tasks(
+    maintainers: list[records.PackageMaintainer],
+    version_index,
+    path: Path,
+    hub_repo,
+    fusion_binary_path: PathLike,
+):
     """build list of tasks for package version-bump commits"""
 
     def has_dbt_project_yml(package, directory):
@@ -170,10 +172,10 @@ def get_update_tasks(maintainers, version_index, path, hub_repo):
             logging.warning(f"{package} has no dbt_project.yml. Skipping...")
         return has_yaml
 
-    def get_new_tags(repo_path, maintainer_name):
+    def get_new_tags(repo_path: Path, maintainer_name: str):
         # Existing tags are fetched from version index
         try:
-            yml_package_name = parse_pkg_name(repo_path)
+            yml_package_name: str = parse_pkg_name(repo_path)
             logging.info(f"collecting tags for {yml_package_name}")
 
             existing_tags = version.get_existing_tags(
@@ -195,7 +197,7 @@ def get_update_tasks(maintainers, version_index, path, hub_repo):
 
     def build_update_task_tuple(maintainer_name, hub_package_name):
         SKIP = None
-        repo_path = path / Path(f"{maintainer_name}_{hub_package_name}")
+        repo_path: Path = path / Path(f"{maintainer_name}_{hub_package_name}")
 
         # Check if repo directory exists
         if not repo_path.exists():
@@ -226,6 +228,7 @@ def get_update_tasks(maintainers, version_index, path, hub_repo):
                     existing_tags=existing_tags,
                     new_tags=new_tags,
                     hub_repo=hub_repo,
+                    fusion_binary_path=fusion_binary_path,
                 )
             # Cannot create update task for package without new tags
             else:
@@ -266,7 +269,7 @@ def commit_version_updates_to_hub(
 
             # good house keeping
             os.chdir(hub_dir_path)
-            cmd = f"git checkout {default_branch}"
+            cmd = f"git checkout --force {default_branch}"
             run_cmd(cmd)
         except Exception as e:
             logging.error(

@@ -1,5 +1,9 @@
 """Interface for objects useful to processing hub entries"""
 
+from dbt_fusion_package_tools.check_parse_conformance import run_conformance_for_version
+from dbt_fusion_package_tools.compatibility import FusionConformanceResult
+from hubcap.types import PathLike
+from typing import Any, Optional
 import hashlib
 import json
 import logging
@@ -73,6 +77,7 @@ class UpdateTask(object):
         existing_tags: list,
         new_tags: list,
         hub_repo: str,
+        fusion_binary_path: PathLike,
     ):
         self.github_username = github_username
         self.github_repo_name = github_repo_name
@@ -89,16 +94,37 @@ class UpdateTask(object):
         self.package_name = package_name
         self.existing_tags = existing_tags
         self.new_tags = new_tags
+        self.fusion_binary_path = fusion_binary_path
 
-    def run(self, main_dir, pr_strategy):
+    def run_parse_conformance(
+        self, version_tag: str, fusion_binary=None
+    ) -> Optional[FusionConformanceResult]:
+        try:
+            result: Optional[FusionConformanceResult] = run_conformance_for_version(
+                self.local_path_to_repo,
+                self.package_name,
+                version_tag,
+                self.package_name,
+                fusion_binary=fusion_binary,
+            )
+            return result
+        except Exception as e:
+            logging.warning(
+                f"parse conformance failed for {self.package_name} {version_tag}: {e}"
+            )
+            return
+
+    def run(
+        self, main_dir: PathLike, pr_strategy: PullRequestStrategy
+    ) -> tuple[str, str, str]:
         os.chdir(main_dir)
         # Ensure versions directory for a hub package entry
         Path.mkdir(self.hub_version_index_path, parents=True, exist_ok=True)
 
-        branch_name = self.cut_version_branch(pr_strategy)
+        branch_name: str = self.cut_version_branch(pr_strategy)
 
         # create an updated version of the repo's index.json
-        index_filepath = (
+        index_filepath: Path = (
             Path(os.path.dirname(self.hub_version_index_path)) / "index.json"
         )
         new_index_entry = self.make_index(
@@ -116,9 +142,12 @@ class UpdateTask(object):
         for tag in self.new_tags:
             # go to repo dir to checkout tag and tag-commit specific package list
             os.chdir(self.local_path_to_repo)
-            git_helper.run_cmd(f"git checkout tags/{tag}")
+            git_helper.run_cmd(f"git checkout --force tags/{tag}")
             packages = package.parse_pkgs(Path(os.getcwd()))
             require_dbt_version = package.parse_require_dbt_version(Path(os.getcwd()))
+            conformance_result: Optional[
+                FusionConformanceResult
+            ] = self.run_parse_conformance(str(tag), self.fusion_binary_path)
 
             # return to hub and build spec
             os.chdir(main_dir)
@@ -128,15 +157,16 @@ class UpdateTask(object):
                 self.package_name,
                 packages,
                 require_dbt_version,
-                tag,
+                str(tag),
+                conformance_result,
             )
 
-            version_path = self.hub_version_index_path / Path(f"{tag}.json")
+            version_path: Path = self.hub_version_index_path / Path(f"{tag}.json")
             with open(version_path, "w") as f:
                 logging.info(f"writing spec to {version_path}")
                 f.write(str(json.dumps(package_spec, indent=4)))
 
-            msg = f"hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}"
+            msg: str = f"hubcap: Adding tag {tag} for {self.github_username}/{self.github_repo_name}"
             logging.info(msg)
             git_helper.run_cmd("git add -A")
             subprocess.run(args=["git", "commit", "-am", f"{msg}"], capture_output=True)
@@ -144,14 +174,14 @@ class UpdateTask(object):
         # if succesful return branchname
         return branch_name, self.github_username, self.github_repo_name
 
-    def cut_version_branch(self, pr_strategy):
+    def cut_version_branch(self, pr_strategy: PullRequestStrategy) -> str:
         """designed to be run in a hub repo which is sibling to package code repos"""
-        branch_name = pr_strategy.branch_name(
+        branch_name: str = pr_strategy.branch_name(
             self.github_username, self.github_repo_name
         )
         helper.logging.info(f"checking out branch {branch_name} in the hub repo")
 
-        completed_subprocess = subprocess.run(
+        completed_subprocess: subprocess.CompletedProcess[bytes] = subprocess.run(
             ["git", "checkout", "-q", "-b", branch_name]
         )
         if completed_subprocess.returncode == 128:
@@ -159,9 +189,16 @@ class UpdateTask(object):
 
         return branch_name
 
-    def make_index(self, org_name, repo, package_name, existing, tags):
-        description = "dbt models for {}".format(repo)
-        assets = {"logo": "logos/placeholder.svg"}
+    def make_index(
+        self,
+        org_name: str,
+        repo: str,
+        package_name: str,
+        existing: Optional[dict[str, Any]],
+        tags,
+    ) -> dict[str, Any]:
+        description: str = "dbt models for {}".format(repo)
+        assets: dict[str, str] = {"logo": "logos/placeholder.svg"}
 
         if isinstance(existing, dict):
             description = existing.get("description", description)
@@ -169,7 +206,7 @@ class UpdateTask(object):
 
         # attempt to grab the latest final version of a project if one exists
         # (and the latest prerelease otherwise)
-        latest_version = version.latest_version(tags)
+        latest_version: str = version.latest_version(tags)
 
         return {
             "name": package_name,
@@ -179,14 +216,34 @@ class UpdateTask(object):
             "assets": assets,
         }
 
-    def fetch_index_file_contents(self, filepath):
+    def fetch_index_file_contents(self, filepath: Path) -> Optional[dict[str, Any]]:
         if os.path.exists(filepath):
             with open(filepath, "rb") as stream:
-                existing_index_file_contents = stream.read().decode("utf-8").strip()
+                existing_index_file_contents: str = (
+                    stream.read().decode("utf-8").strip()
+                )
                 try:
-                    return json.loads(existing_index_file_contents)
-                except Exception:
-                    return {}
+                    existing_index_file_json: Any = json.loads(
+                        existing_index_file_contents
+                    )
+                    if isinstance(existing_index_file_json, dict):
+                        return {
+                            str(key): value
+                            for key, value in existing_index_file_json.items()
+                        }
+                    else:
+                        logging.error(
+                            f"JSON in index file at {filepath} is typed as {type(existing_index_file_json)} instead of dict"
+                        )
+                except json.JSONDecodeError:
+                    logging.error(
+                        f"Could not decode malformed JSON in index file at {filepath}"
+                    )
+                except Exception as e:
+                    logging.error(
+                        f"Exception occurred while decoding index file at {filepath}: {str(e)}"
+                    )
+        return
 
     def download(self, url):
         """Get some content to create a sha (very surely) unique to that package version"""
@@ -210,7 +267,14 @@ class UpdateTask(object):
         return digest
 
     def make_spec(
-        self, org, repo, package_name, packages, require_dbt_version, version
+        self,
+        org: str,
+        repo: str,
+        package_name: str,
+        packages: list[dict[str, Any]],
+        require_dbt_version: list[str],
+        version: str,
+        conformance_output: Optional[FusionConformanceResult] = None,
     ):
         """The hub needs these specs for packages to be discoverable by deps and on the web"""
         tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(
@@ -219,7 +283,7 @@ class UpdateTask(object):
         sha1 = self.get_sha1(tarball_url)
 
         # note: some packages do not have a packages.yml
-        return {
+        spec = {
             "id": "{}/{}/{}".format(org, package_name, version),
             "name": package_name,
             "version": version,
@@ -236,3 +300,9 @@ class UpdateTask(object):
             },
             "downloads": {"tarball": tarball_url, "format": "tgz", "sha1": sha1},
         }
+        if conformance_output is not None:
+            spec["fusion_compatibility"] = conformance_output.to_dict()
+            spec["fusion_compatibility"]["fusion_compatible_download"] = {}
+        else:
+            spec["fusion_compatibility"] = {}
+        return spec

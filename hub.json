@@ -362,6 +362,9 @@
     "gauthierpiarrette": [
         "dbt-timefence"
     ],
+    "hasbi93": [
+        "hsbi-dbt-artifacts"
+    ],
     "get-select": [
         "dbt-query-tags",
         "dbt-snowflake-monitoring",

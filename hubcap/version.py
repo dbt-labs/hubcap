@@ -3,16 +3,11 @@
 import re
 import semver
 import logging
-from typing import List
+from typing import List, Optional
+from hubcap.exceptions import VersionError
 
 
-class VersionError(Exception):
-    """Custom exception for version operation errors"""
-
-    pass
-
-
-def parse_semver_tag(tag):
+def parse_semver_tag(tag: str) -> Optional[re.Match[str]]:
     """use regexes to parse the semver tag into groups"""
     try:
         if not isinstance(tag, str):
@@ -29,7 +24,7 @@ def parse_semver_tag(tag):
         return None
 
 
-def is_valid_semver_tag(tag):
+def is_valid_semver_tag(tag: str) -> bool:
     """tag is valid according to official semver versioning"""
     try:
         return parse_semver_tag(tag) is not None
@@ -62,7 +57,7 @@ def strip_v_from_version(tag):
         raise VersionError(f"Error stripping version prefix from '{tag}': {str(e)}")
 
 
-def get_existing_tags(version_tags):
+def get_existing_tags(version_tags: list | set) -> set:
     """in: list of version tags
     out: only semver compliant tags"""
     try:

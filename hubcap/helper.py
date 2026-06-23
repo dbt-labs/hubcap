@@ -8,18 +8,7 @@ from contextlib import contextmanager
 from typing import Dict, Any, List
 
 from pathlib import Path
-
-
-class ConfigurationError(Exception):
-    """Custom exception for configuration errors"""
-
-    pass
-
-
-class FileOperationError(Exception):
-    """Custom exception for file operation errors"""
-
-    pass
+from .exceptions import ConfigurationError, FileOperationError
 
 
 NOW = int(datetime.datetime.now().timestamp())

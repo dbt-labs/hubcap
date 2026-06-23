@@ -72,6 +72,9 @@
     "henryupton": [
         "dbt-scd2-utils"
     ],
+    "kanoniv": [
+        "dbt-kanoniv"
+    ],
     "LewisDavies": [
         "upstream-prod"
     ],
@@ -91,7 +94,8 @@
         "dbt-set-similarity",
         "dbt-stat-test",
         "dbt-cortex-search-service",
-        "dbt-ml-eval"
+        "dbt-ml-eval",
+        "dbt-orphan"
     ],
     "metaplane" : [
         "dbt-expectations"
@@ -350,12 +354,17 @@
         "dbt_ga4_export",
         "dbt_unified_rag",
         "dbt_amazon_selling_partner",
-        "dbt_dynamics_365_crm"
+        "dbt_dynamics_365_crm",
+        "dbt_stackadapt"
     ],
     "fullstorydev": [
         "dbt_fullstory"
     ],
+    "gauthierpiarrette": [
+        "dbt-timefence"
+    ],
     "get-select": [
+        "dbt-query-tags",
         "dbt-snowflake-monitoring",
         "dbt-snowflake-query-tags"
     ],
@@ -426,6 +435,9 @@
     "omnata-labs": [
         "dbt-ml-preprocessing"
     ],
+    "paradime-io": [
+        "dbt-llm-evals"
+    ],
     "pvcy": [
         "dbt-privacy"
     ],
@@ -449,6 +461,9 @@
     ],
     "sgoley": [
         "dbt-postgres-utils"
+    ],
+    "smithclay": [
+        "dbt_opentelemetry"
     ],
     "snowplow": [
         "dbt-snowplow-utils",
@@ -482,11 +497,19 @@
         "dbt-meta-testing",
         "dbt-activity-schema"
     ],
+    "tripleaceme": [
+        "dbt-anomaly-detector",
+        "dbt-doc-inherit",
+        "dbt-doc-tracker"
+    ],
     "tuva-health": [
         "the_tuva_project"
     ],
-    "versent-dimensional": [
+    "versent": [
         "dbt_versent_dimensional_automate"
+    ],
+    "vladimir-vvalov": [
+        "tbmacro"
     ],
     "windsor-ai": [
         "dbt_facebook_ads",
@@ -507,5 +530,8 @@
     ],
     "datooine": [
         "dbt-buckets"
+    ],
+    "teoria": [
+        "dbt-iceberg-utils"
     ]
 }

@@ -96,7 +96,7 @@
         "dbt-ml-eval",
         "dbt-orphan"
     ],
-    "metaplane" : [
+    "metaplane": [
         "dbt-expectations"
     ],
     "Montreal-Analytics": [
@@ -218,6 +218,9 @@
     ],
     "dbt-msft": [
         "tsql-utils"
+    ],
+    "dgvj-work": [
+        "dbt_dqscore"
     ],
     "dwreeves": [
         "dbt_linreg",

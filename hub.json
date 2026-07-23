@@ -400,6 +400,9 @@
     "irvingpop": [
         "dbt_otel_export"
     ],
+    "jaysobel": [
+        "dbt-cron-timestamps"
+    ],
     "jitsucom": [
         "dbt-jitsu"
     ],

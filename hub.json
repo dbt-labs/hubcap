@@ -94,7 +94,8 @@
         "dbt-set-similarity",
         "dbt-stat-test",
         "dbt-ml-eval",
-        "dbt-orphan"
+        "dbt-orphan",
+        "dbt-cortex-agent"
     ],
     "metaplane" : [
         "dbt-expectations"

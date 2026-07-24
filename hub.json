@@ -92,6 +92,7 @@
     "Matts52": [
         "dbt-ml-inline-preprocessing",
         "dbt-set-similarity",
+        "dbt-sigma-data-models",
         "dbt-stat-test",
         "dbt-ml-eval",
         "dbt-orphan",

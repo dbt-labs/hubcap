@@ -536,5 +536,8 @@
     ],
     "teoria": [
         "dbt-iceberg-utils"
+    ],
+    "UniRate-API": [
+        "dbt-unirate"
     ]
 }

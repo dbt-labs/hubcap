@@ -139,6 +139,9 @@
     "Teradata": [
         "dbt-teradata-utils"
     ],
+    "TheDamiofLagos": [
+        "dbt-contract-gen"
+    ],
     "Velir": [
         "dbt-ga4"
     ],

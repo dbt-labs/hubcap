@@ -182,6 +182,9 @@
         "airbyte_dbt_shopify",
         "airbyte_dbt_stripe"
     ],
+    "civitaspo": [
+        "dbt-authorized-models"
+    ],
     "creativeautomation": [
         "dbt-airbyte-shopify"
     ],

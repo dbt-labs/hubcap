@@ -1,6 +1,6 @@
 # GitHub Actions Setup Guide
 
-This guide explains how to set up hubcap.py to run on GitHub Actions instead of Heroku.
+This guide explains how to set up hubcap.py to run on GitHub Actions.
 
 ## Overview
 

@@ -4,7 +4,6 @@ permissions:
   contents: read
 
 on:
-  # TODO: Re-enable when you move from heroku to github actions
   schedule:
     # Run every hour at :00 for production
     - cron: '0 * * * *'

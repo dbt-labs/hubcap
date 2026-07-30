@@ -94,12 +94,16 @@
         "dbt-set-similarity",
         "dbt-sigma-data-models",
         "dbt-stat-test",
+        "dbt-cortex-search-service",
         "dbt-ml-eval",
         "dbt-orphan",
         "dbt-cortex-agent"
     ],
     "metaplane" : [
         "dbt-expectations"
+    ],
+    "monitorial-io" : [
+        "dbt-snowflake-cortex"
     ],
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
@@ -138,6 +142,9 @@
     "Teradata": [
         "dbt-teradata-utils"
     ],
+    "TheDamiofLagos": [
+        "dbt-contract-gen"
+    ],
     "Velir": [
         "dbt-ga4"
     ],
@@ -174,6 +181,9 @@
         "airbyte_dbt_pipedrive",
         "airbyte_dbt_shopify",
         "airbyte_dbt_stripe"
+    ],
+    "civitaspo": [
+        "dbt-authorized-models"
     ],
     "creativeautomation": [
         "dbt-airbyte-shopify"
@@ -537,5 +547,8 @@
     ],
     "teoria": [
         "dbt-iceberg-utils"
+    ],
+    "UniRate-API": [
+        "dbt-unirate"
     ]
 }

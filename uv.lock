@@ -195,7 +195,7 @@ toml = [
 
 [[package]]
 name = "dbt-fusion-package-tools"
-version = "0.20.5"
+version = "0.21.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -206,9 +206,9 @@ dependencies = [
     { name = "rich" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d1/7d/d9cc0f3474470e890c43fb7ac7f2bc23c1ba394e9731f8628db632c8b055/dbt_fusion_package_tools-0.20.5.tar.gz", hash = "sha256:971496008adfde566fe0536a9876ea6b6985ac74ad7be8e47069026e64cef278", size = 45883, upload-time = "2026-05-21T00:36:03.428Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/10/42/df5068a212ae502bc2a5f96fcbbe90a8220a609c0120cb244f01effc41a8/dbt_fusion_package_tools-0.21.5.tar.gz", hash = "sha256:47a5a83aacebf1a9b435a4a8477ead5a0b06f7cc18855caa71d2f72c97d288c6", size = 48046, upload-time = "2026-07-23T20:17:53.884Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d1/be/9f06c6de244792194a9e449f5861366ec5408b1528a632f4b15e9f979c45/dbt_fusion_package_tools-0.20.5-py3-none-any.whl", hash = "sha256:db02992ef2757398765039e7979d516a1703adef794c647678d83ee0644761d6", size = 57099, upload-time = "2026-05-21T00:36:00.16Z" },
+    { url = "https://files.pythonhosted.org/packages/5a/5b/d3e34af27759e71fdd333592fe0f3248180b4f104c048b1feff76991ad61/dbt_fusion_package_tools-0.21.5-py3-none-any.whl", hash = "sha256:b5b24248143ffa165e71b9ea61e6fdf484427e9706e897864a638c7b00f24ced", size = 59623, upload-time = "2026-07-23T20:17:51.087Z" },
 ]
 
 [[package]]
@@ -298,7 +298,7 @@ requires-dist = [
     { name = "black", marker = "extra == 'test'", specifier = "==22.6.0" },
     { name = "certifi", specifier = "==2022.12.7" },
     { name = "charset-normalizer", specifier = "==2.1.1" },
-    { name = "dbt-fusion-package-tools", specifier = ">=0.20.5" },
+    { name = "dbt-fusion-package-tools", specifier = ">=0.21.5" },
     { name = "gitdb", specifier = "==4.0.9" },
     { name = "gitpython", specifier = ">=3.1.45" },
     { name = "idna", specifier = "==3.4" },

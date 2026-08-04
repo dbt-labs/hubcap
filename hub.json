@@ -130,7 +130,8 @@
         "shopify-fivetran-to-daton"
     ],
     "ScalefreeCOM": [
-        "datavault4dbt"
+        "datavault4dbt",
+        "dbt_salesforce_analytics_vault"
     ],
     "shankararul": [
         "dbt_eda_tools"

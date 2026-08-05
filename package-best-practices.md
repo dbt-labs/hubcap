@@ -12,6 +12,11 @@ To avoid ambiguity, the bullets below are pretty formal, but we are a friendly b
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
 
+### Real world usage
+- Packages MUST have been used in the author's own production environment for an extended period of time before being submitted to the dbt Package Hub.
+    - Using coding agents to help build a package is completely fine, but a package's behaviour SHOULD be proven by real usage rather than by review alone.
+- Package authors SHOULD be satisfied with their package's behaviour in production at the time of submission.
+
 ### First run experience
 - Packages MUST include a [licence file detectable by GitHub](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-license-to-a-repository). We strongly encourage an open source licence such as Apache 2.0 or MIT.
 - Packages SHOULD contain a README file which explains how to get started with the package and customise its behaviour.

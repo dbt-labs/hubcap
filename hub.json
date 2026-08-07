@@ -99,7 +99,7 @@
         "dbt-orphan",
         "dbt-cortex-agent"
     ],
-    "metaplane" : [
+    "metaplane": [
         "dbt-expectations"
     ],
     "monitorial-io" : [
@@ -230,6 +230,9 @@
     ],
     "dbt-msft": [
         "tsql-utils"
+    ],
+    "dgvj-work": [
+        "dbt_dqscore"
     ],
     "dwreeves": [
         "dbt_linreg",

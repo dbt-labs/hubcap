@@ -99,10 +99,10 @@
         "dbt-orphan",
         "dbt-cortex-agent"
     ],
-    "metaplane": [
+    "metaplane" : [
         "dbt-expectations"
     ],
-    "monitorial-io": [
+    "monitorial-io" : [
         "dbt-snowflake-cortex"
     ],
     "Montreal-Analytics": [

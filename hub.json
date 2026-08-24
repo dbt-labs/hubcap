@@ -160,6 +160,9 @@
     "bcodell": [
         "dbt-activity-schema"
     ],
+    "beepboop2025": [
+        "liquilens-evidence-carrier"
+    ],
     "bqbooster": [
         "dbt-bigquery-monitoring"
     ],

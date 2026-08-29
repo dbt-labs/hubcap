@@ -551,5 +551,8 @@
     ],
     "UniRate-API": [
         "dbt-unirate"
+    ],
+    "katekruger": [
+        "pipeline-waterfall"
     ]
 }

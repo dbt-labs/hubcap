@@ -538,7 +538,8 @@
         "dbt-airflow-macros",
         "dbt-unittest",
         "dbt-gcp-billing",
-        "dbt-ops"
+        "dbt-ops",
+        "dbt-bigquery-federation"
     ],
     "YukiTechnologies": [
         "yuki-snowflake-dbt-tags"

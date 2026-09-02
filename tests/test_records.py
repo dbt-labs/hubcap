@@ -10,6 +10,18 @@ from hubcap.records import (
 )
 
 
+def _mock_tarball_response():
+    """Stand in for a tarball download so specs can be built without network"""
+    return type(
+        "MockResponse",
+        (),
+        {
+            "iter_content": lambda self, size: [b"test content"],
+            "raise_for_status": lambda self: None,
+        },
+    )()
+
+
 class TestIndividualPullRequests:
     """Tests for IndividualPullRequests strategy."""
 
@@ -470,6 +482,137 @@ class TestUpdateTask:
             assert "_source" in spec
             assert "fusion_compatibility" in spec
             assert spec["fusion_compatibility"] == {}
+
+    def test_update_task_make_spec_omits_hub_without_s3_config(self, temp_dir):
+        """Without an s3 config, downloads must look exactly as it did before."""
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
+        )
+
+        with patch("hubcap.records.requests.get") as mock_get:
+            mock_get.return_value = _mock_tarball_response()
+
+            spec = task.make_spec(
+                "dbt-labs", "dbt-utils", "dbt_utils", [], [">=1.0.0"], "1.0.0"
+            )
+
+            assert "hub" not in spec["downloads"]
+            assert spec["downloads"]["tarball"] == (
+                "https://codeload.github.com/dbt-labs/dbt-utils/tar.gz/1.0.0"
+            )
+
+    def test_update_task_make_spec_adds_hub_download(self, temp_dir):
+        """A mirrored release gets a downloads.hub entry sharing the source sha1."""
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
+            s3_config={"bucket": "hub-packages"},
+        )
+
+        hub_url = "https://hub.getdbt.com/packages/dbt-labs/dbt-utils/tar.gz/1.0.0"
+
+        with patch("hubcap.records.requests.get") as mock_get, patch(
+            "hubcap.records.s3_helper.upload_package_tarball", return_value=hub_url
+        ) as mock_upload:
+            mock_get.return_value = _mock_tarball_response()
+
+            spec = task.make_spec(
+                "dbt-labs", "dbt-utils", "dbt_utils", [], [">=1.0.0"], "1.0.0"
+            )
+
+            downloads = spec["downloads"]
+            assert downloads["hub"] == {
+                "tarball": hub_url,
+                "format": "tgz",
+                "sha1": downloads["sha1"],
+            }
+            # the mirror is byte-identical, so it must not be hashed separately
+            assert mock_upload.call_args.args[0] == b"test content"
+
+    def test_update_task_make_spec_survives_failed_upload(self, temp_dir):
+        """A failed mirror must not keep the release off the hub."""
+        from unittest.mock import patch
+
+        from hubcap.exceptions import S3UploadError
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
+            s3_config={"bucket": "hub-packages"},
+        )
+
+        with patch("hubcap.records.requests.get") as mock_get, patch(
+            "hubcap.records.s3_helper.upload_package_tarball"
+        ) as mock_upload:
+            mock_get.return_value = _mock_tarball_response()
+            mock_upload.side_effect = S3UploadError("access denied")
+
+            spec = task.make_spec(
+                "dbt-labs", "dbt-utils", "dbt_utils", [], [">=1.0.0"], "1.0.0"
+            )
+
+            assert "hub" not in spec["downloads"]
+            assert spec["downloads"]["sha1"]
+
+    def test_fetch_tarball_returns_contents_and_sha1(self, temp_dir):
+        """The tarball is fetched once; both callers reuse the one download."""
+        import hashlib
+        from unittest.mock import patch
+
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="dbt-labs",
+            github_repo_name="dbt-utils",
+            local_path_to_repo=local_path,
+            package_name="dbt_utils",
+            existing_tags=[],
+            new_tags=["1.0.0"],
+            hub_repo="hub",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
+        )
+
+        with patch("hubcap.records.requests.get") as mock_get:
+            mock_get.return_value = _mock_tarball_response()
+
+            contents, sha1 = task.fetch_tarball("https://example.com/pkg.tar.gz")
+
+            assert contents == b"test content"
+            assert sha1 == hashlib.sha1(b"test content").hexdigest()
+            assert mock_get.call_count == 1
 
     def test_run_parse_conformance_success(
         self, temp_dir, mock_fusion_conformance_output

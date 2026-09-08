@@ -1,0 +1,112 @@
+name: Backfill package mirrors
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment configuration
+        type: choice
+        options: [test, production]
+        default: test
+        required: true
+      dry_run:
+        description: Download and report only (no S3 writes or PR)
+        type: boolean
+        default: true
+      package:
+        description: Optional hub package ID (e.g. dbt-labs/dbt_utils)
+        type: string
+        default: ''
+      limit:
+        description: Maximum candidate versions (0 for all)
+        type: string
+        default: '100'
+      check_public:
+        description: Verify the first mirror through its public URL
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: backfill-package-mirrors-${{ inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+      - uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Configure AWS credentials through OIDC
+        if: ${{ !inputs.dry_run }}
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+          role-duration-seconds: 3600
+      - name: Backfill existing specs
+        env:
+          CONFIG: ${{ secrets.HUBCAP_CONFIG }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          PACKAGE: ${{ inputs.package }}
+          LIMIT: ${{ inputs.limit }}
+          CHECK_PUBLIC: ${{ inputs.check_public }}
+        shell: bash
+        run: |
+          export GH_TOKEN
+          GH_TOKEN=$(jq -r '.user.token' <<< "$CONFIG")
+          echo "::add-mask::$GH_TOKEN"
+          hub_repo=$(jq -r '.org + "/" + .repo' <<< "$CONFIG")
+          gh repo clone "$hub_repo" target/backfill-hub -- --depth=1
+
+          args=(--hub-dir target/backfill-hub --limit "$LIMIT")
+          if [[ -n "$PACKAGE" ]]; then args+=(--package "$PACKAGE"); fi
+          if [[ "$DRY_RUN" == "false" ]]; then args+=(--apply); fi
+          if [[ "$CHECK_PUBLIC" == "false" ]]; then args+=(--skip-public-check); fi
+          # Publish successful changes even if some versions failed.
+          status=0
+          uv run python -m hubcap.backfill "${args[@]}" 2>&1 | tee backfill.log || status=$?
+
+          if [[ "$DRY_RUN" == "false" ]]; then
+            cd target/backfill-hub
+            if ! git diff --quiet -- data/packages; then
+              base=$(git branch --show-current)
+              branch="hubcap-backfill-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+              git checkout -b "$branch"
+              git config user.name "$(jq -r '.user.name' <<< "$CONFIG")"
+              git config user.email "$(jq -r '.user.email' <<< "$CONFIG")"
+              git config credential.helper '!gh auth git-credential'
+              git add data/packages
+              git commit -m 'Backfill package download mirrors'
+              git push origin "$branch"
+              {
+                echo 'Adds downloads.hub to existing versions using the SHA-1 of the mirrored bytes. Original metadata is preserved.'
+                echo
+                jq '.counts' ../../backfill-report.json
+                echo
+                echo "Report: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+              } > ../backfill-pr.md
+              gh pr create --repo "$hub_repo" --base "$base" --head "$branch" \
+                --title 'Backfill package download mirrors' --body-file ../backfill-pr.md
+            fi
+          fi
+          exit "$status"
+      - name: Upload investigation report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: backfill-${{ inputs.environment }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            backfill-report.json
+            backfill.log
+          retention-days: 30

@@ -227,7 +227,8 @@
         "dbt-external-tables",
         "dbt_metrics",
         "dbt-project-evaluator",
-        "dbt-query-profiler"
+        "dbt-query-profiler",
+        "dbt-context-engineering"
     ],
     "dbt-msft": [
         "tsql-utils"

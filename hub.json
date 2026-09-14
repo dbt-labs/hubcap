@@ -552,5 +552,8 @@
     ],
     "UniRate-API": [
         "dbt-unirate"
+    ],
+    "onesixsolutions": [
+        "dbt_cortex_agent"
     ]
 }

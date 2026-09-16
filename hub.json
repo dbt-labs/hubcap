@@ -102,6 +102,9 @@
     "metaplane" : [
         "dbt-expectations"
     ],
+    "mitch-zink": [
+        "dbt_anomaly_detection"
+    ],
     "monitorial-io" : [
         "dbt-snowflake-cortex"
     ],

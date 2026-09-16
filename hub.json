@@ -368,7 +368,12 @@
         "dbt_unified_rag",
         "dbt_amazon_selling_partner",
         "dbt_dynamics_365_crm",
-        "dbt_stackadapt"
+        "dbt_stackadapt",
+        "dbt_workday_financial_management",
+        "dbt_mntn",
+        "dbt_openai",
+        "dbt_claude",
+        "dbt_ai_reporting"
     ],
     "fullstorydev": [
         "dbt_fullstory"

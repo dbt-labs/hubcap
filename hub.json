@@ -108,6 +108,9 @@
     "Montreal-Analytics": [
         "dbt-snowflake-utils"
     ],
+    "rbmuller": [
+        "scherlok"
+    ],
     "Saras-Daton": [
         "currency_exchange_rates",
         "AmazonSellerCentral",

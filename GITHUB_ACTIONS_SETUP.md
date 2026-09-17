@@ -66,6 +66,40 @@ Each environment needs a `HUBCAP_CONFIG` secret with the appropriate configurati
 }
 ```
 
+#### S3 Mirror Configuration
+
+New release tarballs are mirrored to the hub's own bucket, and the resulting URL is
+recorded as `downloads.hub` in each version spec. Add an `s3` block to
+`HUBCAP_CONFIG` to enable this:
+
+```json
+{
+  "s3": {
+    "bucket": "hub-getdbt-com-packages",
+    "region": "us-east-1",
+    "key_prefix": "package-hub/dbt-packages",
+    "hub_url_base": "https://public.cdn.getdbt.com/package-hub/dbt-packages"
+  }
+}
+```
+
+`key_prefix` and `hub_url_base` default to the values above, so `bucket` is the only
+required field. If the `s3` block is omitted entirely, uploads are skipped and specs
+are written without a `downloads.hub` entry.
+
+Credentials are obtained via GitHub's OIDC provider rather than static keys: the
+workflow assumes the role ARN in the `AWS_ROLE_ARN` repository secret, then boto3
+picks up the resulting short-lived credentials from its default credential chain.
+This step is skipped on `pull_request` runs, since forked PRs get neither secrets
+nor `id-token` permission.
+
+**Secret name**: `AWS_ROLE_ARN`
+**Secret value**: `arn:aws:iam::<account-id>:role/<role-name>`
+
+The role's trust policy must allow this repository's GitHub OIDC provider to assume
+it, and its permissions policy needs `s3:PutObject` (and ideally `s3:HeadObject`,
+used to skip tarballs already mirrored) on `arn:aws:s3:::<bucket>/<key_prefix>/*`.
+
 ### 3. GitHub Personal Access Tokens
 
 Create two GitHub Personal Access Tokens:

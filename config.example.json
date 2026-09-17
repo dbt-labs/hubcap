@@ -7,5 +7,11 @@
     "org": "dbt-labs",
     "repo": "hub.getdbt.com-test",
     "push_branches": true,
-    "one_branch_per_repo": true
+    "one_branch_per_repo": true,
+    "s3": {
+        "bucket": "hub-getdbt-com-packages",
+        "region": "us-east-1",
+        "key_prefix": "package-hub/dbt-packages",
+        "hub_url_base": "https://public.cdn.getdbt.com/package-hub/dbt-packages"
+    }
 }

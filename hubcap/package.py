@@ -3,7 +3,7 @@
 import logging
 import os
 import yaml
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 from git import Repo
 from hubcap.types import PathLike
@@ -162,6 +162,7 @@ def get_update_tasks(
     path: Path,
     hub_repo,
     fusion_binary_path: PathLike,
+    s3_config: Optional[Dict[str, Any]] = None,
 ):
     """build list of tasks for package version-bump commits"""
 
@@ -229,6 +230,7 @@ def get_update_tasks(
                     new_tags=new_tags,
                     hub_repo=hub_repo,
                     fusion_binary_path=fusion_binary_path,
+                    s3_config=s3_config,
                 )
             # Cannot create update task for package without new tags
             else:

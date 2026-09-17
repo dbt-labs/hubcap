@@ -2,6 +2,7 @@ name: Hubcap Scheduler
 
 permissions:
   contents: read
+  id-token: write
 
 on:
   schedule:
@@ -106,6 +107,13 @@ jobs:
           echo "CONFIG<<EOF" >> $GITHUB_ENV
           cat config.json >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        if: github.event_name != 'pull_request'
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a  # aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: "us-east-1"
 
       - name: Run hubcap
         run: |

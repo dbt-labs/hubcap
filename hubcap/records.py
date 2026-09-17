@@ -17,7 +17,9 @@ from pathlib import Path
 from hubcap import git_helper
 from hubcap import helper
 from hubcap import package
+from hubcap import s3_helper
 from hubcap import version
+from hubcap.exceptions import S3UploadError
 
 
 class PullRequestStrategy(ABC):
@@ -78,6 +80,7 @@ class UpdateTask(object):
         new_tags: list,
         hub_repo: str,
         fusion_binary_path: PathLike,
+        s3_config: Optional[dict[str, Any]] = None,
     ):
         self.github_username = github_username
         self.github_repo_name = github_repo_name
@@ -95,6 +98,7 @@ class UpdateTask(object):
         self.existing_tags = existing_tags
         self.new_tags = new_tags
         self.fusion_binary_path = fusion_binary_path
+        self.s3_config = s3_config or {}
 
     def run_parse_conformance(
         self, version_tag: str, fusion_binary=None
@@ -256,15 +260,33 @@ class UpdateTask(object):
 
         return file_buf
 
-    def get_sha1(self, url):
-        """used to create a unique sha for each release"""
+    def fetch_tarball(self, url) -> tuple[bytes, str]:
+        """Download once so the hub mirror can reuse the contents"""
         logging.info(f"    downloading: {url}")
         contents = self.download(url)
         hasher = hashlib.sha1()
         hasher.update(contents)
         digest = hasher.hexdigest()
         logging.info(f"      SHA1: {digest}")
-        return digest
+        return contents, digest
+
+    def upload_hub_tarball(
+        self, contents: bytes, org: str, repo: str, version: str
+    ) -> Optional[str]:
+        """Returns the public hub URL, or None if unconfigured/failed (never blocks the release)"""
+        if not self.s3_config:
+            logging.info("    no s3 config; skipping hub tarball upload")
+            return None
+
+        try:
+            return s3_helper.upload_package_tarball(
+                contents, org, repo, version, self.s3_config
+            )
+        except S3UploadError as e:
+            logging.warning(
+                f"hub tarball upload failed for {org}/{repo} {version}: {e}"
+            )
+            return None
 
     def make_spec(
         self,
@@ -280,7 +302,19 @@ class UpdateTask(object):
         tarball_url = "https://codeload.github.com/{}/{}/tar.gz/{}".format(
             org, repo, version
         )
-        sha1 = self.get_sha1(tarball_url)
+        tarball_contents, sha1 = self.fetch_tarball(tarball_url)
+
+        downloads: dict[str, Any] = {
+            "tarball": tarball_url,
+            "format": "tgz",
+            "sha1": sha1,
+        }
+
+        # mirror the release on the hub so deps need not reach github directly
+        hub_url = self.upload_hub_tarball(tarball_contents, org, repo, version)
+        if hub_url:
+            # the mirror is the same bytes, so it shares the source tarball's sha1
+            downloads["hub"] = {"tarball": hub_url, "format": "tgz", "sha1": sha1}
 
         # note: some packages do not have a packages.yml
         spec = {
@@ -298,7 +332,7 @@ class UpdateTask(object):
                     org, repo, version
                 ),
             },
-            "downloads": {"tarball": tarball_url, "format": "tgz", "sha1": sha1},
+            "downloads": downloads,
         }
         if conformance_output is not None:
             spec["fusion_compatibility"] = conformance_output.to_dict()

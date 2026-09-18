@@ -558,5 +558,8 @@
     ],
     "UniRate-API": [
         "dbt-unirate"
+    ],
+    "bricefotzo": [
+        "dbt-bqai"
     ]
 }

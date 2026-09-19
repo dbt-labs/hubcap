@@ -506,6 +506,9 @@
     "sutrolabs": [
         "dbt_census_utils"
     ],
+    "sudo-pradip": [
+        "dbt-hacks"
+    ],
     "TasmanAnalytics": [
         "tasman-dbt-mta",
         "tasman-dbt-revenuecat",

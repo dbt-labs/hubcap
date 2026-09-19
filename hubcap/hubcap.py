@@ -64,6 +64,11 @@ def main():
         fusion_binary_path: PathLike = config.get(
             "fusion_binary_path", DEFAULT_FUSION_BINARY_PATH.resolve()
         )
+        s3_config = config.get("s3", {})
+        if not s3_config:
+            logging.warning(
+                "No s3 config found. Release tarballs will not be mirrored to the hub."
+            )
 
         try:
             PACKAGE_MAINTAINERS = package_maintainers.load_package_maintainers()
@@ -168,6 +173,7 @@ def main():
                 TMP_DIR,
                 github_repo,
                 fusion_binary_path,
+                s3_config,
             )
         except Exception as e:
             logging.error(f"Error getting update tasks: {str(e)}")

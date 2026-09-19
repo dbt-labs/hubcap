@@ -34,6 +34,12 @@ class ReleaseCarrierError(Exception):
     pass
 
 
+class S3UploadError(Exception):
+    """Custom exception for hub tarball upload failures"""
+
+    pass
+
+
 class VersionError(Exception):
     """Custom exception for version operation errors"""
 

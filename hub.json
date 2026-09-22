@@ -484,6 +484,7 @@
         "dbt-postgres-utils"
     ],
     "smithclay": [
+        "dbt_jev",
         "dbt_opentelemetry"
     ],
     "snowplow": [

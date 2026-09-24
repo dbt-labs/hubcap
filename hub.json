@@ -558,5 +558,8 @@
     ],
     "UniRate-API": [
         "dbt-unirate"
+    ],
+    "Ste-Fano98": [
+        "loopcost-dbt"
     ]
 }

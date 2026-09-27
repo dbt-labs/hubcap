@@ -459,6 +459,9 @@
     "paradime-io": [
         "dbt-llm-evals"
     ],
+    "pif": [
+        "dbt_yaml_semantic_view"
+    ],
     "pvcy": [
         "dbt-privacy"
     ],

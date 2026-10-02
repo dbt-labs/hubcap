@@ -27,6 +27,9 @@
     "Datavault-UK": [
         "dbtvault"
     ],
+    "datavloot": [
+    "dbt-datavloot-optimist"
+    ],
     "Datomni": [
         "profitwell_metrics",
         "ga4_metrics"

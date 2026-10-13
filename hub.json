@@ -378,6 +378,9 @@
     "fullstorydev": [
         "dbt_fullstory"
     ],
+    "fxmacrodata": [
+        "dbt-fxmacrodata"
+    ],
     "gauthierpiarrette": [
         "dbt-timefence"
     ],

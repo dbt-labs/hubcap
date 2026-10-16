@@ -500,6 +500,9 @@
         "dbt-snowplow-unified",
         "dbt-snowplow-attribution"
     ],
+    "snowplow-incubator": [
+        "dbt-snowplow-identities"
+    ],
     "splitgraph": [
         "ab2ft_stripe"
     ],

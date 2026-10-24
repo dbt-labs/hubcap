@@ -556,7 +556,8 @@
         "yuki-snowflake-dbt-tags"
     ],
     "datooine": [
-        "dbt-buckets"
+        "dbt-buckets",
+        "dbt-event-patterns"
     ],
     "teoria": [
         "dbt-iceberg-utils"

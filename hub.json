@@ -11,6 +11,9 @@
     "AltimateAI": [
         "altimate-dbt-snowflake-query-tags"
     ],
+    "Elsayed91": [
+        "dbt-subzero"
+    ],
     "M-KOPA": [
         "insert_by_timeperiod"
     ],

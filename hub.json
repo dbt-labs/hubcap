@@ -98,6 +98,9 @@
         "dbt-orphan",
         "dbt-cortex-agent"
     ],
+    "mercedes-benz": [
+        "dbt-iterative-snapshot"
+    ],
     "metaplane" : [
         "dbt-expectations"
     ],

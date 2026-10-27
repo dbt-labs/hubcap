@@ -489,6 +489,7 @@
         "dbt-sigma-data-model"
     ],
     "smithclay": [
+        "dbt_jev",
         "dbt_opentelemetry"
     ],
     "snowplow": [

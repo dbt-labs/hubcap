@@ -486,7 +486,9 @@
         "dbt-postgres-utils"
     ],
     "sigmacomputing": [
-        "dbt-sigma-data-model"
+        "dbt-sigma-data-model",
+        "dbt-sigma-report",
+        "dbt-sigma-workbook"
     ],
     "smithclay": [
         "dbt_opentelemetry"

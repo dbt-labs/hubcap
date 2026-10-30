@@ -1,6 +1,8 @@
 """Tests for the records module."""
 
+import pytest
 
+from hubcap.exceptions import PackageError
 from hubcap.hubcap import DEFAULT_FUSION_BINARY_PATH
 from hubcap.records import (
     IndividualPullRequests,
@@ -181,6 +183,69 @@ class TestUpdateTask:
         assert "test-org" in str(task.hub_version_index_path)
         assert "test_package" in str(task.hub_version_index_path)
         assert "versions" in str(task.hub_version_index_path)
+
+    @pytest.mark.parametrize(
+        "unsafe_package_name",
+        ["../other-org/their_package", "..", "/tmp/anywhere", "a/b"],
+    )
+    def test_update_task_refuses_name_outside_its_namespace(
+        self, temp_dir, unsafe_package_name
+    ):
+        """A package name may only ever name a dir inside its own namespace."""
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        with pytest.raises(PackageError):
+            UpdateTask(
+                github_username="some-org",
+                github_repo_name="test-pkg",
+                local_path_to_repo=local_path,
+                package_name=unsafe_package_name,
+                existing_tags=[],
+                new_tags=[],
+                hub_repo="hub.getdbt.com",
+                fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
+            )
+
+    def test_update_task_refuses_traversing_username(self, temp_dir):
+        """The namespace segment is guarded the same way as the package."""
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        with pytest.raises(PackageError):
+            UpdateTask(
+                github_username="../elsewhere",
+                github_repo_name="test-pkg",
+                local_path_to_repo=local_path,
+                package_name="test_package",
+                existing_tags=[],
+                new_tags=[],
+                hub_repo="hub.getdbt.com",
+                fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
+            )
+
+    def test_update_task_path_stays_under_namespace(self, temp_dir):
+        """A legitimate task lands exactly at <namespace>/<package>/versions."""
+        local_path = temp_dir / "test_repo"
+        local_path.mkdir()
+
+        task = UpdateTask(
+            github_username="test-org",
+            github_repo_name="test-pkg",
+            local_path_to_repo=local_path,
+            package_name="test_package",
+            existing_tags=[],
+            new_tags=[],
+            hub_repo="hub.getdbt.com",
+            fusion_binary_path=DEFAULT_FUSION_BINARY_PATH,
+        )
+
+        namespace_root = (
+            temp_dir / "hub.getdbt.com" / "data" / "packages" / "test-org"
+        ).resolve()
+        assert task.hub_version_index_path.resolve().relative_to(
+            namespace_root
+        ).parts == ("test_package", "versions")
 
     def test_update_task_with_empty_tags(self, temp_dir):
         """Test creating UpdateTask with empty tags."""

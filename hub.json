@@ -470,9 +470,6 @@
     "rjh336": [
         "dbt-model-usage"
     ],
-    "rlsalcido24": [
-        "lakehouse_utils"
-    ],
     "rudderlabs": [
         "dbt-sessionization",
         "dbt-id-stitching",

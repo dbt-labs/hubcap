@@ -150,6 +150,9 @@
     "Velir": [
         "dbt-ga4"
     ],
+    "a-adamovich": [
+        "dbt-dqm"
+    ],
     "andrewcstewart": [
         "dbt-uaparser"
     ],

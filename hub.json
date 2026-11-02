@@ -230,7 +230,8 @@
         "dbt_metrics",
         "dbt-project-evaluator",
         "dbt-query-profiler",
-        "dbt-context-engineering"
+        "dbt-context-engineering",
+        "dbt-cost-optimization"
     ],
     "dbt-msft": [
         "tsql-utils"

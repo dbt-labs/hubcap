@@ -470,9 +470,6 @@
     "rjh336": [
         "dbt-model-usage"
     ],
-    "rlsalcido24": [
-        "lakehouse_utils"
-    ],
     "rudderlabs": [
         "dbt-sessionization",
         "dbt-id-stitching",
@@ -486,7 +483,9 @@
         "dbt-postgres-utils"
     ],
     "sigmacomputing": [
-        "dbt-sigma-data-model"
+        "dbt-sigma-data-model",
+        "dbt-sigma-report",
+        "dbt-sigma-workbook"
     ],
     "smithclay": [
         "dbt_opentelemetry"

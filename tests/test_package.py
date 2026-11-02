@@ -1,6 +1,7 @@
 """Tests for the package module."""
 
 import pytest
+import yaml
 from unittest.mock import MagicMock, patch
 
 from hubcap import package
@@ -42,6 +43,72 @@ class TestParsePkgName:
         with pytest.raises(package.PackageError) as exc_info:
             package.parse_pkg_name(temp_dir)
         assert "No 'name' field found" in str(exc_info.value)
+
+    @pytest.mark.parametrize(
+        "unsafe_name",
+        [
+            "../other-org/their_package",
+            "..",
+            "/absolute/package",
+            "nested/package",
+            "back\\slash",
+            "trailing_newline\n",
+        ],
+    )
+    def test_parse_rejects_names_that_are_not_one_segment(self, temp_dir, unsafe_name):
+        """A name that could name another directory must not be returned."""
+        (temp_dir / "dbt_project.yml").write_text(
+            yaml.safe_dump({"name": unsafe_name, "version": "1.0.0"})
+        )
+        with pytest.raises(package.PackageError) as exc_info:
+            package.parse_pkg_name(temp_dir)
+        assert "single path segment" in str(exc_info.value)
+
+    def test_parse_accepts_dashed_name(self, temp_dir):
+        """Packages already on the hub use dashes; they must keep working."""
+        (temp_dir / "dbt_project.yml").write_text("name: dbt-event-logging\n")
+        assert package.parse_pkg_name(temp_dir) == "dbt-event-logging"
+
+
+class TestValidateHubPathSegment:
+    """Tests for the path-segment guard applied to hub directory names."""
+
+    @pytest.mark.parametrize(
+        "name", ["dbt_utils", "dbt-event-logging", "audit_helper", "Snowplow1"]
+    )
+    def test_accepts_real_package_names(self, name):
+        """Names in the shape the hub already stores are accepted."""
+        assert package.validate_hub_path_segment(name, "name") == name
+
+    @pytest.mark.parametrize(
+        "name",
+        [
+            "../other-org/their_package",
+            "..",
+            ".",
+            "/etc/passwd",
+            "a/b",
+            "has space",
+            "dot.name",
+            "",
+        ],
+    )
+    def test_rejects_unsafe_segments(self, name):
+        """Anything that is not one plain directory name is refused."""
+        with pytest.raises(package.PackageError):
+            package.validate_hub_path_segment(name, "name")
+
+    def test_rejects_non_string(self):
+        """A non-string name cannot be joined into a path safely."""
+        with pytest.raises(package.PackageError) as exc_info:
+            package.validate_hub_path_segment(123, "name")
+        assert "must be a string" in str(exc_info.value)
+
+    def test_rejects_overlong_name(self):
+        """An absurdly long name is refused before it reaches the filesystem."""
+        with pytest.raises(package.PackageError) as exc_info:
+            package.validate_hub_path_segment("a" * 101, "name")
+        assert "longer than" in str(exc_info.value)
 
 
 class TestParseRequireDbtVersion:

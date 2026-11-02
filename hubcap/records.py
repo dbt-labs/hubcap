@@ -19,7 +19,7 @@ from hubcap import helper
 from hubcap import package
 from hubcap import s3_helper
 from hubcap import version
-from hubcap.exceptions import S3UploadError
+from hubcap.exceptions import PackageError, S3UploadError
 
 
 class PullRequestStrategy(ABC):
@@ -84,14 +84,8 @@ class UpdateTask(object):
     ):
         self.github_username = github_username
         self.github_repo_name = github_repo_name
-        self.hub_version_index_path = (
-            Path(os.path.dirname(local_path_to_repo))
-            / hub_repo
-            / "data"
-            / "packages"
-            / github_username
-            / package_name
-            / "versions"
+        self.hub_version_index_path = self._build_hub_version_index_path(
+            local_path_to_repo, hub_repo, github_username, package_name
         )
         self.local_path_to_repo = local_path_to_repo
         self.package_name = package_name
@@ -99,6 +93,47 @@ class UpdateTask(object):
         self.new_tags = new_tags
         self.fusion_binary_path = fusion_binary_path
         self.s3_config = s3_config or {}
+
+    @staticmethod
+    def _build_hub_version_index_path(
+        local_path_to_repo: Path,
+        hub_repo: str,
+        github_username: str,
+        package_name: str,
+    ) -> Path:
+        """Locate a package's versions dir, refusing to leave its namespace
+
+        package_name is read from the package's own dbt_project.yml, so it is
+        publisher-controlled input to a path join. pathlib keeps ".." literal
+        and lets an absolute segment discard everything joined before it, so
+        an unchecked name here would write records into another maintainer's
+        directory.
+        """
+        package.validate_hub_path_segment(github_username, "github_username")
+        package.validate_hub_path_segment(package_name, "package name")
+
+        namespace_path = (
+            Path(os.path.dirname(local_path_to_repo))
+            / hub_repo
+            / "data"
+            / "packages"
+            / github_username
+        )
+        version_index_path = namespace_path / package_name / "versions"
+
+        # the segment checks above already make this unreachable; it is the
+        # layer that still has to hold if either is ever loosened
+        resolved = version_index_path.resolve()
+        namespace_root = namespace_path.resolve()
+        if not resolved.is_relative_to(namespace_root) or resolved.relative_to(
+            namespace_root
+        ).parts != (package_name, "versions"):
+            raise PackageError(
+                f"refusing to write records for {github_username}/{package_name} "
+                f"outside {namespace_root}: resolved to {resolved}"
+            )
+
+        return version_index_path
 
     def run_parse_conformance(
         self, version_tag: str, fusion_binary=None

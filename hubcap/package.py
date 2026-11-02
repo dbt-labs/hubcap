@@ -2,6 +2,7 @@
 
 import logging
 import os
+import re
 import yaml
 from typing import List, Dict, Any, Optional
 
@@ -46,6 +47,37 @@ def clone_package_repos(package_maintainer_index, path):
     return failed_repos
 
 
+# Maintainer and package names are interpolated into paths under the hub's
+# data/packages tree, so each has to be a single literal directory name.
+# Dots are left out of the charset deliberately: no package on the hub uses
+# one, and without them "." and ".." cannot be spelled at all. Matched with
+# fullmatch, since "$" would also accept a name with a trailing newline.
+HUB_PATH_SEGMENT_PATTERN = re.compile(r"[A-Za-z0-9_-]+")
+MAX_HUB_PATH_SEGMENT_LENGTH = 100
+
+
+def validate_hub_path_segment(value: Any, label: str) -> str:
+    """Reject any value that would not stay put as one directory name"""
+    if not isinstance(value, str):
+        raise PackageError(
+            f"{label} must be a string, got {type(value).__name__}: {value!r}"
+        )
+
+    if len(value) > MAX_HUB_PATH_SEGMENT_LENGTH:
+        raise PackageError(
+            f"{label} is longer than {MAX_HUB_PATH_SEGMENT_LENGTH} characters: "
+            f"{value[:MAX_HUB_PATH_SEGMENT_LENGTH]!r}..."
+        )
+
+    if not HUB_PATH_SEGMENT_PATTERN.fullmatch(value):
+        raise PackageError(
+            f"{label} must be a single path segment of letters, digits, "
+            f"underscores or dashes: {value!r}"
+        )
+
+    return value
+
+
 def parse_pkg_name(repo_dir: Path) -> str:
     """Parse package name from dbt_project.yml with error handling"""
     try:
@@ -67,13 +99,17 @@ def parse_pkg_name(repo_dir: Path) -> str:
                         f"No 'name' field found in dbt_project.yml in {repo_dir}"
                     )
 
-                return name
+                # this name becomes a directory under data/packages/<org>/,
+                # so it must not be able to name anywhere else
+                return validate_hub_path_segment(name, f"'name' in {dbt_project_path}")
             except yaml.YAMLError as e:
                 raise PackageError(
                     f"Invalid YAML in dbt_project.yml in {repo_dir}: {str(e)}"
                 )
     except (OSError, IOError) as e:
         raise PackageError(f"Error reading dbt_project.yml in {repo_dir}: {str(e)}")
+    except PackageError:
+        raise
     except Exception as e:
         raise PackageError(
             f"Unexpected error parsing package name from {repo_dir}: {str(e)}"

@@ -480,7 +480,8 @@
         "dbt-duckdb-utils"
     ],
     "sgoley": [
-        "dbt-postgres-utils"
+        "dbt-postgres-utils",
+        "dbt-holidates"
     ],
     "sigmacomputing": [
         "dbt-sigma-data-model",

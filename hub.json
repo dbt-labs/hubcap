@@ -5,6 +5,9 @@
     "Aaron-Zhou": [
         "dbt-synapse-statistics"
     ],
+    "AidanHarveyNelson": [
+        "dbt-streams-tasks"
+    ],
     "Aidbox": [
         "dbt_fhir"
     ],

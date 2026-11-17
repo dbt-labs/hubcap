@@ -451,6 +451,9 @@
         "dbt-datamocktool",
         "dbt_product_analytics"
     ],
+    "nace-ai": [
+        "dbt-drex"
+    ],
     "narratorai": [
         "dbt-activity-schema",
         "dbt-segment-activity-schema"

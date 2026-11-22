@@ -153,6 +153,9 @@
     "andrewcstewart": [
         "dbt-uaparser"
     ],
+    "angellist": [
+        "dbt_devin"
+    ],
     "arnoN7": [
         "dbt-incremental-stream"
     ],

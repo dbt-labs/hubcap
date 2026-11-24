@@ -561,5 +561,8 @@
     ],
     "UniRate-API": [
         "dbt-unirate"
+    ],
+    "hmamoun": [
+        "dbt-scout"
     ]
 }

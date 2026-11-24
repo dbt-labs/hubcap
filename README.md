@@ -15,3 +15,6 @@ Assorted constraints:
 Currently, only packages hosted on a GitHub repo are supported.
 
 To add your package, open a PR that adds your repository to [hub.json](hub.json). A dbt Labs team member will review your PR and provide a cursory check of your new package against [best practices](package-best-practices.md).
+
+### Archiving, redirecting, or removing a package
+These steps span both this hubcap repo and the [hub.getdbt.com](https://github.com/dbt-labs/hub.getdbt.com) repo, and are documented in the [hub.getdbt.com README](https://github.com/dbt-labs/hub.getdbt.com#archiving-redirecting-or-removing-a-package).

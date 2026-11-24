@@ -206,7 +206,6 @@
     "dbt-labs": [
         "dbt-utils",
         "dbt-event-logging",
-        "facebook-ads",
         "shopify",
         "recurly",
         "purecloud",

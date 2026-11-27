@@ -101,7 +101,7 @@
     "mercedes-benz": [
         "dbt-iterative-snapshot"
     ],
-    "metaplane" : [
+    "metaplane": [
         "dbt-expectations"
     ],
     "monitorial-io" : [
@@ -152,6 +152,9 @@
     ],
     "andrewcstewart": [
         "dbt-uaparser"
+    ],
+    "anentropic": [
+        "dbt-duckdb-semantic-views"
     ],
     "arnoN7": [
         "dbt-incremental-stream"
